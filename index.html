@@ -700,7 +700,7 @@ header {
 </div>
 
 <script>
-const SORARE_GRAPHQL = 'https://api.sorare.com/federation/graphql';
+const SORARE_GRAPHQL = '/api/sorare';
 
 async function sorareQuery(query, variables = {}) {
   const res = await fetch(SORARE_GRAPHQL, {

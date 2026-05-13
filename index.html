@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESS — Sorare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0907;
+  --bg-2: #14110d;
+  --bg-3: #1a1612;
+  --gold: #d4a24c;
+  --gold-light: #f5dc94;
+  --gold-bright: #ffd97a;
+  --gold-dim: #6b4f1e;
+  --text: #f5f0e6;
+  --text-muted: #8a7c6a;
+  --border: rgba(212, 162, 76, 0.25);
+  --border-strong: rgba(212, 162, 76, 0.6);
+  --error: #d4685c;
+  --success: #6bc78b;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ATMOSPHERE */
+.atmosphere {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 700px at 50% 45%, rgba(212,162,76,0.10), transparent 65%),
+    radial-gradient(ellipse 600px 400px at 15% 10%, rgba(212,162,76,0.05), transparent 70%),
+    radial-gradient(ellipse 600px 400px at 85% 90%, rgba(212,162,76,0.05), transparent 70%);
+}
+.beams { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.beam {
+  position: absolute; top: -20%; width: 1px; height: 140%;
+  background: linear-gradient(180deg, transparent, rgba(212,162,76,0.15), transparent);
+  transform-origin: top center; filter: blur(1px);
+}
+.beam:nth-child(1) { left: 20%; transform: rotate(8deg); }
+.beam:nth-child(2) { left: 50%; transform: rotate(-4deg); animation: beam-pulse 8s ease-in-out infinite; }
+.beam:nth-child(3) { left: 78%; transform: rotate(6deg); animation: beam-pulse 11s ease-in-out infinite 2s; }
+@keyframes beam-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  opacity: 0.05; mix-blend-mode: overlay;
+}
+
+.particles { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+.particle {
+  position: absolute; width: 2px; height: 2px;
+  background: var(--gold); border-radius: 50%;
+  box-shadow: 0 0 6px var(--gold), 0 0 12px rgba(212,162,76,0.4);
+  bottom: -10px; opacity: 0;
+  animation: float linear infinite;
+}
+@keyframes float {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.7; }
+  100% { transform: translateY(-110vh) translateX(var(--drift, 30px)); opacity: 0; }
+}
+
+/* HEADER */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 1.1rem 2rem;
+  display: flex; justify-content: flex-end; align-items: center;
+  z-index: 20;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(10,9,7,0.92), rgba(10,9,7,0.5));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.gw-badge {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(212, 162, 76, 0.06);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 0.4s ease;
+  opacity: 0;
+  animation: fadeIn 0.6s 0.4s ease forwards;
+}
+.gw-badge.active { color: var(--gold); border-color: var(--border-strong); }
+.gw-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: all 0.4s ease;
+}
+.gw-badge.active .gw-dot {
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  animation: pulse 1.5s ease infinite;
+}
+.gw-badge.loading .gw-dot {
+  background: var(--gold);
+  animation: pulse 0.8s ease infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes fadeIn { to { opacity: 1; } }
+.beta {
+  font-size: 0.7rem; letter-spacing: 0.4em;
+  color: var(--text-muted); font-weight: 500;
+}
+
+/* SCREENS */
+.screen {
+  position: relative; z-index: 5; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 6rem 1.5rem 3rem;
+}
+.screen.hidden { display: none; }
+
+/* LANDING */
+#screen-landing { justify-content: center; gap: 1.75rem; }
+.subtitle {
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.55em; color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0; animation: fadeUp 0.8s ease forwards;
+}
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(4.5rem, 13vw, 9.5rem);
+  font-weight: 900;
+  background: linear-gradient(180deg, #fce9b3 0%, #d4a24c 50%, #7a5a14 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  letter-spacing: 0.04em; line-height: 0.95;
+  filter: drop-shadow(0 0 40px rgba(212,162,76,0.35));
+  position: relative;
+  opacity: 0; animation: fadeUp 1s 0.15s ease forwards;
+}
+.hero-title::after {
+  content: ''; position: absolute; bottom: -14px;
+  left: 50%; transform: translateX(-50%);
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* CARD */
+.card-wrap {
+  perspective: 1200px;
+  opacity: 0; animation: fadeUp 1s 0.35s ease forwards;
+  margin-top: 0.5rem;
+}
+.card {
+  width: 290px; height: 440px; position: relative;
+  background: linear-gradient(165deg, #1c1814 0%, #100d0a 100%);
+  border: 1px solid var(--gold);
+  border-radius: 10px; overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.6), inset 0 0 60px rgba(212,162,76,0.04);
+}
+.card:hover {
+  box-shadow: 0 25px 60px rgba(212,162,76,0.2), 0 4px 30px rgba(0,0,0,0.8), inset 0 0 60px rgba(212,162,76,0.08);
+}
+.card::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(212,162,76,0.025) 8px, rgba(212,162,76,0.025) 9px);
+  pointer-events: none;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,217,122,0.12) 50%, transparent 70%);
+  animation: shine 6s ease-in-out infinite;
+  z-index: 3; pointer-events: none;
+}
+@keyframes shine { 0%,100% { left: -100%; } 55% { left: 200%; } }
+
+.card-corner {
+  position: absolute; width: 22px; height: 22px;
+  border: 1px solid var(--gold); z-index: 2;
+}
+.card-corner.tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.card-corner.tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+.card-corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+.card-corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+.card-inner {
+  padding: 1.5rem 1.4rem 1.25rem;
+  height: 100%;
+  display: flex; flex-direction: column;
+  position: relative; z-index: 2;
+}
+.card-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.25rem;
+}
+.rarity { font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold); font-weight: 700; }
+.star {
+  width: 26px; height: 26px;
+  border: 1px solid var(--gold); border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--gold); font-size: 11px;
+  background: rgba(212,162,76,0.08);
+}
+.avatar {
+  width: 110px; height: 110px;
+  border: 2px solid var(--gold); border-radius: 50%;
+  margin: 0.5rem auto 0;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 35%, rgba(212,162,76,0.15), rgba(212,162,76,0.02) 70%);
+  position: relative; color: var(--gold);
+}
+.avatar::before {
+  content: ''; position: absolute; inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,162,76,0.35), transparent 65%);
+  filter: blur(12px); z-index: -1;
+  animation: glow 3s ease-in-out infinite;
+}
+@keyframes glow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+.rating-diamond {
+  width: 64px; height: 64px;
+  margin: 1rem auto 0.5rem;
+  background: linear-gradient(135deg, #ffe5a0, #d4a24c 45%, #7a5a14);
+  transform: rotate(45deg);
+  display: grid; place-items: center;
+  box-shadow: 0 0 25px rgba(212,162,76,0.5), inset 0 0 10px rgba(255,230,170,0.4);
+  border-radius: 4px;
+}
+.rating-number {
+  transform: rotate(-45deg);
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.65rem; font-weight: 700;
+  color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.card-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem; font-weight: 800;
+  text-align: center; letter-spacing: 0.18em;
+  color: var(--text); margin-top: 0.6rem;
+}
+.card-role {
+  font-size: 0.7rem; letter-spacing: 0.4em;
+  text-align: center; color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+.card-stats {
+  margin-top: auto; padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around;
+}
+.stat { text-align: center; }
+.stat-value {
+  font-family: 'Oswald', sans-serif; color: var(--text);
+  font-size: 1.05rem; font-weight: 600;
+}
+.stat-label {
+  font-size: 0.6rem; letter-spacing: 0.25em;
+  color: var(--text-muted); margin-top: 0.25rem;
+  text-transform: uppercase;
+}
+
+/* BUTTON */
+.connect-btn {
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #c89548 0%, #e5b860 30%, #d4a24c 50%, #a07728 75%, #7a5a14 100%);
+  background-size: 200% 200%;
+  border: none; color: #fff;
+  padding: 1.1rem 3rem;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700; font-size: 0.9rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  cursor: pointer; border-radius: 6px;
+  display: inline-flex; align-items: center; gap: 0.85rem;
+  box-shadow: 0 10px 30px rgba(212,162,76,0.3), inset 0 1px 0 rgba(255,230,170,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative; overflow: hidden;
+  opacity: 0;
+  animation: fadeUp 1s 0.55s ease forwards, shimmer 5s ease infinite 1.5s;
+  text-shadow: 0 1px 2px rgba(80,50,0,0.4);
+}
+@keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.connect-btn::before {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,245,220,0.4), transparent);
+  transition: left 0.7s ease;
+}
+.connect-btn:hover::before { left: 100%; }
+.connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 45px rgba(212,162,76,0.5), inset 0 1px 0 rgba(255,230,170,0.5);
+}
+.connect-btn:active { transform: translateY(0); }
+.connect-btn .arrow { transition: transform 0.3s ease; font-size: 1.1rem; font-weight: 400; }
+.connect-btn:hover .arrow { transform: translateX(4px); }
+.helper-text {
+  font-size: 0.8rem; color: var(--text-muted);
+  opacity: 0; animation: fadeUp 1s 0.75s ease forwards;
+  text-align: center; max-width: 360px;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* CONNECT PANEL */
+#screen-connect { justify-content: center; gap: 2rem; }
+.connect-panel {
+  width: 100%; max-width: 440px;
+  background: linear-gradient(165deg, #1c1814 0%, #100d0a 100%);
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  padding: 2.25rem 2rem;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 60px rgba(212,162,76,0.1);
+  animation: fadeUp 0.5s ease;
+}
+.connect-panel .card-corner { width: 18px; height: 18px; }
+.panel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem; font-weight: 700;
+  text-align: center;
+  background: linear-gradient(180deg, #fce9b3, #d4a24c);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+.panel-subtitle {
+  text-align: center; font-size: 0.78rem;
+  color: var(--text-muted); margin-bottom: 1.75rem;
+  letter-spacing: 0.05em; line-height: 1.6;
+}
+.field-label {
+  display: block;
+  font-size: 0.7rem; letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem; font-weight: 600;
+}
+.field-input {
+  width: 100%;
+  background: rgba(10,9,7,0.6);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+.field-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212,162,76,0.15);
+}
+.field-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+.field-hint code {
+  background: rgba(212,162,76,0.08);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-family: monospace;
+  color: var(--gold);
+  font-size: 0.95em;
+}
+.panel-actions {
+  display: flex; gap: 0.75rem; margin-top: 1.5rem;
+}
+.btn-secondary {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover { border-color: var(--gold); color: var(--text); }
+.btn-primary {
+  flex: 1;
+  background: linear-gradient(135deg, #c89548 0%, #d4a24c 50%, #8b6914 100%);
+  border: none; color: #fff;
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(212,162,76,0.25);
+  text-shadow: 0 1px 2px rgba(80,50,0,0.3);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(212,162,76,0.4); }
+.btn-primary:disabled { opacity: 0.6; cursor: wait; transform: none; }
+.panel-error {
+  margin-top: 1rem; padding: 0.75rem 1rem;
+  background: rgba(212,104,92,0.1);
+  border: 1px solid rgba(212,104,92,0.3);
+  border-radius: 6px;
+  color: var(--error);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  display: none;
+}
+.panel-error.visible { display: block; animation: fadeUp 0.3s ease; }
+
+.loading-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10,9,7,0.85);
+  backdrop-filter: blur(8px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1.5rem;
+  z-index: 50;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.loading-overlay.visible { opacity: 1; pointer-events: auto; }
+.spinner {
+  width: 50px; height: 50px;
+  border: 2px solid rgba(212,162,76,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-size: 0.8rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--gold);
+}
+
+/* CLUB */
+#screen-club { padding-top: 5.5rem; align-items: stretch; }
+.club-header {
+  width: 100%; max-width: 1200px; margin: 0 auto 2rem;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 1rem;
+}
+.club-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+  background: linear-gradient(180deg, #fce9b3, #d4a24c 60%, #7a5a14);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  letter-spacing: 0.05em;
+}
+.club-subtitle {
+  font-size: 0.78rem; letter-spacing: 0.3em;
+  color: var(--text-muted); text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+.club-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.filter-chip {
+  background: rgba(212,162,76,0.06);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-chip:hover { color: var(--text); border-color: var(--border-strong); }
+.filter-chip.active {
+  background: rgba(212,162,76,0.15);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.cards-grid {
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.25rem;
+}
+.club-card {
+  aspect-ratio: 290/440;
+  background: linear-gradient(165deg, #1c1814 0%, #100d0a 100%);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: fadeUp 0.5s ease backwards;
+}
+.club-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 15px 35px rgba(212,162,76,0.2);
+}
+.club-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.club-card-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 0.6rem 0.75rem 0.75rem;
+  background: linear-gradient(180deg, transparent, rgba(10,9,7,0.95));
+  font-size: 0.75rem;
+}
+.club-card-name {
+  color: var(--text); font-weight: 600;
+  letter-spacing: 0.03em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.club-card-meta {
+  color: var(--text-muted);
+  font-size: 0.68rem; margin-top: 0.2rem;
+  letter-spacing: 0.04em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rarity-badge {
+  position: absolute; top: 0.5rem; left: 0.5rem;
+  font-size: 0.58rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: rgba(10,9,7,0.7);
+  border: 1px solid;
+  backdrop-filter: blur(4px);
+}
+.rarity-limited { color: #ffd97a; border-color: #ffd97a; }
+.rarity-rare { color: #ef4444; border-color: #ef4444; }
+.rarity-super-rare { color: #3b82f6; border-color: #3b82f6; }
+.rarity-unique { color: #f5f0e6; border-color: #f5f0e6; }
+.rarity-common { color: #9ca3af; border-color: #9ca3af; }
+
+.empty-state {
+  text-align: center; padding: 4rem 1rem;
+  color: var(--text-muted);
+}
+.empty-state-icon {
+  width: 80px; height: 80px;
+  margin: 0 auto 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--gold);
+  background: rgba(212,162,76,0.05);
+}
+.empty-state-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem; color: var(--text);
+  margin-bottom: 0.5rem; letter-spacing: 0.05em;
+}
+.empty-state-text {
+  font-size: 0.9rem; line-height: 1.6;
+  max-width: 400px; margin: 0 auto 1.5rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .hero-title { font-size: 4rem; letter-spacing: 0.03em; }
+  .card { width: 270px; height: 410px; }
+  header { padding: 0.9rem 1rem; }
+  .gw-badge { font-size: 0.65rem; padding: 0.35rem 0.7rem; letter-spacing: 0.2em; }
+  .connect-btn { padding: 1rem 2rem; font-size: 0.8rem; letter-spacing: 0.18em; }
+  .screen { padding: 5.5rem 1rem 2rem; gap: 1.25rem; }
+  .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .connect-panel { padding: 1.75rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="atmosphere"></div>
+<div class="beams"><div class="beam"></div><div class="beam"></div><div class="beam"></div></div>
+<div class="grain"></div>
+<div class="particles" id="particles"></div>
+
+<header>
+  <div class="beta">BETA</div>
+</header>
+
+<!-- SCREEN 1: LANDING -->
+<section class="screen" id="screen-landing">
+  <div class="subtitle">Sorare</div>
+  <h1 class="hero-title">NESS</h1>
+
+  <div class="card-wrap">
+    <div class="card" id="card">
+      <div class="card-corner tl"></div>
+      <div class="card-corner tr"></div>
+      <div class="card-corner bl"></div>
+      <div class="card-corner br"></div>
+      <div class="card-inner">
+        <div class="card-top">
+          <div class="rarity">UNIQUE</div>
+          <div class="star">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 7.36H22l-6.18 4.5L18.18 22 12 17.5 5.82 22l2.36-8.14L2 9.36h7.61z"/></svg>
+          </div>
+        </div>
+        <div class="avatar">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="7" r="3.5"/>
+            <path d="M5.5 21c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/>
+            <path d="M8 17.5l-1.5 2M16 17.5l1.5 2"/>
+          </svg>
+        </div>
+        <div class="rating-diamond">
+          <div class="rating-number">99</div>
+        </div>
+        <div class="card-name">NESS</div>
+        <div class="card-role">Manager</div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-value" id="cardGW">—</div><div class="stat-label">GW</div></div>
+          <div class="stat"><div class="stat-value">—</div><div class="stat-label">AVG</div></div>
+          <div class="stat"><div class="stat-value">—</div><div class="stat-label">Cards</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="connect-btn" id="connectBtn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+    Connexion Sorare
+    <span class="arrow">›</span>
+  </button>
+
+  <div class="helper-text">Connecte-toi à ton compte Sorare pour accéder à tes cartes</div>
+</section>
+
+<!-- SCREEN 2: CONNECT -->
+<section class="screen hidden" id="screen-connect">
+  <div class="connect-panel">
+    <div class="card-corner tl"></div>
+    <div class="card-corner tr"></div>
+    <div class="card-corner bl"></div>
+    <div class="card-corner br"></div>
+
+    <h2 class="panel-title">Connexion Sorare</h2>
+    <p class="panel-subtitle">
+      Entre ton pseudo Sorare pour charger tes cartes.<br>
+      Pas de mot de passe — on utilise l'API publique.
+    </p>
+
+    <label class="field-label" for="slugInput">Pseudo Sorare</label>
+    <input id="slugInput" class="field-input" type="text" placeholder="ex: ness" autocomplete="off" spellcheck="false">
+    <div class="field-hint">
+      C'est ce qui apparaît après <code>sorare.com/u/</code> dans l'URL de ton profil
+    </div>
+
+    <div class="panel-error" id="panelError"></div>
+
+    <div class="panel-actions">
+      <button class="btn-secondary" id="cancelConnectBtn">Retour</button>
+      <button class="btn-primary" id="submitConnectBtn">Voir mes cartes ›</button>
+    </div>
+  </div>
+</section>
+
+<!-- SCREEN 3: CLUB -->
+<section class="screen hidden" id="screen-club">
+  <div class="club-header">
+    <div>
+      <h2 class="club-title" id="clubTitle">Mon Club</h2>
+      <div class="club-subtitle" id="clubSubtitle">— cartes</div>
+    </div>
+    <div class="club-actions">
+      <button class="filter-chip active" data-rarity="all">Toutes</button>
+      <button class="filter-chip" data-rarity="unique">Unique</button>
+      <button class="filter-chip" data-rarity="super_rare">Super Rare</button>
+      <button class="filter-chip" data-rarity="rare">Rare</button>
+      <button class="filter-chip" data-rarity="limited">Limited</button>
+      <button class="btn-secondary" id="logoutBtn" style="padding:0.55rem 1rem;font-size:0.7rem;">Déconnexion</button>
+    </div>
+  </div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</section>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Chargement…</div>
+</div>
+
+<script>
+const SORARE_GRAPHQL = 'https://api.sorare.com/federation/graphql';
+
+async function sorareQuery(query, variables = {}) {
+  const res = await fetch(SORARE_GRAPHQL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables })
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json();
+  if (data.errors) throw new Error(data.errors.map(e => e.message).join(' • '));
+  return data.data;
+}
+
+// ----- GAMEWEEK at boot -----
+async function loadGameWeek() {
+  const badge = document.getElementById('gwBadge');
+  const label = document.getElementById('gwLabel');
+  const cardGW = document.getElementById('cardGW');
+  try {
+    const data = await sorareQuery(`{
+      football { so5 {
+        so5Fixtures(first: 5) {
+          nodes { gameWeek state startDate endDate }
+        }
+      } }
+    }`);
+    const fixtures = data?.football?.so5?.so5Fixtures?.nodes || [];
+    const current =
+      fixtures.find(f => f.state === 'STARTED') ||
+      fixtures.find(f => f.state === 'OPENED') ||
+      fixtures[0];
+    if (current?.gameWeek != null) {
+      const stateLabel = current.state === 'STARTED' ? 'en cours' : current.state === 'OPENED' ? 'ouverte' : 'à venir';
+      badge.classList.remove('loading');
+      badge.classList.add('active');
+      label.textContent = `GW ${current.gameWeek} · ${stateLabel}`;
+      cardGW.textContent = current.gameWeek;
+    } else {
+      throw new Error('aucune GW');
+    }
+  } catch (err) {
+    console.warn('GW fetch failed:', err);
+    badge.classList.remove('loading');
+    label.textContent = 'GW indisponible';
+  }
+}
+
+// ----- USER CARDS -----
+async function fetchUserCards(slug) {
+  const allCards = [];
+  let cursor = null;
+  let nickname = slug;
+
+  for (let i = 0; i < 5; i++) {
+    const data = await sorareQuery(`
+      query($slug: String!, $cursor: String) {
+        user(slug: $slug) {
+          nickname
+          paginatedCards(first: 50, after: $cursor) {
+            nodes {
+              slug
+              pictureUrl
+              rarityTyped
+              player {
+                displayName
+                position
+                activeClub { name }
+              }
+            }
+            pageInfo { hasNextPage endCursor }
+          }
+        }
+      }
+    `, { slug, cursor });
+
+    if (!data?.user) throw new Error(`Utilisateur "${slug}" introuvable sur Sorare`);
+    nickname = data.user.nickname || slug;
+    const nodes = data.user.paginatedCards?.nodes || [];
+    allCards.push(...nodes);
+    const pageInfo = data.user.paginatedCards?.pageInfo;
+    if (!pageInfo?.hasNextPage) break;
+    cursor = pageInfo.endCursor;
+  }
+  return { nickname, cards: allCards };
+}
+
+// ----- UI helpers -----
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+function setLoading(visible, text = 'Chargement…') {
+  const overlay = document.getElementById('loadingOverlay');
+  document.getElementById('loadingText').textContent = text;
+  overlay.classList.toggle('visible', visible);
+}
+function showPanelError(msg) {
+  const el = document.getElementById('panelError');
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+function hidePanelError() {
+  document.getElementById('panelError').classList.remove('visible');
+}
+
+// ----- Club rendering -----
+let clubState = { cards: [], filter: 'all', nickname: '' };
+
+function rarityLabel(r) {
+  return ({
+    unique: 'Unique', super_rare: 'Super Rare', rare: 'Rare',
+    limited: 'Limited', common: 'Common'
+  })[r] || r || '—';
+}
+function rarityClass(r) { return 'rarity-' + (r || 'common').replace(/_/g, '-'); }
+
+function renderClub() {
+  const { cards, filter, nickname } = clubState;
+  document.getElementById('clubTitle').textContent = `Club de ${nickname}`;
+  const filtered = filter === 'all'
+    ? cards
+    : cards.filter(c => (c.rarityTyped || '').toLowerCase() === filter);
+  document.getElementById('clubSubtitle').textContent = `${filtered.length} carte${filtered.length > 1 ? 's' : ''}`;
+
+  const grid = document.getElementById('cardsGrid');
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <div class="empty-state-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="M3 10h18"/>
+          </svg>
+        </div>
+        <div class="empty-state-title">Aucune carte</div>
+        <div class="empty-state-text">Aucune carte ne correspond à ce filtre.</div>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map((c, i) => {
+    const rarity = (c.rarityTyped || '').toLowerCase();
+    const player = c.player?.displayName || c.slug || '—';
+    const club = c.player?.activeClub?.name || '';
+    const pos = c.player?.position || '';
+    return `
+      <div class="club-card" style="animation-delay:${Math.min(i * 30, 600)}ms">
+        ${c.pictureUrl ? `<img src="${c.pictureUrl}" alt="${player}" loading="lazy">` : ''}
+        <span class="rarity-badge ${rarityClass(rarity)}">${rarityLabel(rarity)}</span>
+        <div class="club-card-info">
+          <div class="club-card-name">${player}</div>
+          <div class="club-card-meta">${[pos, club].filter(Boolean).join(' · ')}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ----- Events -----
+document.getElementById('connectBtn').addEventListener('click', () => {
+  hidePanelError();
+  showScreen('screen-connect');
+  setTimeout(() => document.getElementById('slugInput').focus(), 100);
+});
+document.getElementById('cancelConnectBtn').addEventListener('click', () => {
+  showScreen('screen-landing');
+});
+
+async function submitConnect() {
+  const slug = document.getElementById('slugInput').value.trim().toLowerCase();
+  if (!slug) { showPanelError('Entre ton pseudo Sorare'); return; }
+  hidePanelError();
+  const btn = document.getElementById('submitConnectBtn');
+  btn.disabled = true;
+  setLoading(true, 'Récupération des cartes…');
+  try {
+    const { nickname, cards } = await fetchUserCards(slug);
+    clubState = { cards, filter: 'all', nickname };
+    renderClub();
+    showScreen('screen-club');
+  } catch (err) {
+    console.error(err);
+    const msg = String(err.message || err);
+    if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) {
+      showPanelError("Le navigateur a bloqué la requête (CORS). Il faudra un mini-proxy backend pour aller plus loin — vois mon message dans le chat.");
+    } else {
+      showPanelError(msg);
+    }
+  } finally {
+    btn.disabled = false;
+    setLoading(false);
+  }
+}
+document.getElementById('submitConnectBtn').addEventListener('click', submitConnect);
+document.getElementById('slugInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitConnect();
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  clubState = { cards: [], filter: 'all', nickname: '' };
+  document.getElementById('slugInput').value = '';
+  showScreen('screen-landing');
+});
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    clubState.filter = chip.dataset.rarity;
+    renderClub();
+  });
+});
+
+// ----- Particles -----
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDuration = (12 + Math.random() * 14) + 's';
+  p.style.animationDelay = (Math.random() * 15) + 's';
+  p.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+  p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+  particlesContainer.appendChild(p);
+}
+
+// 3D tilt
+const card = document.getElementById('card');
+card.addEventListener('mousemove', e => {
+  const rect = card.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width - 0.5;
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
+  card.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg) translateY(-4px)`;
+});
+card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+
+// Boot
+// loadGameWeek(); // désactivé pour l'instant — on s'en servira plus tard pour afficher la GW sur la carte
+</script>
+
+</body>
+</html>

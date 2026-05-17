@@ -82,24 +82,21 @@ button{cursor:pointer;}
   background:linear-gradient(
     180deg,
     #ffffff 0%,
-    #f8f8f8 7%,
-    #d4d4d4 16%,
-    #8c8c8c 28%,
-    #e0e0e0 38%,
-    #ffffff 48%,
-    #e8e8e8 54%,
-    #b0b0b0 64%,
-    #606060 76%,
-    #9c9c9c 86%,
-    #d8d8d8 93%,
-    #f5f5f5 100%
+    #ffffff 18%,
+    #f2f2f2 32%,
+    #ebebeb 44%,
+    #ffffff 54%,
+    #f5f5f5 66%,
+    #ededed 78%,
+    #ffffff 90%,
+    #f8f8f8 100%
   );
   -webkit-background-clip:text; background-clip:text; color:transparent;
   letter-spacing:.04em; line-height:.92; text-transform:uppercase;
   filter:
-    drop-shadow(0 0 70px rgba(220,225,240,.45))
-    drop-shadow(0 4px 10px rgba(0,0,0,.95))
-    drop-shadow(0 0 140px rgba(200,210,230,.12));
+    drop-shadow(0 0 90px rgba(255,255,255,.75))
+    drop-shadow(0 4px 12px rgba(0,0,0,.85))
+    drop-shadow(0 0 220px rgba(255,255,255,.25));
   position:relative;
   opacity:0; animation:fadeUp 1s .15s ease forwards;
 }
@@ -590,6 +587,65 @@ button{cursor:pointer;}
 
 @media(max-width:768px){.teams-grid{grid-template-columns:1fr;}.cards-grid{grid-template-columns:repeat(2,1fr);gap:.7rem;}.screen.app-screen{padding-bottom:2rem;}.modal-stats-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:480px){.hero-title{font-size:4rem;}.manager-card{width:270px;height:410px;}.screen{padding:5.5rem 1rem 2rem;}}
+
+/* ============================================================  SCORENESS  */
+.sn-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:20px;border-radius:4px;border:1px solid;font-family:'Antonio',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:0 4px;}
+.ci-sn{position:absolute;top:6px;right:6px;}
+.ci-value{font-size:.62rem;color:var(--blue-light);letter-spacing:.05em;text-align:center;margin-bottom:.3rem;font-weight:600;}
+
+/* ============================================================  FORM BARS  */
+.form-bars{display:flex;align-items:flex-end;gap:2px;height:20px;margin:.35rem auto .1rem;width:fit-content;}
+.form-bar{width:6px;border-radius:2px 2px 0 0;min-height:3px;transition:height .4s;}
+
+/* ============================================================  MATCHDAY CHIP  */
+.matchday-chip{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(6,10,20,.82);border:1px solid rgba(105,145,232,.35);border-radius:3px;font-size:.5rem;letter-spacing:.06em;color:var(--blue-light);padding:1px 4px;white-space:nowrap;font-weight:600;}
+
+/* ============================================================  MAGIC BUTTON  */
+.tc-btn-magic{background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(167,139,250,.08));border-color:rgba(167,139,250,.5);color:#a78bfa;flex:0 0 auto;padding:.7rem 1rem;font-size:.68rem;}
+.tc-btn-magic:hover{background:rgba(167,139,250,.25);box-shadow:0 0 14px rgba(167,139,250,.3);}
+
+/* ============================================================  ARENA CAP BAR  */
+.arena-cap-bar-wrap{padding:.5rem 1.1rem .65rem;border-top:1px solid var(--border);}
+.arena-cap-label{display:flex;justify-content:space-between;font-size:.62rem;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.35rem;}
+.arena-cap-track{height:5px;background:rgba(105,145,232,.12);border-radius:999px;overflow:hidden;}
+.arena-cap-fill{height:100%;border-radius:999px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+
+/* ============================================================  STREAK PROJECTION  */
+.streak-proj-note{font-size:.65rem;letter-spacing:.06em;color:var(--success);margin:.35rem 0 .25rem;display:flex;align-items:center;gap:.4rem;}
+.streak-proj-note.warn{color:var(--warn);}
+.streak-proj-note.danger{color:var(--error);}
+.streak-proj-note::before{content:'◆';font-size:.45rem;}
+
+/* ============================================================  LIVE TIMELINE  */
+.live-timeline{display:flex;gap:.4rem;flex-wrap:wrap;padding:.5rem 1.1rem .65rem;border-top:1px solid var(--border);}
+.lt-evt{display:inline-flex;align-items:center;gap:.25rem;background:rgba(105,145,232,.07);border:1px solid rgba(105,145,232,.18);border-radius:4px;padding:.2rem .45rem;font-size:.62rem;}
+.lt-emoji{font-size:.75rem;}
+.lt-name{color:var(--text);font-weight:600;font-family:'Antonio',sans-serif;font-size:.68rem;letter-spacing:.04em;}
+.lt-min{color:var(--text-muted);font-size:.58rem;}
+
+/* ============================================================  STATS SCREEN  */
+#screen-stats{}
+.stats-filters{max-width:1300px;width:100%;margin:0 auto 1.25rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;}
+.stats-table-wrap{max-width:1300px;width:100%;margin:0 auto;overflow-x:auto;border:1px solid var(--border);border-radius:10px;}
+.stats-table{width:100%;border-collapse:collapse;}
+.stats-table thead{background:rgba(105,145,232,.06);}
+.stats-th{padding:.75rem 1rem;text-align:left;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);font-weight:700;cursor:pointer;user-select:none;white-space:nowrap;transition:color .2s;border-bottom:1px solid var(--border);}
+.stats-th:hover{color:var(--text);}
+.stats-th.sort-active{color:var(--blue-light);}
+.stats-th.sort-active::after{content:' ↓';}
+.stats-th.sort-active[data-dir="asc"]::after{content:' ↑';}
+.stats-table tbody tr{border-bottom:1px solid rgba(105,145,232,.08);transition:background .15s;}
+.stats-table tbody tr:hover{background:rgba(105,145,232,.06);}
+.stats-table td{padding:.6rem 1rem;vertical-align:middle;}
+.st-player{display:flex;align-items:center;gap:.75rem;}
+.st-av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:'Antonio',sans-serif;font-size:.82rem;font-weight:700;flex-shrink:0;border:1.5px solid;}
+.st-av.limited{border-color:rgba(240,194,57,.6);background:rgba(240,194,57,.12);color:#f0c239;}
+.st-av.rare{border-color:rgba(224,82,82,.6);background:rgba(224,82,82,.12);color:#e05252;}
+.st-av.super-rare{border-color:rgba(74,144,217,.6);background:rgba(74,144,217,.12);color:#4a90d9;}
+.st-av.unique{border-color:rgba(212,221,232,.6);background:rgba(212,221,232,.12);color:#d4dde8;}
+.st-name{font-family:'Antonio',sans-serif;font-size:.85rem;letter-spacing:.06em;color:var(--text);}
+.st-club{font-size:.62rem;color:var(--text-muted);margin-top:.1rem;}
+.st-pos{font-size:.65rem;letter-spacing:.15em;font-weight:700;color:var(--blue-light);}
 </style>
 </head>
 <body>
@@ -630,7 +686,7 @@ button{cursor:pointer;}
       <span class="nav-label">Match Live</span>
     </button>
     <div class="nav-section-title" style="margin-top:.5rem;">À venir</div>
-    <button class="nav-item" style="opacity:.4;cursor:default;">
+    <button class="nav-item" data-page="stats" id="nav-stats">
       <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
       <span class="nav-label">Stats</span>
     </button>
@@ -789,6 +845,45 @@ button{cursor:pointer;}
   </div>
 </section>
 
+<!-- STATS -->
+<section class="screen app-screen hidden" id="screen-stats">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">Analyse</div>
+      <h2 class="page-title">Stats · ScoreNess</h2>
+      <div class="page-sub">Classement de tes cartes par ScoreNess · forme · valeur</div>
+    </div>
+  </div>
+  <div class="stats-filters">
+    <div class="search-wrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input id="statsSearch" class="search-input" type="text" placeholder="Rechercher…"></div>
+    <div class="pos-chips" id="statsPosChips">
+      <div class="pos-chip active" data-pos="all">Tous</div>
+      <div class="pos-chip" data-pos="Gardien">GK</div>
+      <div class="pos-chip" data-pos="Défenseur">DEF</div>
+      <div class="pos-chip" data-pos="Milieu">MIL</div>
+      <div class="pos-chip" data-pos="Attaquant">ATT</div>
+    </div>
+  </div>
+  <div class="stats-table-wrap">
+    <table class="stats-table">
+      <thead>
+        <tr>
+          <th class="stats-th sort-active" data-sort="player">Joueur</th>
+          <th class="stats-th" data-sort="pos">Poste</th>
+          <th class="stats-th" data-sort="rarity">Rareté</th>
+          <th class="stats-th sort-active" data-sort="sn">ScoreNess</th>
+          <th class="stats-th" style="cursor:default;">Forme</th>
+          <th class="stats-th" data-sort="avg">AVG</th>
+          <th class="stats-th" data-sort="gw">GW</th>
+          <th class="stats-th" data-sort="value">Valeur</th>
+          <th class="stats-th" style="cursor:default;">Match</th>
+        </tr>
+      </thead>
+      <tbody id="statsGrid"></tbody>
+    </table>
+  </div>
+</section>
+
 </div><!-- /app-content -->
 
 <!-- Club card modal -->
@@ -868,34 +963,74 @@ button{cursor:pointer;}
    SORARE 26 DATA
    ============================================================ */
 const DEMO_CARDS = [
-  {id:1,  player:"Kylian Mbappé",          initials:"KM", club:"Real Madrid",       pos:"Attaquant", rarity:"unique",     gw:78, avg:71.2, apps:28},
-  {id:2,  player:"Vinícius Jr.",            initials:"VJ", club:"Real Madrid",       pos:"Attaquant", rarity:"super_rare", gw:82, avg:68.5, apps:25},
-  {id:3,  player:"Erling Haaland",          initials:"EH", club:"Manchester City",   pos:"Attaquant", rarity:"super_rare", gw:65, avg:72.1, apps:30},
-  {id:4,  player:"Pedri",                   initials:"PE", club:"FC Barcelone",      pos:"Milieu",    rarity:"rare",       gw:74, avg:65.3, apps:22},
-  {id:5,  player:"Rodri",                   initials:"RO", club:"Manchester City",   pos:"Milieu",    rarity:"super_rare", gw:88, avg:70.8, apps:26},
-  {id:6,  player:"Bukayo Saka",             initials:"BS", club:"Arsenal",           pos:"Attaquant", rarity:"rare",       gw:71, avg:64.2, apps:29},
-  {id:7,  player:"Jude Bellingham",         initials:"JB", club:"Real Madrid",       pos:"Milieu",    rarity:"super_rare", gw:69, avg:66.7, apps:27},
-  {id:8,  player:"Lamine Yamal",            initials:"LY", club:"FC Barcelone",      pos:"Attaquant", rarity:"rare",       gw:77, avg:63.9, apps:24},
-  {id:9,  player:"Florian Wirtz",           initials:"FW", club:"Bayer Leverkusen",  pos:"Milieu",    rarity:"limited",    gw:83, avg:71.4, apps:28},
-  {id:10, player:"Harry Kane",              initials:"HK", club:"Bayern Munich",     pos:"Attaquant", rarity:"limited",    gw:72, avg:69.8, apps:32},
-  {id:11, player:"Phil Foden",              initials:"PF", club:"Manchester City",   pos:"Milieu",    rarity:"rare",       gw:59, avg:62.1, apps:24},
-  {id:12, player:"Ruben Dias",              initials:"RD", club:"Manchester City",   pos:"Défenseur", rarity:"limited",    gw:68, avg:64.5, apps:26},
-  {id:13, player:"William Saliba",          initials:"WS", club:"Arsenal",           pos:"Défenseur", rarity:"limited",    gw:76, avg:67.3, apps:29},
-  {id:14, player:"Trent Alexander-Arnold", initials:"TA", club:"Liverpool",          pos:"Défenseur", rarity:"rare",       gw:65, avg:60.8, apps:27},
-  {id:15, player:"Mike Maignan",            initials:"MM", club:"AC Milan",           pos:"Gardien",   rarity:"rare",       gw:71, avg:63.2, apps:28},
-  {id:16, player:"Gavi",                    initials:"GA", club:"FC Barcelone",      pos:"Milieu",    rarity:"limited",    gw:58, avg:61.7, apps:20},
-  {id:17, player:"Dani Olmo",               initials:"DO", club:"FC Barcelone",      pos:"Milieu",    rarity:"limited",    gw:74, avg:65.1, apps:23},
-  {id:18, player:"Marcus Rashford",         initials:"MR", club:"Manchester United", pos:"Attaquant", rarity:"limited",    gw:54, avg:57.3, apps:22},
-  {id:19, player:"Alejandro Garnacho",      initials:"AG", club:"Manchester United", pos:"Attaquant", rarity:"limited",    gw:67, avg:59.8, apps:25},
-  {id:20, player:"Heung-Min Son",           initials:"HS", club:"Tottenham",         pos:"Attaquant", rarity:"rare",       gw:71, avg:62.4, apps:30},
-  {id:21, player:"Alisson Becker",          initials:"AB", club:"Liverpool",          pos:"Gardien",   rarity:"limited",    gw:66, avg:64.8, apps:28},
-  {id:22, player:"Antoine Griezmann",       initials:"GR", club:"Atlético Madrid",   pos:"Attaquant", rarity:"limited",    gw:70, avg:63.5, apps:26},
-  {id:23, player:"Jamal Musiala",           initials:"JM", club:"Bayern Munich",     pos:"Milieu",    rarity:"rare",       gw:79, avg:67.9, apps:27},
-  {id:24, player:"Bernardo Silva",          initials:"BS", club:"Manchester City",   pos:"Milieu",    rarity:"limited",    gw:63, avg:61.2, apps:29},
+  {id:1,  player:"Kylian Mbappé",          initials:"KM", club:"Real Madrid",       pos:"Attaquant", rarity:"unique",     gw:78, avg:71.2, apps:28, form:[68,74,80,75,78], home:true,  opp:2, gpg:0.52, apg:0.22, value:180},
+  {id:2,  player:"Vinícius Jr.",            initials:"VJ", club:"Real Madrid",       pos:"Attaquant", rarity:"super_rare", gw:82, avg:68.5, apps:25, form:[75,68,82,72,85], home:true,  opp:2, gpg:0.44, apg:0.38, value:120},
+  {id:3,  player:"Erling Haaland",          initials:"EH", club:"Manchester City",   pos:"Attaquant", rarity:"super_rare", gw:65, avg:72.1, apps:30, form:[72,65,78,58,71], home:false, opp:3, gpg:0.68, apg:0.12, value:110},
+  {id:4,  player:"Pedri",                   initials:"PE", club:"FC Barcelone",      pos:"Milieu",    rarity:"rare",       gw:74, avg:65.3, apps:22, form:[60,72,68,74,70], home:true,  opp:2, gpg:0.15, apg:0.32, value:45},
+  {id:5,  player:"Rodri",                   initials:"RO", club:"Manchester City",   pos:"Milieu",    rarity:"super_rare", gw:88, avg:70.8, apps:26, form:[85,80,92,88,84], home:false, opp:3, gpg:0.08, apg:0.28, value:95},
+  {id:6,  player:"Bukayo Saka",             initials:"BS", club:"Arsenal",           pos:"Attaquant", rarity:"rare",       gw:71, avg:64.2, apps:29, form:[68,72,74,66,72], home:false, opp:4, gpg:0.28, apg:0.36, value:50},
+  {id:7,  player:"Jude Bellingham",         initials:"JB", club:"Real Madrid",       pos:"Milieu",    rarity:"super_rare", gw:69, avg:66.7, apps:27, form:[64,72,68,74,70], home:false, opp:3, gpg:0.25, apg:0.20, value:100},
+  {id:8,  player:"Lamine Yamal",            initials:"LY", club:"FC Barcelone",      pos:"Attaquant", rarity:"rare",       gw:77, avg:63.9, apps:24, form:[72,68,80,74,78], home:true,  opp:2, gpg:0.18, apg:0.44, value:40},
+  {id:9,  player:"Florian Wirtz",           initials:"FW", club:"Bayer Leverkusen",  pos:"Milieu",    rarity:"limited",    gw:83, avg:71.4, apps:28, form:[78,82,84,80,86], home:true,  opp:3, gpg:0.22, apg:0.35, value:30},
+  {id:10, player:"Harry Kane",              initials:"HK", club:"Bayern Munich",     pos:"Attaquant", rarity:"limited",    gw:72, avg:69.8, apps:32, form:[68,74,72,78,72], home:true,  opp:2, gpg:0.72, apg:0.18, value:28},
+  {id:11, player:"Phil Foden",              initials:"PF", club:"Manchester City",   pos:"Milieu",    rarity:"rare",       gw:59, avg:62.1, apps:24, form:[52,62,58,68,60], home:false, opp:3, gpg:0.15, apg:0.22, value:42},
+  {id:12, player:"Ruben Dias",              initials:"RD", club:"Manchester City",   pos:"Défenseur", rarity:"limited",    gw:68, avg:64.5, apps:26, form:[62,68,64,70,66], home:false, opp:3, gpg:0.05, apg:0.04, value:22},
+  {id:13, player:"William Saliba",          initials:"WS", club:"Arsenal",           pos:"Défenseur", rarity:"limited",    gw:76, avg:67.3, apps:29, form:[72,74,76,70,74], home:false, opp:4, gpg:0.08, apg:0.02, value:25},
+  {id:14, player:"Trent Alexander-Arnold", initials:"TA", club:"Liverpool",          pos:"Défenseur", rarity:"rare",       gw:65, avg:60.8, apps:27, form:[58,64,68,62,65], home:true,  opp:3, gpg:0.08, apg:0.35, value:35},
+  {id:15, player:"Mike Maignan",            initials:"MM", club:"AC Milan",           pos:"Gardien",   rarity:"rare",       gw:71, avg:63.2, apps:28, form:[64,70,72,68,74], home:false, opp:2, gpg:0,    apg:0,    value:30},
+  {id:16, player:"Gavi",                    initials:"GA", club:"FC Barcelone",      pos:"Milieu",    rarity:"limited",    gw:58, avg:61.7, apps:20, form:[55,60,62,58,58], home:false, opp:4, gpg:0.10, apg:0.20, value:18},
+  {id:17, player:"Dani Olmo",               initials:"DO", club:"FC Barcelone",      pos:"Milieu",    rarity:"limited",    gw:74, avg:65.1, apps:23, form:[68,72,74,70,74], home:false, opp:4, gpg:0.20, apg:0.25, value:20},
+  {id:18, player:"Marcus Rashford",         initials:"MR", club:"Manchester United", pos:"Attaquant", rarity:"limited",    gw:54, avg:57.3, apps:22, form:[48,58,52,58,54], home:false, opp:3, gpg:0.22, apg:0.12, value:15},
+  {id:19, player:"Alejandro Garnacho",      initials:"AG", club:"Manchester United", pos:"Attaquant", rarity:"limited",    gw:67, avg:59.8, apps:25, form:[60,64,72,65,68], home:false, opp:3, gpg:0.28, apg:0.18, value:16},
+  {id:20, player:"Heung-Min Son",           initials:"HS", club:"Tottenham",         pos:"Attaquant", rarity:"rare",       gw:71, avg:62.4, apps:30, form:[68,72,70,68,72], home:true,  opp:4, gpg:0.32, apg:0.24, value:32},
+  {id:21, player:"Alisson Becker",          initials:"AB", club:"Liverpool",          pos:"Gardien",   rarity:"limited",    gw:66, avg:64.8, apps:28, form:[62,68,70,64,66], home:true,  opp:3, gpg:0,    apg:0,    value:20},
+  {id:22, player:"Antoine Griezmann",       initials:"GR", club:"Atlético Madrid",   pos:"Attaquant", rarity:"limited",    gw:70, avg:63.5, apps:26, form:[65,68,72,68,70], home:true,  opp:3, gpg:0.28, apg:0.22, value:22},
+  {id:23, player:"Jamal Musiala",           initials:"JM", club:"Bayern Munich",     pos:"Milieu",    rarity:"rare",       gw:79, avg:67.9, apps:27, form:[74,78,82,76,80], home:true,  opp:2, gpg:0.22, apg:0.30, value:48},
+  {id:24, player:"Bernardo Silva",          initials:"BS", club:"Manchester City",   pos:"Milieu",    rarity:"limited",    gw:63, avg:61.2, apps:29, form:[56,62,64,60,64], home:false, opp:3, gpg:0.10, apg:0.18, value:18},
 ];
 
 const RARITY_LABELS = {limited:"Limited",rare:"Rare",super_rare:"Super Rare",unique:"Unique"};
 const RARITY_COL    = {limited:"#f0c239",rare:"#e05252",super_rare:"#4a90d9",unique:"#d4dde8"};
+
+/* ============================================================
+   SCORENESS — score composite 0-99 par joueur
+   ============================================================ */
+const CLUB_MATCHDAY = {
+  "Real Madrid":"Mar 20","FC Barcelone":"Mar 20","Atlético Madrid":"Mer 21",
+  "Arsenal":"Jeu 22","Manchester City":"Mer 21","Liverpool":"Mer 21",
+  "Bayern Munich":"Sam 24","Bayer Leverkusen":"Jeu 22",
+  "Manchester United":"Dim 25","Tottenham":"Dim 25","AC Milan":"Jeu 22"
+};
+
+function computeScoreNess(card){
+  if(!card.form) return 50;
+  const weights=[0.08,0.14,0.20,0.26,0.32];
+  const formAvg=card.form.reduce((s,v,i)=>s+v*weights[i],0);
+  const formDelta=formAvg-card.avg;
+  const fixtureBonus=[12,6,0,-3,-8][(card.opp||3)-1];
+  const homeBonus=card.home===true?4:card.home===false?-3:0;
+  const actionsBonus=Math.min(12,(card.gpg||0)*12+(card.apg||0)*7);
+  const predicted=card.avg+formDelta*0.65+fixtureBonus+homeBonus+actionsBonus;
+  return Math.round(Math.max(1,Math.min(99,predicted)));
+}
+function scoreNessColor(sn){
+  return sn>=85?'#a78bfa':sn>=70?'#6bc78b':sn>=55?'#6991e8':sn>=40?'#f0c239':'#e05252';
+}
+function formBarsHTML(card){
+  if(!card.form||!card.form.length) return '';
+  const mn=Math.min(...card.form),mx=Math.max(...card.form);
+  const range=mx-mn||1;
+  return `<div class="form-bars">${card.form.map(v=>{
+    const pct=Math.round((v-mn)/range*75+25);
+    const col=v>=card.avg+4?'#6bc78b':v>=card.avg-4?'#6991e8':'#e05252';
+    return `<div class="form-bar" style="height:${pct}%;background:${col};"></div>`;
+  }).join('')}</div>`;
+}
+function snBadgeHTML(card,extra){
+  const sn=computeScoreNess(card);
+  const col=scoreNessColor(sn);
+  return `<span class="sn-badge${extra?' '+extra:''}" style="background:${col}22;color:${col};border-color:${col}55;">${sn}</span>`;
+}
 
 /* Hot Streak paliers par rareté (Sorare 26)
    Score = somme des 5 joueurs (capitaine ×1.5, max ~550 pts)
@@ -1088,6 +1223,7 @@ function showPage(page){
   window.scrollTo({top:0,behavior:"instant"});
   if(page==="club")    renderClub();
   if(page==="builder"){ loadTeams(); renderBuilder(); }
+  if(page==="stats")   renderStats();
   if(page==="live") {} // placeholder — données via OAuth Sorare
 }
 document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>showPage(el.dataset.page)));
@@ -1117,11 +1253,24 @@ function renderClub(){
   if(clubSubEl) clubSubEl.textContent=`${cards.length} carte${cards.length>1?"s":""} · mode démo`;
   const grid=document.getElementById("cardsGrid");
   if(!cards.length){grid.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div><div style="font-family:'Antonio';font-size:1.2rem;color:var(--text);letter-spacing:.05em">Aucune carte</div></div>`;return;}
-  grid.innerHTML=cards.map((c,i)=>`<div class="ci ${rc(c.rarity)}" data-id="${c.id}" style="animation-delay:${Math.min(i*25,500)}ms"><div class="ci-inner"><div class="ci-header"><span class="ci-rl">${RARITY_LABELS[c.rarity]}</span><span class="ci-star">★</span></div><div class="ci-avatar">${c.initials}</div><div class="ci-sw"><div class="ci-d"><span class="ci-s">${c.gw}</span></div></div><div class="ci-name">${c.player.split(" ").slice(-1)[0]}</div><div class="ci-club">${c.pos} · ${c.club}</div><div class="ci-stats"><div class="ci-stat"><div class="ci-sv">${c.gw}</div><div class="ci-sl">GW</div></div><div class="ci-stat"><div class="ci-sv">${c.avg}</div><div class="ci-sl">AVG</div></div></div></div></div>`).join("");
+  grid.innerHTML=cards.map((c,i)=>{
+    const sn=computeScoreNess(c);const snCol=scoreNessColor(sn);
+    return `<div class="ci ${rc(c.rarity)}" data-id="${c.id}" style="animation-delay:${Math.min(i*25,500)}ms;position:relative"><div class="ci-inner">
+      <div class="ci-header"><span class="ci-rl">${RARITY_LABELS[c.rarity]}</span><span class="ci-star">★</span></div>
+      <span class="sn-badge ci-sn" style="background:${snCol}22;color:${snCol};border-color:${snCol}55;">${sn}</span>
+      <div class="ci-avatar">${c.initials}</div>
+      <div class="ci-sw"><div class="ci-d"><span class="ci-s">${c.gw}</span></div></div>
+      ${formBarsHTML(c)}
+      <div class="ci-name">${c.player.split(" ").slice(-1)[0]}</div>
+      <div class="ci-club">${c.pos} · ${c.club}</div>
+      ${c.value?`<div class="ci-value">€${c.value.toLocaleString()}M</div>`:''}
+      <div class="ci-stats"><div class="ci-stat"><div class="ci-sv">${c.gw}</div><div class="ci-sl">GW</div></div><div class="ci-stat"><div class="ci-sv">${c.avg}</div><div class="ci-sl">AVG</div></div></div>
+    </div></div>`;
+  }).join("");
   grid.querySelectorAll(".ci").forEach(el=>el.addEventListener("click",()=>openCardModal(+el.dataset.id)));
 }
 document.querySelectorAll(".r-pill").forEach(el=>el.addEventListener("click",()=>{document.querySelectorAll(".r-pill").forEach(p=>p.classList.remove("active"));el.classList.add("active");clubState.rarity=el.dataset.rarity;renderClub();}));
-document.querySelectorAll(".pos-chip").forEach(el=>el.addEventListener("click",()=>{document.querySelectorAll(".pos-chip").forEach(p=>p.classList.remove("active"));el.classList.add("active");clubState.pos=el.dataset.pos;renderClub();}));
+document.querySelectorAll("#screen-club .pos-chip").forEach(el=>el.addEventListener("click",()=>{document.querySelectorAll("#screen-club .pos-chip").forEach(p=>p.classList.remove("active"));el.classList.add("active");clubState.pos=el.dataset.pos;renderClub();}));
 document.getElementById("searchInput").addEventListener("input",e=>{clubState.search=e.target.value;renderClub();});
 document.getElementById("sortSelect").addEventListener("change",e=>{clubState.sort=e.target.value;renderClub();});
 
@@ -1342,15 +1491,21 @@ function renderBuilder(){
       const c=s.cardId?cardById(s.cardId):null;
       const col=c?(RARITY_COL[c.rarity]||"var(--blue)"):"rgba(105,145,232,.4)";
       const isCap=c&&s.cardId===team.captain;
-      if(c) return `<div class="slot filled ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}">
-        <div class="slot-pos">${s.pos}</div>
-        <div class="slot-card">
-          <div class="slot-rarity-bar" style="background:${col};opacity:.6;"></div>
-          ${isCap?`<div class="cap-crown">👑</div>`:""}
-          <div class="slot-initials" style="color:${col}">${c.initials}</div>
-          <div class="slot-name">${c.player.split(" ").slice(-1)[0]}</div>
-          <div class="slot-score" style="color:${col}">${s.done?s.liveScore:"⏳"}</div>
-        </div></div>`;
+      if(c){
+        const sn=computeScoreNess(c);const snCol=scoreNessColor(sn);
+        const md=CLUB_MATCHDAY[c.club]||'';
+        return `<div class="slot filled ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative">
+          <div class="slot-pos">${s.pos}</div>
+          <div class="slot-card">
+            <div class="slot-rarity-bar" style="background:${col};opacity:.6;"></div>
+            ${isCap?`<div class="cap-crown">👑</div>`:""}
+            <div class="slot-initials" style="color:${col}">${c.initials}</div>
+            <div class="slot-name">${c.player.split(" ").slice(-1)[0]}</div>
+            <div class="slot-score" style="color:${col}">${s.done?s.liveScore:"⏳"}</div>
+            <span class="sn-badge" style="position:absolute;top:3px;left:3px;font-size:.5rem;min-width:20px;height:16px;padding:0 2px;background:${snCol}22;color:${snCol};border-color:${snCol}55;">${sn}</span>
+            ${md&&!team.locked?`<div class="matchday-chip">${md}</div>`:''}
+          </div></div>`;
+      }
       return `<div class="slot ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}">
         <div class="slot-pos">${s.pos}</div>
         <div class="slot-card"><div class="slot-plus">+</div></div></div>`;
@@ -1390,6 +1545,37 @@ function renderBuilder(){
          </div>`
       : "";
 
+    /* streak projection note */
+    let streakProjHTML="";
+    if(tiers&&tier){
+      if(score>=tier.pts){
+        streakProjHTML=`<div class="streak-proj-note">Maintiens ce niveau → ${tier.r}</div>`;
+      } else if(allDone){
+        streakProjHTML=`<div class="streak-proj-note danger">Palier non atteint · ${tier.pts-score} pts manquants</div>`;
+      }
+      /* at-risk player warning */
+      const atRisk=team.slots.filter(s=>s.cardId&&!s.done).map(s=>cardById(s.cardId)).filter(c=>c&&computeScoreNess(c)<42);
+      if(atRisk.length&&!allDone){
+        streakProjHTML+=`<div class="streak-proj-note warn">⚠ ${atRisk.map(c=>c.player.split(" ").slice(-1)[0]).join(", ")} à risque (ScoreNess faible)</div>`;
+      }
+    }
+
+    /* arena cap bar */
+    let arenaCapHTML="";
+    if(isArena&&team.comp==="arena_capped"){
+      const filledSlots=team.slots.filter(s=>s.cardId);
+      if(filledSlots.length){
+        const avgSum=filledSlots.reduce((s,sl)=>{const c=cardById(sl.cardId);return s+(c?c.avg:0);},0);
+        const teamAvg=(avgSum/team.slots.length).toFixed(1);
+        const pctCap=Math.min(+teamAvg/260*100,100);
+        const capOk=+teamAvg<=260;
+        arenaCapHTML=`<div class="arena-cap-bar-wrap">
+          <div class="arena-cap-label"><span>Budget Avg Arena Capped</span><span style="color:${capOk?"var(--success)":"var(--error)"};">${teamAvg} / 260</span></div>
+          <div class="arena-cap-track"><div class="arena-cap-fill" style="width:${pctCap}%;background:${capOk?"var(--success)":"var(--error)"}"></div></div>
+        </div>`;
+      }
+    }
+
     /* ── FOOTER BUTTONS ── */
     const isGWActive = team.inSeason;
     const isHidden   = team.hidden || false;
@@ -1415,6 +1601,7 @@ function renderBuilder(){
       footerHTML=`
         <button class="tc-btn tc-btn-lock" data-tid="${team.id}">🔒 Verrouiller</button>
         ${capBtn}
+        <button class="tc-btn tc-btn-magic" data-magic="${team.id}" title="MagicNess — remplissage auto par ScoreNess">✨ Magic</button>
         <button class="tc-btn tc-btn-delete" data-tid="${team.id}">🗑</button>`;
     }
 
@@ -1450,8 +1637,10 @@ function renderBuilder(){
           <div class="gauge-milestones" style="position:relative;height:24px;">${msHTML}</div>
         </div>
         ${predNoteHTML}
+        ${streakProjHTML}
         <div class="hs-badges">${hsBadgesHTML}</div>
       </div>
+      ${arenaCapHTML}
       <div class="tc-footer">${footerHTML}</div>`;
     grid.appendChild(div);
 
@@ -1472,6 +1661,15 @@ function renderBuilder(){
     div.querySelector(`.tc-btn-delete[data-tid="${team.id}"]`)?.addEventListener("click",()=>deleteTeam(team.id));
     div.querySelector(`.tc-btn-hide[data-tid="${team.id}"]`)?.addEventListener("click",()=>hideTeam(team.id));
     div.querySelector(`[data-captain="${team.id}"]`)?.addEventListener("click",()=>openCaptainPicker(team.id));
+    div.querySelector(`[data-magic="${team.id}"]`)?.addEventListener("click",()=>magicNessTeam(team.id));
+
+    /* live timeline inject after footer for active IS teams */
+    if(team.locked&&team.inSeason){
+      const tl=document.createElement("div");
+      tl.id=`tl-${team.id}`;
+      tl.innerHTML=liveTimelineHTML(team);
+      div.appendChild(tl);
+    }
   });
 
   /* add team btn */
@@ -1611,6 +1809,10 @@ function updateTeamDisplay(teamId){
   const scoreEl=document.getElementById(`score-${teamId}`);
   if(scoreEl) scoreEl.innerHTML=`${score} <small>pts</small>`;
 
+  /* update live timeline */
+  const tlEl=document.getElementById(`tl-${teamId}`);
+  if(tlEl) tlEl.innerHTML=liveTimelineHTML(team);
+
   /* update player score breakdown */
   const card=document.querySelector(`.team-card[data-teamid="${teamId}"]`);
   if(card){
@@ -1716,9 +1918,12 @@ function renderPickerList(search){
   list.innerHTML=items.map(c=>{
     const col=RARITY_COL[c.rarity]||"#6991e8";
     const used=usedIds.has(c.id);
+    const sn=computeScoreNess(c);const snCol=scoreNessColor(sn);
+    const md=CLUB_MATCHDAY[c.club]||'';
     return `<div class="picker-item ${used?"used":""}" data-id="${c.id}">
       <div class="picker-av" style="border-color:${col};color:${col};">${c.initials}</div>
-      <div class="picker-info"><div class="picker-name">${c.player}</div><div class="picker-meta">${c.pos} · ${c.club}</div></div>
+      <div class="picker-info"><div class="picker-name">${c.player}</div><div class="picker-meta">${c.pos} · ${c.club}${md?` · ${md}`:''}</div></div>
+      <span class="sn-badge" style="background:${snCol}22;color:${snCol};border-color:${snCol}55;margin-right:.35rem;">${sn}</span>
       <div class="picker-score" style="color:${col}">${c.gw}</div></div>`;
   }).join("");
   list.querySelectorAll(".picker-item:not(.used)").forEach(el=>el.addEventListener("click",()=>{assignPlayer(pickerState.teamId,pickerState.slotIdx,+el.dataset.id);closePicker();}));
@@ -1986,6 +2191,119 @@ document.addEventListener("click", e=>{
   }
   requestAnimationFrame(draw);
 })();
+
+/* ============================================================
+   MAGIC NESS — remplissage auto par ScoreNess
+   ============================================================ */
+function magicNessTeam(teamId){
+  const team=teams.find(t=>t.id===teamId);if(!team||team.locked)return;
+  const posMap={GK:"Gardien",DEF:"Défenseur",MID:"Milieu",ATT:"Attaquant",ANY:null};
+  const pool=DEMO_CARDS.filter(c=>c.rarity===team.rarity)
+    .sort((a,b)=>computeScoreNess(b)-computeScoreNess(a));
+  const usedIds=new Set(teams.filter(t=>t.id!==teamId).flatMap(t=>t.slots.map(s=>s.cardId)).filter(Boolean));
+  const isCapped=team.comp==="arena_capped";
+  const newSlots=team.slots.map(s=>({...s,cardId:null,liveScore:0,done:false}));
+  const assignedIds=new Set();
+  newSlots.forEach((slot,i)=>{
+    const posFilter=posMap[slot.pos];
+    let candidates=pool.filter(c=>!usedIds.has(c.id)&&!assignedIds.has(c.id)&&(!posFilter||c.pos===posFilter));
+    if(isCapped){
+      const curSum=newSlots.slice(0,i).reduce((s,sl)=>{const c=sl.cardId?cardById(sl.cardId):null;return s+(c?c.avg:0);},0);
+      const remaining=newSlots.length-i;
+      const maxAvg=(260*newSlots.length-curSum-(remaining-1)*30)/1;
+      candidates=candidates.filter(c=>c.avg<=maxAvg);
+    }
+    if(candidates.length){slot.cardId=candidates[0].id;assignedIds.add(candidates[0].id);}
+  });
+  team.slots=newSlots;
+  const best=team.slots.filter(s=>s.cardId).sort((a,b)=>computeScoreNess(cardById(b.cardId))-computeScoreNess(cardById(a.cardId)))[0];
+  if(best) team.captain=best.cardId;
+  saveTeams();renderBuilder();
+}
+
+/* ============================================================
+   LIVE TIMELINE — événements match simulés
+   ============================================================ */
+function fakePlayerEvents(card){
+  let s=(card.id*1664525+1013904223)>>>0;
+  function rnd(){s=(s*1664525+1013904223)>>>0;return s/4294967296;}
+  const evts=[];
+  const min1=Math.floor(rnd()*44+1);
+  const min2=Math.floor(rnd()*44+46);
+  const min3=Math.floor(rnd()*28+62);
+  const min4=Math.floor(rnd()*30+55);
+  if((card.gpg||0)>=0.3) evts.push({min:min1,emoji:'⚽'});
+  else if((card.gpg||0)>=0.15&&rnd()<0.45) evts.push({min:min2,emoji:'⚽'});
+  if((card.apg||0)>=0.3) evts.push({min:min3,emoji:'🅰️'});
+  if(rnd()<0.10) evts.push({min:min4,emoji:'🟨'});
+  return evts;
+}
+function liveTimelineHTML(team){
+  if(!team.locked||!team.inSeason) return '';
+  const allEvts=[];
+  team.slots.forEach(s=>{
+    if(!s.cardId||!s.done) return;
+    const c=cardById(s.cardId);if(!c)return;
+    fakePlayerEvents(c).forEach(e=>allEvts.push({...e,name:c.player.split(' ').slice(-1)[0]}));
+  });
+  if(!allEvts.length) return '';
+  allEvts.sort((a,b)=>a.min-b.min);
+  return `<div class="live-timeline">${allEvts.map(e=>`<span class="lt-evt"><span class="lt-emoji">${e.emoji}</span><span class="lt-name">${e.name}</span><span class="lt-min">${e.min}'</span></span>`).join('')}</div>`;
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+let statsSortKey='sn';
+let statsSortDir=-1;
+let statsPos='all';
+let statsSearch='';
+
+function renderStats(){
+  let cards=DEMO_CARDS.map(c=>({...c,sn:computeScoreNess(c)}));
+  if(statsPos!=='all') cards=cards.filter(c=>c.pos===statsPos);
+  if(statsSearch) cards=cards.filter(c=>c.player.toLowerCase().includes(statsSearch.toLowerCase())||c.club.toLowerCase().includes(statsSearch.toLowerCase()));
+  cards.sort((a,b)=>{
+    const av=a[statsSortKey],bv=b[statsSortKey];
+    if(typeof av==='string') return statsSortDir*(av<bv?-1:av>bv?1:0);
+    return statsSortDir*(av<bv?-1:av>bv?1:0);
+  });
+  const grid=document.getElementById('statsGrid');if(!grid)return;
+  grid.innerHTML=cards.map(c=>{
+    const snCol=scoreNessColor(c.sn);
+    const md=CLUB_MATCHDAY[c.club]||'—';
+    return `<tr>
+      <td><div class="st-player"><div class="st-av ${rc(c.rarity)}">${c.initials}</div><div><div class="st-name">${c.player}</div><div class="st-club">${c.club}</div></div></div></td>
+      <td><span class="st-pos">${c.pos.substring(0,3).toUpperCase()}</span></td>
+      <td><span style="color:${RARITY_COL[c.rarity]};font-size:.7rem;font-weight:700;">${RARITY_LABELS[c.rarity]}</span></td>
+      <td><span class="sn-badge" style="background:${snCol}22;color:${snCol};border-color:${snCol}55;">${c.sn}</span></td>
+      <td>${formBarsHTML(c)}</td>
+      <td style="font-family:'Antonio',sans-serif;font-size:.92rem;color:var(--text);">${c.avg}</td>
+      <td style="font-family:'Antonio',sans-serif;font-size:.92rem;color:var(--text);">${c.gw}</td>
+      <td style="font-size:.82rem;color:var(--blue-light);font-weight:600;">€${(c.value||0).toLocaleString()}M</td>
+      <td style="font-size:.75rem;color:var(--text-muted);">${md}</td>
+    </tr>`;
+  }).join('');
+  document.querySelectorAll('.stats-th[data-sort]').forEach(th=>{
+    const isActive=th.dataset.sort===statsSortKey;
+    th.classList.toggle('sort-active',isActive);
+    if(isActive) th.dataset.dir=statsSortDir>0?'asc':'desc';
+    else delete th.dataset.dir;
+  });
+}
+document.addEventListener('click',e=>{
+  const th=e.target.closest('.stats-th[data-sort]');
+  if(!th)return;
+  const key=th.dataset.sort;
+  if(statsSortKey===key) statsSortDir*=-1;
+  else{statsSortKey=key;statsSortDir=-1;}
+  renderStats();
+});
+document.getElementById('statsSearch')?.addEventListener('input',e=>{statsSearch=e.target.value;renderStats();});
+document.querySelectorAll('#statsPosChips .pos-chip').forEach(el=>el.addEventListener('click',()=>{
+  document.querySelectorAll('#statsPosChips .pos-chip').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');statsPos=el.dataset.pos;renderStats();
+}));
 
 const heroCard=document.getElementById("heroCard");
 heroCard.addEventListener("mousemove",e=>{const r=heroCard.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;heroCard.style.transform=`rotateY(${x*12}deg) rotateX(${-y*12}deg) translateY(-4px)`;});

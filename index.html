@@ -26,16 +26,8 @@ button{cursor:pointer;}
 /* ============================================================  ATMOSPHERE  */
 .atmosphere{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 900px 700px at 50% 45%,rgba(105,145,232,.10),transparent 65%),radial-gradient(ellipse 600px 400px at 15% 10%,rgba(105,145,232,.05),transparent 70%),radial-gradient(ellipse 600px 400px at 85% 90%,rgba(105,145,232,.05),transparent 70%);}
 .grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(105,145,232,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(105,145,232,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%);}
-.beams{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.beam{position:absolute;top:-20%;width:1px;height:140%;background:linear-gradient(180deg,transparent,rgba(168,196,245,.18),transparent);filter:blur(1px);}
-.beam:nth-child(1){left:20%;transform:rotate(8deg);}
-.beam:nth-child(2){left:50%;transform:rotate(-4deg);animation:beam-pulse 8s ease-in-out infinite;}
-.beam:nth-child(3){left:78%;transform:rotate(6deg);animation:beam-pulse 11s ease-in-out infinite 2s;}
-@keyframes beam-pulse{0%,100%{opacity:.4}50%{opacity:1}}
 .grain{position:fixed;inset:0;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");opacity:.04;mix-blend-mode:overlay;}
-.particles{position:fixed;inset:0;pointer-events:none;z-index:2;}
-.particle{position:absolute;background:var(--blue-light);border-radius:50%;box-shadow:0 0 6px var(--blue),0 0 14px rgba(105,145,232,.5);bottom:-10px;opacity:0;animation:float linear infinite;}
-@keyframes float{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.8}90%{opacity:.8}100%{transform:translateY(-110vh) translateX(var(--drift,30px));opacity:0}}
+#starCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
 
 /* ============================================================  HEADER  */
 .app-header{position:fixed;top:0;right:0;left:0;height:58px;display:flex;justify-content:flex-end;align-items:center;padding:0 2rem;z-index:20;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(6,10,20,.95),rgba(6,10,20,.6));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:left .3s ease;}
@@ -71,20 +63,14 @@ button{cursor:pointer;}
 .nav-item.logout{color:rgba(212,104,92,.7);}
 .nav-item.logout:hover{color:var(--error);background:rgba(212,104,92,.08);}
 
-/* Mobile bottom nav */
-.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;z-index:25;background:rgba(6,10,20,.97);border-top:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:space-around;}
-.bottom-nav.visible{display:flex;}
-.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-muted);cursor:pointer;padding:.5rem .75rem;transition:color .2s;border:none;background:transparent;font-family:'Manrope',sans-serif;font-size:.6rem;letter-spacing:.1em;flex:1;}
-.bn-item.active{color:var(--blue-light);}
-.bn-item svg{width:20px;height:20px;}
 
 /* ============================================================  LAYOUT  */
 .app-content{position:relative;z-index:5;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
 .app-content.with-sidebar{margin-left:var(--sidebar-w);}
-@media(max-width:768px){.sidebar{display:none;}.app-content.with-sidebar{margin-left:0;}.app-header.with-sidebar{left:0!important;}}
+@media(max-width:768px){.app-content.with-sidebar{margin-left:var(--sidebar-w);}.app-header.with-sidebar{left:var(--sidebar-w)!important;}}
 .screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:6rem 1.5rem 3rem;}
 .screen.app-screen{padding:5rem 1.5rem 5rem;align-items:stretch;}
-@media(max-width:768px){.screen.app-screen{padding-bottom:80px;}}
+@media(max-width:768px){.screen.app-screen{padding-bottom:2rem;}}
 
 /* ============================================================  LANDING  */
 #screen-landing{justify-content:center;gap:1.5rem;}
@@ -93,23 +79,27 @@ button{cursor:pointer;}
 .hero-title {
   font-family:'Antonio',sans-serif;
   font-size:clamp(5rem,14vw,11rem); font-weight:700;
-  /* Gradient métallique type chrome argenté */
   background:linear-gradient(
     180deg,
     #ffffff 0%,
-    #e8f0ff 12%,
-    #b0c8e8 28%,
-    #6888aa 48%,
-    #2c4460 65%,
-    #7090b8 82%,
-    #1a3050 100%
+    #f8f8f8 7%,
+    #d4d4d4 16%,
+    #8c8c8c 28%,
+    #e0e0e0 38%,
+    #ffffff 48%,
+    #e8e8e8 54%,
+    #b0b0b0 64%,
+    #606060 76%,
+    #9c9c9c 86%,
+    #d8d8d8 93%,
+    #f5f5f5 100%
   );
   -webkit-background-clip:text; background-clip:text; color:transparent;
   letter-spacing:.04em; line-height:.92; text-transform:uppercase;
-  /* Shadow forte pour l'effet de profondeur */
   filter:
-    drop-shadow(0 0 50px rgba(120,170,240,.55))
-    drop-shadow(0 3px 6px rgba(0,0,30,.75));
+    drop-shadow(0 0 70px rgba(220,225,240,.45))
+    drop-shadow(0 4px 10px rgba(0,0,0,.95))
+    drop-shadow(0 0 140px rgba(200,210,230,.12));
   position:relative;
   opacity:0; animation:fadeUp 1s .15s ease forwards;
 }
@@ -598,17 +588,16 @@ button{cursor:pointer;}
   100%{background:var(--slot-bg,rgba(105,145,232,.04));}
 }
 
-@media(max-width:768px){.sidebar{display:none;}.app-content.with-sidebar{margin-left:0;}.app-header.with-sidebar{left:0!important;}.teams-grid{grid-template-columns:1fr;}.cards-grid{grid-template-columns:repeat(2,1fr);gap:.7rem;}.screen.app-screen{padding-bottom:80px;}.bottom-nav.visible{display:flex;}.modal-stats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.teams-grid{grid-template-columns:1fr;}.cards-grid{grid-template-columns:repeat(2,1fr);gap:.7rem;}.screen.app-screen{padding-bottom:2rem;}.modal-stats-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:480px){.hero-title{font-size:4rem;}.manager-card{width:270px;height:410px;}.screen{padding:5.5rem 1rem 2rem;}}
 </style>
 </head>
 <body>
 
+<canvas id="starCanvas"></canvas>
 <div class="atmosphere"></div>
 <div class="grid-bg"></div>
-<div class="beams"><div class="beam"></div><div class="beam"></div><div class="beam"></div></div>
 <div class="grain"></div>
-<div class="particles" id="particles"></div>
 
 <header class="app-header" id="appHeader">
   <div class="header-right">
@@ -658,11 +647,6 @@ button{cursor:pointer;}
   </div>
 </nav>
 
-<div class="bottom-nav" id="bottomNav">
-  <button class="bn-item" data-page="club"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>Club</button>
-  <button class="bn-item" data-page="builder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>Builder</button>
-  <button class="bn-item" id="logoutBnBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Quitter</button>
-</div>
 
 <div class="app-content" id="appContent">
 
@@ -869,14 +853,6 @@ button{cursor:pointer;}
         <option value="arena_capped">Arena Capped (260 cap)</option>
         <option value="arena_uncapped">Arena Uncapped</option>
       </optgroup>
-    </select>
-    <label class="form-label" for="streakLevel">Niveau Hot Streak actuel</label>
-    <select id="streakLevel" class="form-select">
-      <option value="1">Niveau 1 (départ)</option>
-      <option value="2">Niveau 2</option>
-      <option value="3">Niveau 3</option>
-      <option value="4">Niveau 4</option>
-      <option value="5">Niveau 5 (max)</option>
     </select>
     <div class="add-modal-actions">
       <button class="am-cancel" id="addModalCancel">Annuler</button>
@@ -1091,7 +1067,6 @@ function enterAppMode(){
   document.getElementById("appHeader").classList.add("with-sidebar");
   document.getElementById("appContent").classList.add("with-sidebar");
   document.getElementById("demoPill").classList.add("visible");
-  document.getElementById("bottomNav").classList.add("visible");
   startCountdown();
 }
 function exitAppMode(){
@@ -1099,7 +1074,6 @@ function exitAppMode(){
   document.getElementById("appHeader").classList.remove("with-sidebar");
   document.getElementById("appContent").classList.remove("with-sidebar");
   document.getElementById("demoPill").classList.remove("visible");
-  document.getElementById("bottomNav").classList.remove("visible");
   document.getElementById("gwCountdown").classList.add("hidden");
   clearInterval(countdownTimer);
 }
@@ -1118,7 +1092,6 @@ function showPage(page){
 }
 document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>showPage(el.dataset.page)));
 document.getElementById("logoutBtn").addEventListener("click",()=>showPage("landing"));
-document.getElementById("logoutBnBtn").addEventListener("click",()=>showPage("landing"));
 document.getElementById("sidebarBrand").addEventListener("click",()=>showPage(currentPage||"club"));
 document.getElementById("demoBtn").addEventListener("click",()=>showPage("club"));
 document.getElementById("connectBtn").addEventListener("click",()=>{
@@ -1397,10 +1370,9 @@ function renderBuilder(){
 
     /* gauge milestones */
     const maxPts=tiers?Math.max(...tiers.map(t=>t.pts)):500;
-    const msHTML=tiers?tiers.map(t=>{
-      const at=(t.pts/maxPts*100);
-      return `<div class="gauge-ms ${score>=t.pts?"reached":""}" style="position:absolute;left:${at}%;transform:translateX(-50%);"><div class="gauge-ms-tick" style="--ms-col:${score>=t.pts?gc.col:"rgba(105,145,232,.4)"}"></div><div class="gauge-ms-label">${t.pts}</div></div>`;
-    }).join(""):"";
+    const msHTML=tiers&&tier
+      ?`<div class="gauge-ms ${score>=tier.pts?"reached":""}" style="position:absolute;left:${(tier.pts/maxPts*100).toFixed(2)}%;transform:translateX(-50%);"><div class="gauge-ms-tick" style="--ms-col:${score>=tier.pts?gc.col:"rgba(105,145,232,.4)"}"></div><div class="gauge-ms-label">${tier.pts} pts</div></div>`
+      :"";
 
     const nextTargetPct=tier?(tier.pts/maxPts*100):100;
     const targetLineHTML=(pct<1&&tier)?`<div class="gauge-target-line" style="left:${nextTargetPct}%;--target-col:${gc.col};"><div class="gauge-target-label">${tier.pts} pts → ${tier.r}</div></div>`:"";
@@ -1783,7 +1755,7 @@ document.querySelectorAll(".rarity-opt").forEach(el=>el.addEventListener("click"
 document.getElementById("addModalConfirm").addEventListener("click",()=>{
   const name=document.getElementById("teamNameInput").value.trim()||"Nouvelle Équipe";
   const comp=document.getElementById("compSelect").value;
-  const streakLevel=+document.getElementById("streakLevel").value||1;
+  const streakLevel=1;
   const id=Date.now();
   const isClassicComp=CLASSIC_COMPS_LIST.includes(comp);
   const newSlots=isClassicComp
@@ -1925,8 +1897,96 @@ document.addEventListener("click", e=>{
   if(currentPage==="builder") renderBuilder();
 });
 
-const pc=document.getElementById("particles");
-for(let i=0;i<20;i++){const p=document.createElement("div");p.className="particle";p.style.left=Math.random()*100+"%";p.style.animationDuration=(12+Math.random()*14)+"s";p.style.animationDelay=(Math.random()*15)+"s";p.style.setProperty("--drift",(Math.random()*100-50)+"px");p.style.width=p.style.height=(1+Math.random()*2)+"px";pc.appendChild(p);}
+/* ============================================================
+   STAR CANVAS — ciel nocturne étoilé avec étoiles filantes
+   ============================================================ */
+(function(){
+  const canvas=document.getElementById('starCanvas');
+  const ctx=canvas.getContext('2d');
+  let W=0,H=0;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  /* Génération des étoiles fixes */
+  const NSTARS=340;
+  const stars=Array.from({length:NSTARS},()=>{
+    const big=Math.random()<.05,med=Math.random()<.15;
+    return{
+      x:Math.random(),y:Math.random(),
+      r:big?1.6+Math.random()*.9:med?.7+Math.random()*.5:.15+Math.random()*.4,
+      a:.35+Math.random()*.65,
+      tw:Math.random()<.45,ts:.3+Math.random()*2,tp:Math.random()*Math.PI*2,
+      h:210+Math.random()*80,s:Math.random()<.25?20+Math.random()*35:3+Math.random()*10
+    };
+  });
+
+  /* Étoiles filantes */
+  const shooters=[];
+  function spawn(){
+    const ang=(Math.PI/12)+Math.random()*(Math.PI/4.5);
+    const spd=380+Math.random()*320,dir=Math.random()<.55?1:-1;
+    const sx=dir>0?Math.random()*W*.35:W*.65+Math.random()*W*.35;
+    shooters.push({
+      x:sx,y:Math.random()*H*.42,
+      vx:Math.cos(ang)*spd*dir,vy:Math.sin(ang)*spd,
+      len:110+Math.random()*130,a:1,
+      dec:.45+Math.random()*.45,w:.9+Math.random()*1.6
+    });
+  }
+  function sched(){
+    setTimeout(()=>{
+      spawn();
+      if(Math.random()<.28)setTimeout(spawn,200+Math.random()*600);
+      sched();
+    },4500+Math.random()*7500);
+  }
+  sched();
+
+  let last=0;
+  function draw(ts){
+    const dt=Math.min((ts-last)/1000,.1);last=ts;
+    ctx.clearRect(0,0,W,H);
+
+    /* Étoiles fixes */
+    stars.forEach(s=>{
+      let a=s.a;
+      if(s.tw){a+=Math.sin(ts*.001*s.ts*Math.PI*2+s.tp)*.22;a=Math.max(.04,Math.min(1,a));}
+      ctx.globalAlpha=a;
+      ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+      ctx.fillStyle=`hsl(${s.h},${s.s}%,96%)`;ctx.fill();
+      /* Halo pour les plus grandes étoiles */
+      if(s.r>1.3){
+        const g=ctx.createRadialGradient(s.x*W,s.y*H,s.r*.4,s.x*W,s.y*H,s.r*5);
+        g.addColorStop(0,`hsla(${s.h},${s.s}%,96%,${a*.2})`);g.addColorStop(1,'transparent');
+        ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r*5,0,Math.PI*2);
+        ctx.fillStyle=g;ctx.globalAlpha=1;ctx.fill();
+      }
+    });
+
+    /* Étoiles filantes */
+    ctx.globalAlpha=1;
+    for(let i=shooters.length-1;i>=0;i--){
+      const s=shooters[i];
+      const mag=Math.hypot(s.vx,s.vy),dx=s.vx/mag,dy=s.vy/mag;
+      const tl=s.len*Math.min(s.a,1);
+      const gr=ctx.createLinearGradient(s.x,s.y,s.x-dx*tl,s.y-dy*tl);
+      gr.addColorStop(0,`rgba(255,255,255,${s.a})`);
+      gr.addColorStop(.35,`rgba(215,232,255,${s.a*.55})`);
+      gr.addColorStop(1,'rgba(180,210,255,0)');
+      ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x-dx*tl,s.y-dy*tl);
+      ctx.strokeStyle=gr;ctx.lineWidth=s.w;ctx.stroke();
+      /* Tête lumineuse */
+      ctx.beginPath();ctx.arc(s.x,s.y,s.w*2.8,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${s.a*.85})`;ctx.fill();
+      s.x+=s.vx*dt;s.y+=s.vy*dt;s.a-=s.dec*dt;
+      if(s.a<=0||s.x<-500||s.x>W+500||s.y>H+300)shooters.splice(i,1);
+    }
+    ctx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
 const heroCard=document.getElementById("heroCard");
 heroCard.addEventListener("mousemove",e=>{const r=heroCard.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;heroCard.style.transform=`rotateY(${x*12}deg) rotateX(${-y*12}deg) translateY(-4px)`;});
 heroCard.addEventListener("mouseleave",()=>{heroCard.style.transform="";});

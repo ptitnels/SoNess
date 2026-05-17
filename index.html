@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NESS — Sorare</title>
+<title>soNESS — Sorare</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -90,7 +90,29 @@ button{cursor:pointer;}
 #screen-landing{justify-content:center;gap:1.5rem;}
 .subtitle{display:flex;align-items:center;gap:1rem;font-size:.72rem;font-weight:500;letter-spacing:.55em;color:var(--blue-light);text-transform:uppercase;opacity:0;animation:fadeUp .8s ease forwards;}
 .subtitle::before,.subtitle::after{content:'';width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--border-strong),transparent);}
-.hero-title{font-family:'Antonio',sans-serif;font-size:clamp(5rem,14vw,11rem);font-weight:700;background:linear-gradient(180deg,#fff 0%,#a8c4f5 50%,#4a6fa5 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.04em;line-height:.92;text-transform:uppercase;filter:drop-shadow(0 0 50px rgba(105,145,232,.35));position:relative;opacity:0;animation:fadeUp 1s .15s ease forwards;}
+.hero-title {
+  font-family:'Antonio',sans-serif;
+  font-size:clamp(5rem,14vw,11rem); font-weight:700;
+  /* Gradient métallique type chrome argenté */
+  background:linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #e8f0ff 12%,
+    #b0c8e8 28%,
+    #6888aa 48%,
+    #2c4460 65%,
+    #7090b8 82%,
+    #1a3050 100%
+  );
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:.04em; line-height:.92; text-transform:uppercase;
+  /* Shadow forte pour l'effet de profondeur */
+  filter:
+    drop-shadow(0 0 50px rgba(120,170,240,.55))
+    drop-shadow(0 3px 6px rgba(0,0,30,.75));
+  position:relative;
+  opacity:0; animation:fadeUp 1s .15s ease forwards;
+}
 .hero-title::after{content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--blue-light) 30%,var(--blue-light) 70%,transparent);}
 .title-deco{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%) rotate(45deg);width:6px;height:6px;background:var(--blue-light);box-shadow:0 0 10px var(--blue);}
 .card-wrap{perspective:1200px;opacity:0;animation:fadeUp 1s .35s ease forwards;margin-top:.5rem;}
@@ -212,6 +234,8 @@ button{cursor:pointer;}
 .builder-gw-info{max-width:1300px;width:100%;margin:0 auto 1.5rem;background:linear-gradient(135deg,rgba(105,145,232,.08),rgba(105,145,232,.03));border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .gw-info-left{display:flex;align-items:center;gap:1rem;}
 .gw-live-dot{width:9px;height:9px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success);animation:pulse-dot 1.5s ease infinite;}
+.gw-nav-btn{background:rgba(105,145,232,.1);border:1px solid var(--border);color:var(--blue-light);width:26px;height:26px;border-radius:4px;cursor:pointer;font-size:1rem;display:grid;place-items:center;transition:all .2s;line-height:1;padding:0;}
+.gw-nav-btn:hover{background:rgba(105,145,232,.25);border-color:var(--blue);}
 .gw-number{font-family:'Antonio',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);letter-spacing:.1em;}
 .gw-label{font-size:.72rem;color:var(--text-muted);letter-spacing:.06em;}
 .gw-info-right{display:flex;gap:1.5rem;}
@@ -328,9 +352,17 @@ button{cursor:pointer;}
 .tc-btn{flex:1;padding:.7rem;border-radius:6px;border:1px solid;font-family:'Manrope',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;}
 .tc-btn-lock{background:linear-gradient(135deg,rgba(105,145,232,.15),rgba(105,145,232,.08));border-color:var(--blue);color:var(--blue-light);}
 .tc-btn-lock:hover{background:linear-gradient(135deg,rgba(105,145,232,.3),rgba(105,145,232,.15));box-shadow:0 0 15px rgba(105,145,232,.3);}
-.tc-btn-locked{background:transparent;border-color:rgba(105,145,232,.25);color:var(--text-muted);cursor:default;}
+.tc-btn-locked{background:transparent;border-color:rgba(105,145,232,.2);color:var(--text-muted);cursor:default;}
+.tc-btn-unlock{background:rgba(240,194,57,.06);border-color:rgba(240,194,57,.4);color:#f0c239;}
+.tc-btn-unlock:hover{background:rgba(240,194,57,.15);box-shadow:0 0 12px rgba(240,194,57,.2);}
+.tc-btn-captain{background:rgba(240,194,57,.06);border-color:rgba(240,194,57,.4);color:#f0c239;flex:0 0 auto;padding:.7rem 1rem;font-size:.68rem;}
+.tc-btn-captain:hover{background:rgba(240,194,57,.15);}
 .tc-btn-delete{flex:0 0 auto;background:transparent;border-color:rgba(212,104,92,.25);color:rgba(212,104,92,.5);padding:.7rem .9rem;}
 .tc-btn-delete:hover{border-color:var(--error);color:var(--error);background:rgba(212,104,92,.08);}
+.tc-btn-hide{flex:0 0 auto;background:transparent;border-color:rgba(107,122,149,.3);color:var(--text-muted);padding:.7rem 1rem;font-size:.7rem;}
+.tc-btn-hide:hover{border-color:var(--border-strong);color:var(--text);}
+.tc-btn-unhide{border-color:rgba(105,145,232,.4);color:var(--blue-light)!important;}
+.tc-hidden-card{opacity:.55;filter:grayscale(.3);}
 .add-team-btn{background:rgba(105,145,232,.04);border:1px dashed rgba(105,145,232,.3);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;cursor:pointer;transition:all .3s;min-height:300px;color:rgba(105,145,232,.5);}
 .add-team-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(105,145,232,.08);}
 .add-team-btn svg{width:32px;height:32px;}
@@ -440,17 +472,62 @@ button{cursor:pointer;}
 .season-hist-svg{width:100%;height:32px;overflow:visible;}
 
 /* Comp group tabs */
-.comp-tabs-wrap{max-width:1300px;width:100%;margin:0 auto 1.25rem;display:flex;flex-direction:column;gap:.6rem;}
-.comp-group{display:flex;align-items:center;gap:.6rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;}
-.comp-group::-webkit-scrollbar{display:none;}
-.comp-group-label{flex-shrink:0;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:.3rem 0;white-space:nowrap;}
-.comp-group-is .comp-group-label{color:var(--warn);}
-.comp-group-classic .comp-group-label{color:var(--blue-light);}
+.comp-tabs-wrap{max-width:1300px;width:100%;margin:0 auto 1.25rem;overflow-x:auto;scrollbar-width:none;}
+.comp-tabs-wrap::-webkit-scrollbar{display:none;}
+.comp-tabs{display:flex;gap:.5rem;flex-wrap:nowrap;padding-bottom:2px;min-width:max-content;}
+
+/* Mode switcher */
+.builder-mode-switcher{
+  max-width:1300px;width:100%;margin:0 auto 1.25rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;
+}
+.mode-btn{
+  background:rgba(105,145,232,.05);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  cursor:pointer;transition:all .25s ease;
+  text-align:left;
+  display:flex;flex-direction:column;gap:.4rem;
+  position:relative;overflow:hidden;
+}
+.mode-btn::before{
+  content:'';position:absolute;inset:0;
+  opacity:0;transition:opacity .3s;
+  background:radial-gradient(ellipse at 30% 50%,var(--mode-glow,rgba(105,145,232,.2)),transparent 70%);
+}
+.mode-btn:hover::before,.mode-btn.active::before{opacity:1;}
+.mode-btn:hover{border-color:var(--border-strong);}
+.mode-btn.active{border-color:var(--mode-color,var(--blue));box-shadow:0 0 20px var(--mode-glow,rgba(105,145,232,.25));}
+.mode-btn-icon{font-size:1.4rem;line-height:1;}
+.mode-btn-name{font-family:'Antonio',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mode-color,var(--blue-light));}
+.mode-btn-desc{font-size:.68rem;color:var(--text-muted);letter-spacing:.04em;line-height:1.4;}
+.mode-btn-count{
+  margin-top:.25rem;
+  font-family:'Antonio',sans-serif;font-size:.75rem;font-weight:600;
+  color:var(--mode-color,var(--blue-light));
+  opacity:.7;
+}
+.mode-inseason{--mode-color:#f59e0b;--mode-glow:rgba(245,158,11,.2);}
+.mode-classic {--mode-color:#6991e8;--mode-glow:rgba(105,145,232,.2);}
+.mode-arena   {--mode-color:#6bc78b;--mode-glow:rgba(107,199,139,.2);}
+.mode-inseason.active{border-color:#f59e0b;}
+.mode-classic.active {border-color:#6991e8;}
+.mode-arena.active   {border-color:#6bc78b;}
+
+@media(max-width:600px){.builder-mode-switcher{grid-template-columns:1fr;gap:.5rem;}.mode-btn{flex-direction:row;align-items:center;gap:.85rem;padding:.85rem 1rem;}.mode-btn-icon{font-size:1.2rem;}.mode-btn-name{font-size:.88rem;}.mode-btn-count{margin-top:0;margin-left:auto;}}
 .comp-group-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;}
 .comp-tabs-inner{display:flex;gap:.4rem;flex-wrap:nowrap;}
-.comp-tab{display:flex;align-items:center;gap:.45rem;padding:.45rem .85rem;border-radius:6px;border:1px solid var(--border);background:rgba(105,145,232,.04);color:var(--text-muted);cursor:pointer;transition:all .2s;font-family:'Manrope',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
-.comp-tab:hover{border-color:var(--border-strong);color:var(--text);}
-.comp-tab.active{border-color:var(--blue);background:rgba(105,145,232,.15);color:var(--blue-light);box-shadow:0 0 12px rgba(105,145,232,.2);}
+.comp-tab{display:flex;align-items:center;gap:.45rem;padding:.5rem .95rem;border-radius:6px;border:1px solid rgba(105,145,232,.12);background:rgba(6,10,20,.6);color:rgba(107,122,149,.8);cursor:pointer;transition:all .2s;font-family:'Manrope',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.comp-tab:hover{border-color:rgba(105,145,232,.4);color:var(--text);background:rgba(105,145,232,.08);}
+.comp-tab.active{
+  border-color:var(--blue);
+  background:linear-gradient(135deg,rgba(105,145,232,.28),rgba(105,145,232,.14));
+  color:#fff;
+  box-shadow:0 0 0 1px rgba(105,145,232,.35),0 4px 16px rgba(105,145,232,.25);
+  font-weight:700;
+  text-shadow:0 0 12px rgba(168,196,245,.6);
+}
 .comp-tab-count{width:16px;height:16px;border-radius:50%;background:rgba(105,145,232,.15);font-size:.58rem;display:grid;place-items:center;}
 .comp-tab.active .comp-tab-count{background:rgba(105,145,232,.3);}
 .comp-tab-live-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 4px var(--success);animation:pulse-dot 1.5s ease infinite;}
@@ -561,6 +638,13 @@ button{cursor:pointer;}
       <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
       <span class="nav-label">Builder</span>
     </button>
+    <button class="nav-item" data-page="live" id="nav-live">
+      <div class="nav-icon" style="position:relative">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span style="position:absolute;top:-3px;right:-4px;width:7px;height:7px;background:var(--success);border-radius:50%;box-shadow:0 0 6px var(--success);"></span>
+      </div>
+      <span class="nav-label">Match Live</span>
+    </button>
     <div class="nav-section-title" style="margin-top:.5rem;">À venir</div>
     <button class="nav-item" style="opacity:.4;cursor:default;">
       <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
@@ -658,8 +742,12 @@ button{cursor:pointer;}
     <div class="gw-info-left">
       <div class="gw-live-dot"></div>
       <div>
-        <div class="gw-number">Game Week 320</div>
-        <div class="gw-label">Mar 12h CET → Ven 23h59 CET · <span class="gw-countdown" id="gwCountdown">—</span></div>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <button class="gw-nav-btn" id="gwPrev" title="GW précédente">‹</button>
+          <div class="gw-number" id="gwTitle">Game Week <span id="gwNum">320</span></div>
+          <button class="gw-nav-btn" id="gwNext" title="GW suivante">›</button>
+        </div>
+        <div class="gw-label" id="gwRange">—</div>
       </div>
     </div>
     <div class="gw-info-right">
@@ -668,19 +756,58 @@ button{cursor:pointer;}
       <div class="gw-quick-stat"><div class="gw-qs-val" id="qsStreak">—</div><div class="gw-qs-lbl">Meilleur streak</div></div>
     </div>
   </div>
+  <!-- Mode switcher : IN SEASON / CLASSIC / ARENA -->
+  <div class="builder-mode-switcher">
+    <button class="mode-btn mode-inseason active" data-mode="inseason">
+      <div class="mode-btn-icon">🔥</div>
+      <div>
+        <div class="mode-btn-name">In Season</div>
+        <div class="mode-btn-desc">Hot Streaks · Cash prizes<br>4 IN-SEASON + 1 Classic</div>
+      </div>
+      <div class="mode-btn-count" id="cntInseason">— équipes</div>
+    </button>
+    <button class="mode-btn mode-classic" data-mode="classic">
+      <div class="mode-btn-icon">📦</div>
+      <div>
+        <div class="mode-btn-name">Classic</div>
+        <div class="mode-btn-desc">Cartes · Essence · XP<br>7 joueurs, toutes saisons</div>
+      </div>
+      <div class="mode-btn-count" id="cntClassic">— équipes</div>
+    </button>
+    <button class="mode-btn mode-arena" data-mode="arena">
+      <div class="mode-btn-icon">🏟️</div>
+      <div>
+        <div class="mode-btn-name">Arena</div>
+        <div class="mode-btn-desc">Mode permanent · Essence<br>Leaderboards de 10</div>
+      </div>
+      <div class="mode-btn-count" id="cntArena">— équipes</div>
+    </button>
+  </div>
+
+  <!-- Onglets de compétitions du mode actif -->
   <div class="comp-tabs-wrap" id="compTabsWrap">
-    <div class="comp-group comp-group-is">
-      <span class="comp-group-label">🔥 In Season</span>
-      <div class="comp-group-divider"></div>
-      <div class="comp-tabs-inner" id="isCompTabs"></div>
-    </div>
-    <div class="comp-group comp-group-classic">
-      <span class="comp-group-label">📦 Classic</span>
-      <div class="comp-group-divider"></div>
-      <div class="comp-tabs-inner" id="classicCompTabsInner"></div>
-    </div>
+    <div class="comp-tabs" id="compTabsDynamic"></div>
   </div>
   <div class="teams-grid" id="teamsGrid"></div>
+</section>
+
+<!-- LIVE -->
+<section class="screen app-screen hidden" id="screen-live">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">Scores en direct</div>
+      <h2 class="page-title">Match Live</h2>
+      <div class="page-sub">Disponible après connexion Sorare OAuth</div>
+    </div>
+  </div>
+  <div style="max-width:600px;margin:2rem auto;text-align:center;padding:3rem 1.5rem;border:1px solid var(--border);border-radius:12px;background:rgba(105,145,232,.04);">
+    <div style="font-size:3rem;margin-bottom:1rem;">⏱️</div>
+    <div style="font-family:'Antonio',sans-serif;font-size:1.4rem;letter-spacing:.1em;color:var(--text);margin-bottom:.75rem;">EN ATTENTE D'ACTIVATION</div>
+    <div style="font-size:.9rem;color:var(--text-muted);line-height:1.7;max-width:400px;margin:0 auto;">
+      Cette section affichera les scores live de tes joueurs récupérés directement depuis Sorare, match par match, avec les actions décisives en temps réel.<br><br>
+      <span style="color:var(--blue-light);font-weight:600;">Disponible dès que l'authentification OAuth Sorare est activée.</span>
+    </div>
+  </div>
 </section>
 
 </div><!-- /app-content -->
@@ -727,15 +854,26 @@ button{cursor:pointer;}
     </div>
     <label class="form-label" for="compSelect">Compétition</label>
     <select id="compSelect" class="form-select">
-      <option value="premier_league">Premier League</option>
-      <option value="la_liga">La Liga</option>
-      <option value="bundesliga">Bundesliga</option>
-      <option value="ligue_1">Ligue 1 McDonald's</option>
-      <option value="eredivisie">Eredivisie</option>
-      <option value="jpl">Jupiler Pro League</option>
-      <option value="mls">MLS</option>
-      <option value="challenger">Challenger</option>
-      <option value="contender">Contender</option>
+      <optgroup label="🔥 In Season">
+        <option value="premier_league">Premier League</option>
+        <option value="la_liga">La Liga</option>
+        <option value="bundesliga">Bundesliga</option>
+        <option value="ligue_1">Ligue 1 McDonald's</option>
+        <option value="eredivisie">Eredivisie</option>
+        <option value="jpl">Jupiler Pro League</option>
+        <option value="mls">MLS</option>
+        <option value="challenger">Challenger</option>
+        <option value="contender">Contender</option>
+      </optgroup>
+      <optgroup label="📦 Classic">
+        <option value="champion_europe">Champion Europe</option>
+        <option value="all_star">All Star</option>
+        <option value="u23">U23</option>
+      </optgroup>
+      <optgroup label="🏟️ Arena">
+        <option value="arena_capped">Arena Capped (260 cap)</option>
+        <option value="arena_uncapped">Arena Uncapped</option>
+      </optgroup>
     </select>
     <label class="form-label" for="streakLevel">Niveau Hot Streak actuel</label>
     <select id="streakLevel" class="form-select">
@@ -814,7 +952,8 @@ const HOT_STREAK_SMALL = {
 
 const SMALL_COMPS = ["challenger","contender","jpl","eredivisie"];
 function getHotStreak(team){
-  if(CLASSIC_COMPS_LIST.includes(team.comp)) return null; // Classic = pas de Hot Streak
+  if(CLASSIC_COMPS_LIST.includes(team.comp)) return null;
+  if(ARENA_COMPS.includes(team.comp)) return null;
   const base = BIG_LEAGUES.includes(team.comp) ? HOT_STREAK : HOT_STREAK_SMALL;
   return base[team.rarity] || HOT_STREAK.limited;
 }
@@ -826,14 +965,17 @@ const COMP_NAMES = {
   mls:"MLS", challenger:"Challenger", contender:"Contender",
   /* CLASSIC / OFF-SEASON (7 joueurs, cartes + Essence) */
   champion_europe:"Champion Europe", all_star:"All Star", u23:"U23",
+  /* ARENA (toujours ouvert, leaderboards de 10, Essence) */
   arena_capped:"Arena Capped", arena_uncapped:"Arena Uncapped",
 };
 const IS_COMPS    = ["premier_league","la_liga","bundesliga","ligue_1","eredivisie","jpl","mls","challenger","contender"];
-const CLASSIC_COMPS_LIST = ["champion_europe","all_star","u23","arena_capped","arena_uncapped"];
+const CLASSIC_COMPS_LIST = ["champion_europe","all_star","u23"];
+const ARENA_COMPS = ["arena_capped","arena_uncapped"];
 const BIG_LEAGUES = ["premier_league","la_liga","bundesliga","ligue_1","mls"];
 
 /* Demo teams */
-let teams = [
+/* Teams de démo (GW courante) — réutilisées si aucune save en localStorage */
+const DEMO_TEAMS = [
   {
     id:1, name:"Premier League", rarity:"limited", comp:"premier_league", streakLevel:2,
     locked:true, inSeason:true, captain:5,
@@ -882,6 +1024,30 @@ let teams = [
   }
 ];
 
+let teams = JSON.parse(JSON.stringify(DEMO_TEAMS)); // deep copy
+let activeBuilderMode = 'inseason'; // 'inseason' | 'classic' | 'arena'
+let activeComps = new Set(); // Set de compétitions sélectionnées (vide = toutes)
+
+/* ============================================================
+   PERSISTANCE LOCALE PAR GW (localStorage)
+   ============================================================ */
+function gwKey(){ return `ness_gw_${GW_BASE+gwOffset}`; }
+
+function saveTeams(){
+  try { localStorage.setItem(gwKey(), JSON.stringify(teams)); } catch(e){}
+}
+
+function loadTeams(){
+  try {
+    const saved = localStorage.getItem(gwKey());
+    if(saved){ teams = JSON.parse(saved); return; }
+  } catch(e){}
+  // Pas de save : GW courante → démo, autres → vide
+  teams = gwOffset===0
+    ? JSON.parse(JSON.stringify(DEMO_TEAMS))
+    : [];
+}
+
 let clubState = {rarity:"all",pos:"all",search:"",sort:"gw"};
 let pickerState = {teamId:null,pos:null};
 let addTeamState = {rarity:"limited"};
@@ -907,28 +1073,31 @@ function targetScore(team){
 /* allDone = tous les joueurs ont terminé leur match */
 function gaugeColor(pct, allDone){
   if(pct>=1)
-    /* ✅ Palier atteint → vert */
     return {start:"#16a34a",end:"#22c55e",tip:"#86efac",glow:"rgba(34,197,94,.9)",speed:".5s",col:"rgba(34,197,94,.85)"};
   if(allDone && pct<1)
-    /* ❌ Tous joués, palier manqué → rouge */
     return {start:"#b91c1c",end:"#ef4444",tip:"#fca5a5",glow:"rgba(239,68,68,.9)",speed:".5s",col:"rgba(239,68,68,.85)"};
   if(pct>=.92)
-    /* ⚡ Très proche, tension max → rouge-orange pulsant vite */
-    return {start:"#dc2626",end:"#f97316",tip:"#fed7aa",glow:"rgba(249,115,22,.95)",speed:".5s",col:"rgba(249,115,22,.9)"};
+    /* 🟡 Tension max — jaune pulsant TRÈS vite */
+    return {start:"#ca8a04",end:"#facc15",tip:"#fef08a",glow:"rgba(250,204,21,.95)",speed:".35s",col:"rgba(250,204,21,.9)"};
   if(pct>=.78)
-    /* 🟠 Proche → orange */
+    /* 🟠 Proche — orange */
     return {start:"#d97706",end:"#f59e0b",tip:"#fde68a",glow:"rgba(245,158,11,.8)",speed:".9s",col:"rgba(245,158,11,.75)"};
-  /* 🟡 En cours → jaune-bleu neutre */
   return {start:"#4a6fa5",end:"#6991e8",tip:"#a8c4f5",glow:"rgba(105,145,232,.6)",speed:"2s",col:"rgba(105,145,232,.6)"};
 }
 
 /* ============================================================
    NAVIGATION
    ============================================================ */
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
 let currentPage=null;
+let countdownTimer=null; // déclaré ici pour être accessible par enterAppMode et exitAppMode
+function enterAppMode(){
+  document.getElementById("sidebar").classList.add("app-visible");
+  document.getElementById("appHeader").classList.add("with-sidebar");
+  document.getElementById("appContent").classList.add("with-sidebar");
+  document.getElementById("demoPill").classList.add("visible");
+  document.getElementById("bottomNav").classList.add("visible");
+  startCountdown();
+}
 function exitAppMode(){
   document.getElementById("sidebar").classList.remove("app-visible");
   document.getElementById("appHeader").classList.remove("with-sidebar");
@@ -947,8 +1116,9 @@ function showPage(page){
   document.getElementById("screen-"+page).classList.remove("hidden");
   document.querySelectorAll(`[data-page="${page}"]`).forEach(el=>el.classList.add("active"));
   window.scrollTo({top:0,behavior:"instant"});
-  if(page==="club") renderClub();
-  if(page==="builder") renderBuilder();
+  if(page==="club")    renderClub();
+  if(page==="builder"){ loadTeams(); renderBuilder(); }
+  if(page==="live") {} // placeholder — données via OAuth Sorare
 }
 document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>showPage(el.dataset.page)));
 document.getElementById("logoutBtn").addEventListener("click",()=>showPage("landing"));
@@ -974,7 +1144,8 @@ function clubFiltered(){
 }
 function renderClub(){
   const cards=clubFiltered();
-  document.getElementById("clubSub").textContent=`${cards.length} carte${cards.length>1?"s":""} · mode démo`;
+  const clubSubEl=document.getElementById("clubSub");
+  if(clubSubEl) clubSubEl.textContent=`${cards.length} carte${cards.length>1?"s":""} · mode démo`;
   const grid=document.getElementById("cardsGrid");
   if(!cards.length){grid.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div><div style="font-family:'Antonio';font-size:1.2rem;color:var(--text);letter-spacing:.05em">Aucune carte</div></div>`;return;}
   grid.innerHTML=cards.map((c,i)=>`<div class="ci ${rc(c.rarity)}" data-id="${c.id}" style="animation-delay:${Math.min(i*25,500)}ms"><div class="ci-inner"><div class="ci-header"><span class="ci-rl">${RARITY_LABELS[c.rarity]}</span><span class="ci-star">★</span></div><div class="ci-avatar">${c.initials}</div><div class="ci-sw"><div class="ci-d"><span class="ci-s">${c.gw}</span></div></div><div class="ci-name">${c.player.split(" ").slice(-1)[0]}</div><div class="ci-club">${c.pos} · ${c.club}</div><div class="ci-stats"><div class="ci-stat"><div class="ci-sv">${c.gw}</div><div class="ci-sl">GW</div></div><div class="ci-stat"><div class="ci-sv">${c.avg}</div><div class="ci-sl">AVG</div></div></div></div></div>`).join("");
@@ -1108,36 +1279,72 @@ function renderSeasonHist(team,col){
 }
 
 /* ============================================================
-   COMP TABS (IN SEASON + CLASSIC groups)
+   MODE SWITCHER + ONGLETS DYNAMIQUES
    ============================================================ */
-let activeComp = null;
+
+function getModeComps(){
+  if(activeBuilderMode==='inseason') return IS_COMPS;
+  if(activeBuilderMode==='classic')  return CLASSIC_COMPS_LIST;
+  if(activeBuilderMode==='arena')    return ARENA_COMPS;
+  return IS_COMPS;
+}
+
+function updateModeButtons(){
+  /* Comptes par mode */
+  const cnts = {inseason:0, classic:0, arena:0};
+  teams.forEach(t=>{
+    if(IS_COMPS.includes(t.comp))         cnts.inseason++;
+    else if(CLASSIC_COMPS_LIST.includes(t.comp)) cnts.classic++;
+    else if(ARENA_COMPS.includes(t.comp)) cnts.arena++;
+  });
+  const el1=document.getElementById("cntInseason");
+  const el2=document.getElementById("cntClassic");
+  const el3=document.getElementById("cntArena");
+  if(el1) el1.textContent=`${cnts.inseason} équipe${cnts.inseason!==1?"s":""}`;
+  if(el2) el2.textContent=`${cnts.classic} équipe${cnts.classic!==1?"s":""}`;
+  if(el3) el3.textContent=`${cnts.arena} équipe${cnts.arena!==1?"s":""}`;
+  /* Activer le bon bouton */
+  document.querySelectorAll(".mode-btn").forEach(btn=>{
+    btn.classList.toggle("active", btn.dataset.mode===activeBuilderMode);
+  });
+}
 
 function buildCompTabs(){
-  function makeTabsFor(container, compList, allTeams){
-    container.innerHTML="";
-    // "Toutes" tab
-    const allTab=document.createElement("button");
-    allTab.className=`comp-tab ${activeComp===null?"active":""}`;
-    allTab.innerHTML=`Toutes <span class="comp-tab-count">${allTeams.length}</span>`;
-    allTab.addEventListener("click",()=>{activeComp=null;renderBuilder();});
-    container.appendChild(allTab);
+  updateModeButtons();
+  const modeComps=getModeComps();
+  const modeTeams=teams.filter(t=>modeComps.includes(t.comp));
+  const container=document.getElementById("compTabsDynamic");
+  if(!container) return;
+  container.innerHTML="";
 
-    compList.forEach(comp=>{
-      const t=allTeams.filter(x=>x.comp===comp);
-      const hasLive=t.some(x=>x.inSeason);
-      const btn=document.createElement("button");
-      btn.className=`comp-tab ${activeComp===comp?"active":""}`;
-      btn.innerHTML=`${hasLive?`<span class="comp-tab-live-dot"></span>`:""}${COMP_NAMES[comp]||comp}${t.length?` <span class="comp-tab-count">${t.length}</span>`:""}`;
-      btn.addEventListener("click",()=>{activeComp=comp;renderBuilder();});
-      if(!t.length) btn.style.opacity=".4";
-      container.appendChild(btn);
+  /* Tab "Toutes" — actif si rien de sélectionné */
+  const allTab=document.createElement("button");
+  allTab.className=`comp-tab ${activeComps.size===0?"active":""}`;
+  allTab.innerHTML=`Toutes <span class="comp-tab-count">${modeTeams.length}</span>`;
+  allTab.addEventListener("click",()=>{activeComps.clear();renderBuilder();});
+  container.appendChild(allTab);
+
+  /* Séparateur visuel */
+  const sep=document.createElement("div");
+  sep.style.cssText="width:1px;height:24px;background:var(--border);flex-shrink:0;align-self:center;";
+  container.appendChild(sep);
+
+  /* Un tab par compétition du mode */
+  modeComps.forEach(comp=>{
+    const t=modeTeams.filter(x=>x.comp===comp);
+    const hasLive=t.some(x=>x.inSeason);
+    const isActive=activeComps.has(comp);
+    const btn=document.createElement("button");
+    btn.className=`comp-tab ${isActive?"active":""}`;
+    btn.innerHTML=`${hasLive?`<span class="comp-tab-live-dot"></span>`:""}${COMP_NAMES[comp]||comp}${t.length?` <span class="comp-tab-count">${t.length}</span>`:""}`;
+    btn.addEventListener("click",()=>{
+      if(activeComps.has(comp)) activeComps.delete(comp);
+      else activeComps.add(comp);
+      renderBuilder();
     });
-  }
-
-  const isContainer=document.getElementById("isCompTabs");
-  const classicContainer=document.getElementById("classicCompTabsInner");
-  if(isContainer) makeTabsFor(isContainer, IS_COMPS, teams.filter(t=>IS_COMPS.includes(t.comp)));
-  if(classicContainer) makeTabsFor(classicContainer, CLASSIC_COMPS_LIST, teams.filter(t=>CLASSIC_COMPS_LIST.includes(t.comp)));
+    if(!t.length) btn.style.opacity=".4";
+    container.appendChild(btn);
+  });
 }
 
 function renderBuilder(){
@@ -1146,33 +1353,40 @@ function renderBuilder(){
   const grid=document.getElementById("teamsGrid");
   grid.innerHTML="";
 
-  const visibleTeams = activeComp ? teams.filter(t=>t.comp===activeComp) : teams;
+  /* Filtrer par mode actif puis par sélection de compétitions (multi) */
+  const modeComps=getModeComps();
+  const byMode=teams.filter(t=>modeComps.includes(t.comp));
+  const visibleTeams = (activeComps.size>0 ? byMode.filter(t=>activeComps.has(t.comp)) : byMode).filter(t=>!t.hidden);
 
-  /* Compétition vide */
-  if(activeComp && visibleTeams.length===0){
+  /* Compétition vide (sélection d'une seule comp sans équipes) */
+  if(activeComps.size===1 && visibleTeams.length===0){
+    const comp=[...activeComps][0];
     const empty=document.createElement("div");
     empty.className="no-team-comp";
-    empty.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><h3>${COMP_NAMES[activeComp]}</h3><p>Aucune équipe pour cette compétition.<br>Lance-toi et crée ton premier lineup !</p><button class="no-team-comp-btn" id="noTeamAddBtn">+ Créer une équipe</button>`;
+    empty.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><h3>${COMP_NAMES[comp]}</h3><p>Aucune équipe pour cette compétition.<br>Lance-toi et crée ton premier lineup !</p><button class="no-team-comp-btn" id="noTeamAddBtn">+ Créer une équipe</button>`;
     grid.appendChild(empty);
     document.getElementById("noTeamAddBtn")?.addEventListener("click",()=>openAddModal());
   }
 
   visibleTeams.forEach((team,ti)=>{
-    const tiers=getHotStreak(team); // null = Classic
-    const isClassic = !tiers;
+    const tiers=getHotStreak(team); // null = Classic ou Arena
+    const isClassic = !tiers && CLASSIC_COMPS_LIST.includes(team.comp);
+    const isArena   = !tiers && ARENA_COMPS.includes(team.comp);
     const tierIdx=tiers?Math.max(0,Math.min(tiers.length-1,(team.streakLevel||1)-1)):0;
     const tier=tiers?tiers[tierIdx]:null;
     const score=teamScore(team);
     const pred=predictedScore(team);
     const allDone=team.slots.every(s=>!s.cardId||s.done);
     const pct=tier?Math.min(score/tier.pts,1.05):0;
-    const gc=isClassic
+    const gc=(isClassic||isArena)
       ?{start:"#2a5a8c",end:"#4a90d9",tip:"#90c8ff",glow:"rgba(74,144,217,.6)",speed:"2s",col:"rgba(74,144,217,.6)"}
       :gaugeColor(pct,allDone);
     const rCol=RARITY_COL[team.rarity]||"var(--blue)";
 
     const badgeHTML=isClassic
       ?`<span class="tc-badge badge-locked" style="border-color:rgba(74,144,217,.5);color:#90c8ff;background:rgba(74,144,217,.08);">📦 Classic</span>`
+      :isArena
+      ?`<span class="tc-badge badge-locked" style="border-color:rgba(107,199,139,.5);color:var(--success);background:rgba(107,199,139,.08);">🏟️ Arena</span>`
       :(team.locked
         ?(team.inSeason?`<span class="tc-badge badge-season">🔥 In Season</span>`:`<span class="tc-badge badge-locked">🔒 Verrouillée</span>`)
         :`<span class="tc-badge badge-open">Ouverte</span>`);
@@ -1221,7 +1435,7 @@ function renderBuilder(){
     }).join(""):"";
 
     const nextTargetPct=tier?(tier.pts/maxPts*100):100;
-    const targetLineHTML=pct<1?`<div class="gauge-target-line" style="left:${nextTargetPct}%;--target-col:${gc.col};"><div class="gauge-target-label">${tier.pts} pts → ${tier.r}</div></div>`:"";
+    const targetLineHTML=(pct<1&&tier)?`<div class="gauge-target-line" style="left:${nextTargetPct}%;--target-col:${gc.col};"><div class="gauge-target-label">${tier.pts} pts → ${tier.r}</div></div>`:"";
 
     /* prediction line — seulement si des joueurs n'ont pas encore joué */
     const pendingCount=team.slots.filter(s=>s.cardId&&!s.done).length;
@@ -1236,14 +1450,36 @@ function renderBuilder(){
          </div>`
       : "";
 
-    const lockBtnHTML=team.locked
-      ?`<button class="tc-btn tc-btn-locked" disabled>🔒 Verrouillée</button>`
-      :`<button class="tc-btn tc-btn-lock" data-tid="${team.id}">🔒 Verrouiller l'équipe</button>`;
+    /* ── FOOTER BUTTONS ── */
+    const isGWActive = team.inSeason;
+    const isHidden   = team.hidden || false;
 
-    const setCaptainHTML=!team.locked&&team.slots.some(s=>s.cardId)?`<button class="tc-btn" style="background:rgba(240,194,57,.08);border-color:rgba(240,194,57,.4);color:#f0c239;flex:0 0 auto;padding:.7rem 1rem;font-size:.65rem;" data-captain="${team.id}">C Capitaine</button>`:"";
+    let footerHTML;
+    if(isGWActive){
+      /* GW commencée : locked définitif + bouton masquer */
+      footerHTML=`
+        <button class="tc-btn tc-btn-locked" disabled>🔒 Verrouillée</button>
+        <button class="tc-btn tc-btn-hide ${isHidden?"tc-btn-unhide":""}" data-tid="${team.id}">
+          ${isHidden?"👁 Afficher":"👁 Masquer"}
+        </button>`;
+    } else if(team.locked){
+      /* Locked mais GW pas encore commencée : peut encore modifier */
+      footerHTML=`
+        <button class="tc-btn tc-btn-unlock" data-tid="${team.id}">🔓 Modifier</button>
+        <button class="tc-btn tc-btn-lock" data-tid="${team.id}">🔒 Verrouiller</button>
+        <button class="tc-btn tc-btn-delete" data-tid="${team.id}">🗑</button>`;
+    } else {
+      /* Ouverte : peut verrouiller, définir capitaine, supprimer */
+      const capBtn=team.slots.some(s=>s.cardId)
+        ?`<button class="tc-btn tc-btn-captain" data-captain="${team.id}">C Capitaine</button>`:"";
+      footerHTML=`
+        <button class="tc-btn tc-btn-lock" data-tid="${team.id}">🔒 Verrouiller</button>
+        ${capBtn}
+        <button class="tc-btn tc-btn-delete" data-tid="${team.id}">🗑</button>`;
+    }
 
     const div=document.createElement("div");
-    div.className=`team-card ${team.locked?"locked":""}`;
+    div.className=`team-card ${team.locked?"locked":""} ${isHidden?"tc-hidden-card":""}`;
     div.dataset.teamid=team.id;
     div.innerHTML=`
       <div class="team-celebration" id="cel-${team.id}"></div>
@@ -1252,7 +1488,7 @@ function renderBuilder(){
           <div class="tc-name">${team.name}</div>
           <div class="tc-comp">${COMP_NAMES[team.comp]||""} · ${RARITY_LABELS[team.rarity]}</div>
         </div>
-        <div class="tc-badges">${badgeHTML}</div>
+        <div class="tc-badges">${badgeHTML}${isHidden?`<span class="tc-badge" style="border-color:rgba(107,122,149,.4);color:var(--text-muted);">👁 Masquée</span>`:""}</div>
       </div>
       <div class="tc-slots" id="slots-${team.id}">${team.slots.map(slotHTML).join("")}</div>
       <div class="tc-gauge-wrap">
@@ -1261,7 +1497,7 @@ function renderBuilder(){
         <div class="tc-gauge-header">
           <div class="tc-score-display" id="score-${team.id}">${score} <small>pts</small></div>
           <div class="tc-streak-info">
-            <div class="tc-streak-level">${tiers?`🔥 Streak Niveau ${team.streakLevel}/5`:`📦 Compétition Classic`}</div>
+            <div class="tc-streak-level">${tiers?`🔥 Streak Niveau ${team.streakLevel}/5`:`${isArena?"🏟️ Arena":"📦 Compétition Classic"}`}</div>
             <div class="tc-streak-reward">${tier?`Objectif : ${tier.pts} pts → <span>${tier.r}</span>`:`Cartes · Essence · XP`}</div>
           </div>
         </div>
@@ -1276,11 +1512,7 @@ function renderBuilder(){
         ${predNoteHTML}
         <div class="hs-badges">${hsBadgesHTML}</div>
       </div>
-      <div class="tc-footer">
-        ${lockBtnHTML}
-        ${setCaptainHTML}
-        ${!team.locked?`<button class="tc-btn tc-btn-delete" data-tid="${team.id}" style="font-size:.75rem;">🗑</button>`:""}
-      </div>`;
+      <div class="tc-footer">${footerHTML}</div>`;
     grid.appendChild(div);
 
     /* animate gauge */
@@ -1291,16 +1523,15 @@ function renderBuilder(){
       if(tiers&&pct>=1) triggerCelebration(team.id,team,tiers,tierIdx);
     },120+ti*180);
 
-    /* slot events */
+    /* slot events (seulement si pas locked) */
     if(!team.locked){
       div.querySelectorAll(".slot:not(.locked-slot)").forEach(slotEl=>slotEl.addEventListener("click",()=>openPicker(team.id,slotEl.dataset.pos)));
     }
-    const lockB=div.querySelector(`[data-tid="${team.id}"].tc-btn-lock`);
-    if(lockB) lockB.addEventListener("click",()=>lockTeam(team.id));
-    const delB=div.querySelector(`[data-tid="${team.id}"].tc-btn-delete`);
-    if(delB) delB.addEventListener("click",()=>deleteTeam(team.id));
-    const capB=div.querySelector(`[data-captain="${team.id}"]`);
-    if(capB) capB.addEventListener("click",()=>openCaptainPicker(team.id));
+    div.querySelector(`.tc-btn-lock[data-tid="${team.id}"]`)?.addEventListener("click",()=>lockTeam(team.id));
+    div.querySelector(`.tc-btn-unlock[data-tid="${team.id}"]`)?.addEventListener("click",()=>unlockTeam(team.id));
+    div.querySelector(`.tc-btn-delete[data-tid="${team.id}"]`)?.addEventListener("click",()=>deleteTeam(team.id));
+    div.querySelector(`.tc-btn-hide[data-tid="${team.id}"]`)?.addEventListener("click",()=>hideTeam(team.id));
+    div.querySelector(`[data-captain="${team.id}"]`)?.addEventListener("click",()=>openCaptainPicker(team.id));
   });
 
   /* add team btn */
@@ -1309,13 +1540,38 @@ function renderBuilder(){
   addBtn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nouvelle équipe</span>`;
   addBtn.addEventListener("click",()=>openAddModal());
   grid.appendChild(addBtn);
+
+  /* Section équipes masquées */
+  const modeCompsHidden=getModeComps();
+  const hiddenTeams=teams.filter(t=>t.hidden&&modeCompsHidden.includes(t.comp));
+  if(hiddenTeams.length>0){
+    const hiddenSection=document.createElement("div");
+    hiddenSection.style.cssText="grid-column:1/-1;margin-top:.5rem;";
+    hiddenSection.innerHTML=`
+      <button id="toggleHiddenBtn" style="width:100%;background:transparent;border:1px dashed rgba(107,122,149,.3);border-radius:8px;padding:.75rem;color:var(--text-muted);font-family:'Manrope',sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        ${hiddenTeams.length} équipe${hiddenTeams.length>1?"s":""} masquée${hiddenTeams.length>1?"s":""}
+      </button>
+      <div id="hiddenGrid" style="display:none;margin-top:.75rem;display:none;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1.25rem;opacity:.7;"></div>`;
+    grid.appendChild(hiddenSection);
+    document.getElementById("toggleHiddenBtn")?.addEventListener("click",()=>{
+      const hg=document.getElementById("hiddenGrid");
+      if(hg){
+        const isOpen=hg.style.display!=="none";
+        hg.style.display=isOpen?"none":"grid";
+      }
+    });
+  }
 }
 
 function updateQuickStats(){
-  document.getElementById("qsTeams").textContent=teams.length;
-  document.getElementById("qsLocked").textContent=teams.filter(t=>t.locked).length;
+  const el1=document.getElementById("qsTeams");
+  const el2=document.getElementById("qsLocked");
+  const el3=document.getElementById("qsStreak");
+  if(el1) el1.textContent=teams.length;
+  if(el2) el2.textContent=teams.filter(t=>t.locked).length;
   const maxStreak=teams.reduce((mx,t)=>{const s=teamScore(t);const tiers=getHotStreak(t);if(!tiers)return mx;const reached=tiers.filter((_,i)=>i<=(t.streakLevel-1)&&s>=tiers[i].pts).length;return Math.max(mx,reached);},0);
-  document.getElementById("qsStreak").textContent=maxStreak>0?`Niv. ${maxStreak}`:"—";
+  if(el3) el3.textContent=maxStreak>0?`Niv. ${maxStreak}`:"—";
 }
 
 /* ============================================================
@@ -1393,8 +1649,9 @@ function updateTeamDisplay(teamId){
   if(tiers){
     const tierIdx=Math.max(0,Math.min(tiers.length-1,(team.streakLevel||1)-1));
     const tier=tiers[tierIdx];
+    if(!tier){updateQuickStats();return;} // sécurité si tableau vide
     const maxPts=Math.max(...tiers.map(t=>t.pts));
-    const pct=score/tier.pts;
+    const pct=tier.pts>0?score/tier.pts:0;
     const gc=gaugeColor(pct,allDone);
     const fill=document.getElementById(`gf-${teamId}`);
     if(fill){
@@ -1439,10 +1696,20 @@ function lockTeam(id){
   const t=teams.find(x=>x.id===id);if(!t)return;
   if(t.slots.filter(s=>s.cardId).length<5){alert("Complète tous les 5 slots avant de verrouiller.");return;}
   t.locked=true;t.inSeason=true;
-  renderBuilder();
+  saveTeams();renderBuilder();
   setTimeout(()=>startLive(id),300);
 }
-function deleteTeam(id){if(!confirm("Supprimer cette équipe ?"))return;teams=teams.filter(x=>x.id!==id);renderBuilder();}
+function unlockTeam(id){
+  const t=teams.find(x=>x.id===id);if(!t)return;
+  t.locked=false;t.inSeason=false;
+  saveTeams();renderBuilder();
+}
+function deleteTeam(id){if(!confirm("Supprimer cette équipe ?"))return;teams=teams.filter(x=>x.id!==id);saveTeams();renderBuilder();}
+function hideTeam(id){
+  const t=teams.find(x=>x.id===id);if(!t)return;
+  t.hidden=!t.hidden;
+  saveTeams();renderBuilder();
+}
 
 /* ============================================================
    CAPTAIN PICKER
@@ -1521,6 +1788,7 @@ function assignPlayer(teamId,pos,cardId){
   const slot=team.slots.find(s=>s.pos===pos);if(!slot)return;
   const c=cardById(cardId);if(!c)return;
   slot.cardId=cardId;slot.liveScore=0;slot.done=false;
+  saveTeams();
   renderBuilder();
 }
 
@@ -1546,31 +1814,70 @@ document.getElementById("addModalConfirm").addEventListener("click",()=>{
   const id=Date.now();
   teams.push({id,name,rarity:addTeamState.rarity,comp,streakLevel,locked:false,inSeason:false,captain:null,
     slots:[{pos:"GK",cardId:null,liveScore:0,done:false},{pos:"DEF",cardId:null,liveScore:0,done:false},{pos:"MID",cardId:null,liveScore:0,done:false},{pos:"ATT",cardId:null,liveScore:0,done:false},{pos:"ANY",cardId:null,liveScore:0,done:false}]});
-  closeAddModal();renderBuilder();
+  closeAddModal();
+  /* Basculer automatiquement sur le bon mode selon la compétition */
+  if(IS_COMPS.includes(comp)) activeBuilderMode='inseason';
+  else if(CLASSIC_COMPS_LIST.includes(comp)) activeBuilderMode='classic';
+  else if(ARENA_COMPS.includes(comp)) activeBuilderMode='arena';
+  activeComps.clear();activeComps.add(comp);
+  saveTeams();
+  renderBuilder();
 });
 
 /* ============================================================
-   COUNTDOWN DEADLINE GW
+   GAME WEEK — Horaires officiels Sorare
+   Mardi 16h CET → Vendredi 16h CET  (GW "midweek/weekend")
+   Vendredi 16h CET → Mardi 16h CET
    ============================================================ */
-let countdownTimer=null;
-function startCountdown(){
-  /* Démo : deadline simulée — prochain vendredi 23:59 CET depuis maintenant */
-  function nextDeadline(){
-    const now=new Date();
-    const d=new Date(now);
-    /* Trouver le prochain vendredi ou mardi (deadlines Sorare) */
-    const daysToFri=[5,4,3,2,1,0,6][now.getDay()]; // jours restants jusqu'au vendredi
-    const daysToTue=[2,1,0,6,5,4,3][now.getDay()]; // jours restants jusqu'au mardi
-    const nextDays=Math.min(daysToFri||7,daysToTue||7);
-    d.setDate(d.getDate()+nextDays);
-    d.setHours(23,59,0,0);
-    return d;
+const GW_BASE = 320; // numéro de la GW actuelle (à mettre à jour manuellement ou via API)
+let gwOffset = 0;   // 0 = GW courante, -1 = précédente, +1 = suivante
+
+function getCurrentGWDeadline(){
+  /* Deadlines Sorare : mardi 16h CET et vendredi 16h CET
+     16h CET = 15h UTC (hiver) / 14h UTC (été) — on simplifie à UTC+1 */
+  const now = new Date();
+  for(let offset=0; offset<=7; offset++){
+    const d = new Date(now);
+    d.setDate(d.getDate()+offset);
+    if(d.getDay()===2||d.getDay()===5){ // 2=mardi, 5=vendredi
+      d.setHours(15,0,0,0); // 15h UTC = 16h CET (UTC+1)
+      if(d>now) return d;
+    }
   }
-  const deadline=nextDeadline();
+  return new Date(now.getTime()+3*86400000);
+}
+
+function getGWRange(offset){
+  /* Retourne les dates de début/fin de la GW */
+  const deadline = getCurrentGWDeadline();
+  const adjustedDeadline = new Date(deadline.getTime() + offset * 3.5 * 86400000);
+  const start = new Date(adjustedDeadline.getTime() - 3.5*86400000);
+  const fmtDay = d => ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][d.getDay()];
+  const fmt = d => `${fmtDay(d)} ${d.getDate()}/${d.getMonth()+1} 16h`;
+  return `${fmt(start)} → ${fmt(adjustedDeadline)} CET`;
+}
+
+function updateGWDisplay(){
+  const gwNum = document.getElementById("gwNum");
+  const gwRange = document.getElementById("gwRange");
+  const gwTitle = document.getElementById("gwTitle");
+  if(gwNum) gwNum.textContent = GW_BASE + gwOffset;
+  if(gwRange) gwRange.textContent = getGWRange(gwOffset);
+  // Indique si c'est la GW en cours, passée ou future
+  const dot = document.querySelector(".gw-live-dot");
+  if(dot){
+    dot.style.background = gwOffset===0?"var(--success)":gwOffset>0?"var(--blue)":"var(--text-muted)";
+    dot.style.boxShadow = gwOffset===0?"0 0 10px var(--success)":"none";
+  }
+}
+
+function startCountdown(){
+  const deadline=getCurrentGWDeadline();
   const cd=document.getElementById("gwCountdown");
   const cdText=document.getElementById("cdText");
-  if(!cd)return;
+  if(!cd||!cdText)return;
   clearInterval(countdownTimer);
+  updateGWDisplay(); // mettre à jour l'affichage GW au démarrage
   function tick(){
     const diff=deadline-new Date();
     if(diff<=0){clearInterval(countdownTimer);cdText.textContent="Deadline passée";cd.className="gw-countdown critical";return;}
@@ -1578,26 +1885,13 @@ function startCountdown(){
     const m=Math.floor((diff%3600000)/60000);
     const s=Math.floor((diff%60000)/1000);
     const d=Math.floor(h/24);
-    if(d>0) cdText.textContent=`${d}j ${h%24}h ${m}m`;
-    else if(h>0) cdText.textContent=`${h}h ${m}m ${s}s`;
-    else cdText.textContent=`${m}m ${s}s`;
+    const str=d>0?`${d}j ${h%24}h ${m}m`:h>0?`${h}h ${m}m ${s}s`:`${m}m ${s}s`;
+    if(cdText) cdText.textContent=str;
     cd.className="gw-countdown"+(h<2?" critical":h<24?" warn":"");
   }
   tick();
   countdownTimer=setInterval(tick,1000);
   cd.classList.remove("hidden");
-}
-
-/* Démarrer le countdown quand on entre en mode app */
-const _origEnterApp=enterAppMode;
-// on patche enterAppMode pour démarrer le countdown
-function enterAppMode(){
-  document.getElementById("sidebar").classList.add("app-visible");
-  document.getElementById("appHeader").classList.add("with-sidebar");
-  document.getElementById("appContent").classList.add("with-sidebar");
-  document.getElementById("demoPill").classList.add("visible");
-  document.getElementById("bottomNav").classList.add("visible");
-  startCountdown();
 }
 
 /* ============================================================
@@ -1633,6 +1927,28 @@ const _origCaptainClick=openCaptainPicker;
 /* ============================================================
    ATMOSPHERE & HERO CARD
    ============================================================ */
+/* Mode switcher */
+document.querySelectorAll(".mode-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    activeBuilderMode=btn.dataset.mode;
+    activeComps.clear(); // reset onglet de comp
+    renderBuilder();
+  });
+});
+
+/* GW navigation avec save/load */
+document.addEventListener("click", e=>{
+  const btn=e.target.closest("#gwPrev,#gwNext");
+  if(!btn)return;
+  saveTeams(); // sauvegarder la GW courante avant de changer
+  if(btn.id==="gwPrev") gwOffset--;
+  if(btn.id==="gwNext") gwOffset++;
+  loadTeams(); // charger les teams de la nouvelle GW
+  Object.keys(liveIntervals).forEach(k=>{clearInterval(liveIntervals[k]);delete liveIntervals[k];});
+  updateGWDisplay();
+  if(currentPage==="builder") renderBuilder();
+});
+
 const pc=document.getElementById("particles");
 for(let i=0;i<20;i++){const p=document.createElement("div");p.className="particle";p.style.left=Math.random()*100+"%";p.style.animationDuration=(12+Math.random()*14)+"s";p.style.animationDelay=(Math.random()*15)+"s";p.style.setProperty("--drift",(Math.random()*100-50)+"px");p.style.width=p.style.height=(1+Math.random()*2)+"px";pc.appendChild(p);}
 const heroCard=document.getElementById("heroCard");

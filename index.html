@@ -449,11 +449,6 @@ button{cursor:pointer;}
 .spinner{width:44px;height:44px;border:2px solid rgba(105,145,232,.2);border-top-color:var(--blue);border-radius:50%;animation:spin .9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Countdown */
-.gw-countdown{font-weight:700;letter-spacing:.06em;transition:color .5s;}
-.gw-countdown.warn{color:var(--warn);}
-.gw-countdown.crit{color:var(--error);animation:count-pulse .7s ease infinite;}
-@keyframes count-pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 /* Prediction line on gauge */
 .gauge-predict{position:absolute;top:-6px;bottom:-6px;width:2px;transform:translateX(-50%);pointer-events:none;z-index:4;}
@@ -1066,7 +1061,8 @@ function teamScore(team){
   },0);
 }
 function targetScore(team){
-  const tiers=HOT_STREAK[team.rarity]||HOT_STREAK.limited;
+  const tiers=getHotStreak(team);
+  if(!tiers) return null;
   const idx=Math.max(0,Math.min(tiers.length-1,(team.streakLevel||1)-1));
   return tiers[idx];
 }
@@ -1189,36 +1185,6 @@ document.getElementById("addToTeamBtn").addEventListener("click",()=>{closeCardM
 /* ============================================================
    BUILDER
    ============================================================ */
-/* ============================================================
-   COUNTDOWN GW DEADLINE
-   ============================================================ */
-function computeGWDeadline(){
-  // GWs : Mardi 16h CET → Vendredi 23h59 | Vendredi 16h CET → Mardi 23h59
-  // On calcule la prochaine deadline de fin de GW (Ven 23:59 ou Mar 23:59 CET)
-  const now = new Date();
-  for(let d=0;d<=7;d++){
-    const t = new Date(now); t.setDate(now.getDate()+d);
-    const day = t.getDay();
-    if(day===5||day===2){ // Vendredi=5, Mardi=2
-      t.setHours(23,59,59,0);
-      if(t>now) return t;
-    }
-  }
-  return new Date(now.getTime()+2*24*3600*1000);
-}
-const GW_DEADLINE = computeGWDeadline();
-function updateCountdown(){
-  const el=document.getElementById("gwCountdown"); if(!el)return;
-  const diff=GW_DEADLINE-Date.now();
-  if(diff<=0){el.textContent="GW terminée";el.className="gw-countdown";return;}
-  const h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
-  const str = h>=24
-    ? `Deadline dans ${Math.floor(h/24)}j ${h%24}h ${String(m).padStart(2,'0')}m`
-    : `Deadline dans ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  el.textContent=str;
-  el.className="gw-countdown"+(h<2?" crit":h<24?" warn":"");
-}
-setInterval(updateCountdown,1000); updateCountdown();
 
 /* ============================================================
    PREDICTED SCORE (avg des joueurs pas encore joués)
@@ -1236,12 +1202,14 @@ function predictedScore(team){
 /* ============================================================
    SEASON HISTORY SPARKLINE (simulation)
    ============================================================ */
-function fakeSeasonHistory(currentLevel){
+function fakeSeasonHistory(currentLevel,seed){
+  let s=(seed*2654435761)>>>0;
+  function rnd(){s=(s*1664525+1013904223)>>>0;return s/4294967296;}
   const hist=[]; let cur=0;
   for(let i=0;i<22;i++){
-    const r=Math.random();
+    const r=rnd();
     if(r>.65&&cur<5) cur++;
-    else if(r<.12) cur=Math.max(0,cur-Math.floor(Math.random()*3));
+    else if(r<.12) cur=Math.max(0,cur-Math.floor(rnd()*3));
     hist.push(Math.max(0,Math.min(5,cur)));
   }
   hist[hist.length-1]=currentLevel;
@@ -1253,7 +1221,7 @@ function renderSeasonHist(team,col){
   // compute current achieved level
   let achLevel=0;
   tiers.forEach((t,i)=>{ if(score>=t.pts) achLevel=i+1; });
-  const hist=fakeSeasonHistory(achLevel);
+  const hist=fakeSeasonHistory(achLevel,team.id);
   const W=300,H=28,padL=2,padR=2,padT=4,padB=4;
   const xi=i=>padL+i*(W-padL-padR)/(hist.length-1);
   const yi=v=>H-padB-(v/5)*(H-padT-padB);
@@ -1397,11 +1365,11 @@ function renderBuilder(){
       :`<span class="hs-badge hs-2 reached">📦 Cartes</span><span class="hs-badge hs-3 reached">⚗️ Essence</span><span class="hs-badge hs-1 reached">⭐ XP</span>`;
 
     /* slot html */
-    function slotHTML(s){
+    function slotHTML(s,si){
       const c=s.cardId?cardById(s.cardId):null;
       const col=c?(RARITY_COL[c.rarity]||"var(--blue)"):"rgba(105,145,232,.4)";
       const isCap=c&&s.cardId===team.captain;
-      if(c) return `<div class="slot filled ${team.locked?"locked-slot":""}" data-pos="${s.pos}">
+      if(c) return `<div class="slot filled ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}">
         <div class="slot-pos">${s.pos}</div>
         <div class="slot-card">
           <div class="slot-rarity-bar" style="background:${col};opacity:.6;"></div>
@@ -1410,7 +1378,7 @@ function renderBuilder(){
           <div class="slot-name">${c.player.split(" ").slice(-1)[0]}</div>
           <div class="slot-score" style="color:${col}">${s.done?s.liveScore:"⏳"}</div>
         </div></div>`;
-      return `<div class="slot ${team.locked?"locked-slot":""}" data-pos="${s.pos}">
+      return `<div class="slot ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}">
         <div class="slot-pos">${s.pos}</div>
         <div class="slot-card"><div class="slot-plus">+</div></div></div>`;
     }
@@ -1490,7 +1458,7 @@ function renderBuilder(){
         </div>
         <div class="tc-badges">${badgeHTML}${isHidden?`<span class="tc-badge" style="border-color:rgba(107,122,149,.4);color:var(--text-muted);">👁 Masquée</span>`:""}</div>
       </div>
-      <div class="tc-slots" id="slots-${team.id}">${team.slots.map(slotHTML).join("")}</div>
+      <div class="tc-slots" id="slots-${team.id}">${team.slots.map((s,si)=>slotHTML(s,si)).join("")}</div>
       <div class="tc-gauge-wrap">
         <div class="player-scores">${psHTML}</div>
         <div style="height:.75rem"></div>
@@ -1525,7 +1493,7 @@ function renderBuilder(){
 
     /* slot events (seulement si pas locked) */
     if(!team.locked){
-      div.querySelectorAll(".slot:not(.locked-slot)").forEach(slotEl=>slotEl.addEventListener("click",()=>openPicker(team.id,slotEl.dataset.pos)));
+      div.querySelectorAll(".slot:not(.locked-slot)").forEach(slotEl=>slotEl.addEventListener("click",()=>openPicker(team.id,+slotEl.dataset.slotIdx)));
     }
     div.querySelector(`.tc-btn-lock[data-tid="${team.id}"]`)?.addEventListener("click",()=>lockTeam(team.id));
     div.querySelector(`.tc-btn-unlock[data-tid="${team.id}"]`)?.addEventListener("click",()=>unlockTeam(team.id));
@@ -1562,6 +1530,8 @@ function renderBuilder(){
       }
     });
   }
+  /* Démarrer la simulation live pour les équipes In-Season verrouillées */
+  teams.filter(t=>t.inSeason).forEach(t=>startLive(t.id));
 }
 
 function updateQuickStats(){
@@ -1687,17 +1657,16 @@ function updateTeamDisplay(teamId){
   updateQuickStats();
 }
 
-teams.filter(t=>t.inSeason).forEach(t=>{startLive(t.id);});
 
 /* ============================================================
    TEAM ACTIONS
    ============================================================ */
 function lockTeam(id){
   const t=teams.find(x=>x.id===id);if(!t)return;
-  if(t.slots.filter(s=>s.cardId).length<5){alert("Complète tous les 5 slots avant de verrouiller.");return;}
-  t.locked=true;t.inSeason=true;
+  if(t.slots.filter(s=>s.cardId).length<t.slots.length){alert("Complète tous les slots avant de verrouiller.");return;}
+  t.locked=true;t.inSeason=IS_COMPS.includes(t.comp);
   saveTeams();renderBuilder();
-  setTimeout(()=>startLive(id),300);
+  if(t.inSeason) setTimeout(()=>startLive(id),300);
 }
 function unlockTeam(id){
   const t=teams.find(x=>x.id===id);if(!t)return;
@@ -1716,7 +1685,7 @@ function hideTeam(id){
    ============================================================ */
 function openCaptainPicker(teamId){
   const team=teams.find(t=>t.id===teamId);if(!team)return;
-  pickerState={teamId,pos:"CAPTAIN"};
+  pickerState={teamId,slotIdx:null,pos:"CAPTAIN"};
   document.getElementById("pickerTitle").textContent="Désigner le capitaine (×1.5)";
   document.getElementById("pickerSearch").value="";
   const list=document.getElementById("pickerList");
@@ -1744,10 +1713,11 @@ function openCaptainPicker(teamId){
 /* ============================================================
    PLAYER PICKER
    ============================================================ */
-function openPicker(teamId,pos){
-  pickerState={teamId,pos};
+function openPicker(teamId,slotIdx){
+  pickerState={teamId,slotIdx,pos:null};
   const team=teams.find(t=>t.id===teamId);
-  document.getElementById("pickerTitle").textContent=`Ajouter — ${pos} (${RARITY_LABELS[team.rarity]} uniquement)`;
+  const slot=team.slots[slotIdx];
+  document.getElementById("pickerTitle").textContent=`Ajouter — ${slot.pos} (${RARITY_LABELS[team.rarity]} uniquement)`;
   document.getElementById("pickerSearch").value="";
   renderPickerList("");
   document.getElementById("pickerOverlay").classList.add("open");
@@ -1755,10 +1725,13 @@ function openPicker(teamId,pos){
   setTimeout(()=>document.getElementById("pickerSearch").focus(),100);
 }
 function renderPickerList(search){
+  if(pickerState.pos==="CAPTAIN") return; // captain picker gère son propre rendu
   const team=teams.find(t=>t.id===pickerState.teamId);if(!team)return;
   const posMap={GK:"Gardien",DEF:"Défenseur",MID:"Milieu",ATT:"Attaquant",ANY:null};
-  const posFilter=posMap[pickerState.pos];
-  const usedIds=team.slots.map(s=>s.cardId).filter(Boolean);
+  const slot=pickerState.slotIdx!=null?team.slots[pickerState.slotIdx]:null;
+  const posFilter=slot?posMap[slot.pos]:null;
+  /* Cartes déjà utilisées dans n'importe quelle équipe de la GW */
+  const usedIds=new Set(teams.flatMap(t=>t.slots.map(s=>s.cardId)).filter(Boolean));
   /* Filter by same rarity (Sorare rule: same rarity per team) */
   const items=DEMO_CARDS.filter(c=>{
     if(c.rarity!==team.rarity) return false;
@@ -1770,22 +1743,22 @@ function renderPickerList(search){
   if(!items.length){list.innerHTML=`<div style="padding:2rem;text-align:center;color:var(--text-muted);font-size:.85rem;">Aucune carte ${RARITY_LABELS[team.rarity]} disponible pour ce poste.</div>`;return;}
   list.innerHTML=items.map(c=>{
     const col=RARITY_COL[c.rarity]||"#6991e8";
-    const used=usedIds.includes(c.id);
+    const used=usedIds.has(c.id);
     return `<div class="picker-item ${used?"used":""}" data-id="${c.id}">
       <div class="picker-av" style="border-color:${col};color:${col};">${c.initials}</div>
       <div class="picker-info"><div class="picker-name">${c.player}</div><div class="picker-meta">${c.pos} · ${c.club}</div></div>
       <div class="picker-score" style="color:${col}">${c.gw}</div></div>`;
   }).join("");
-  list.querySelectorAll(".picker-item:not(.used)").forEach(el=>el.addEventListener("click",()=>{assignPlayer(pickerState.teamId,pickerState.pos,+el.dataset.id);closePicker();}));
+  list.querySelectorAll(".picker-item:not(.used)").forEach(el=>el.addEventListener("click",()=>{assignPlayer(pickerState.teamId,pickerState.slotIdx,+el.dataset.id);closePicker();}));
 }
 function closePicker(){document.getElementById("pickerOverlay").classList.remove("open");document.body.style.overflow="";}
 document.getElementById("pickerClose").addEventListener("click",closePicker);
 document.getElementById("pickerOverlay").addEventListener("click",e=>{if(e.target===e.currentTarget)closePicker();});
 document.getElementById("pickerSearch").addEventListener("input",e=>renderPickerList(e.target.value));
 
-function assignPlayer(teamId,pos,cardId){
+function assignPlayer(teamId,slotIdx,cardId){
   const team=teams.find(t=>t.id===teamId);if(!team)return;
-  const slot=team.slots.find(s=>s.pos===pos);if(!slot)return;
+  const slot=team.slots[slotIdx];if(!slot)return;
   const c=cardById(cardId);if(!c)return;
   slot.cardId=cardId;slot.liveScore=0;slot.done=false;
   saveTeams();
@@ -1812,8 +1785,11 @@ document.getElementById("addModalConfirm").addEventListener("click",()=>{
   const comp=document.getElementById("compSelect").value;
   const streakLevel=+document.getElementById("streakLevel").value||1;
   const id=Date.now();
-  teams.push({id,name,rarity:addTeamState.rarity,comp,streakLevel,locked:false,inSeason:false,captain:null,
-    slots:[{pos:"GK",cardId:null,liveScore:0,done:false},{pos:"DEF",cardId:null,liveScore:0,done:false},{pos:"MID",cardId:null,liveScore:0,done:false},{pos:"ATT",cardId:null,liveScore:0,done:false},{pos:"ANY",cardId:null,liveScore:0,done:false}]});
+  const isClassicComp=CLASSIC_COMPS_LIST.includes(comp);
+  const newSlots=isClassicComp
+    ?[{pos:"GK",cardId:null,liveScore:0,done:false},{pos:"DEF",cardId:null,liveScore:0,done:false},{pos:"DEF",cardId:null,liveScore:0,done:false},{pos:"MID",cardId:null,liveScore:0,done:false},{pos:"MID",cardId:null,liveScore:0,done:false},{pos:"ATT",cardId:null,liveScore:0,done:false},{pos:"ANY",cardId:null,liveScore:0,done:false}]
+    :[{pos:"GK",cardId:null,liveScore:0,done:false},{pos:"DEF",cardId:null,liveScore:0,done:false},{pos:"MID",cardId:null,liveScore:0,done:false},{pos:"ATT",cardId:null,liveScore:0,done:false},{pos:"ANY",cardId:null,liveScore:0,done:false}];
+  teams.push({id,name,rarity:addTeamState.rarity,comp,streakLevel,locked:false,inSeason:false,captain:null,slots:newSlots});
   closeAddModal();
   /* Basculer automatiquement sur le bon mode selon la compétition */
   if(IS_COMPS.includes(comp)) activeBuilderMode='inseason';

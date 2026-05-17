@@ -79,33 +79,39 @@ button{cursor:pointer;}
 .hero-title {
   font-family:'Antonio',sans-serif;
   font-size:clamp(5rem,14vw,11rem); font-weight:700;
-  background:linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #ffffff 18%,
-    #f2f2f2 32%,
-    #ebebeb 44%,
-    #ffffff 54%,
-    #f5f5f5 66%,
-    #ededed 78%,
-    #ffffff 90%,
-    #f8f8f8 100%
-  );
-  -webkit-background-clip:text; background-clip:text; color:transparent;
+  color:#ffffff;
   letter-spacing:.04em; line-height:.92; text-transform:uppercase;
-  filter:
-    drop-shadow(0 0 90px rgba(255,255,255,.75))
-    drop-shadow(0 4px 12px rgba(0,0,0,.85))
-    drop-shadow(0 0 220px rgba(255,255,255,.25));
+  text-shadow:
+    0 0 55px rgba(255,255,255,1),
+    0 0 110px rgba(210,225,255,.65),
+    0 0 220px rgba(170,200,255,.3),
+    0 3px 16px rgba(0,0,0,.8);
   position:relative;
   opacity:0; animation:fadeUp 1s .15s ease forwards;
 }
 .hero-title::after{content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--blue-light) 30%,var(--blue-light) 70%,transparent);}
 .title-deco{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%) rotate(45deg);width:6px;height:6px;background:var(--blue-light);box-shadow:0 0 10px var(--blue);}
-.card-wrap{perspective:1200px;opacity:0;animation:fadeUp 1s .35s ease forwards;margin-top:.5rem;}
-.manager-card{width:290px;height:440px;position:relative;background:linear-gradient(165deg,var(--bg-3) 0%,var(--bg-card) 100%);border:1px solid var(--blue);border-radius:10px;overflow:hidden;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s ease;box-shadow:0 4px 30px rgba(0,0,0,.6),inset 0 0 60px rgba(105,145,232,.05);}
-.manager-card:hover{box-shadow:0 25px 60px rgba(105,145,232,.25),0 4px 30px rgba(0,0,0,.8);}
-.manager-card::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(168,196,245,.025) 3px,rgba(168,196,245,.025) 4px);pointer-events:none;z-index:2;}
+.card-wrap{perspective:1400px;opacity:0;animation:fadeUp 1s .35s ease forwards;margin-top:.5rem;}
+.manager-card{
+  width:300px;height:460px;position:relative;
+  background:linear-gradient(165deg,#0d1a35 0%,#081224 35%,#0e1a36 60%,#060e1e 100%);
+  border:1px solid rgba(212,221,232,.35);
+  border-radius:14px;overflow:hidden;
+  transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease;
+  box-shadow:0 8px 40px rgba(0,0,0,.75),0 0 0 1px rgba(212,221,232,.08),inset 0 0 80px rgba(105,145,232,.07);
+}
+.manager-card:hover{
+  box-shadow:0 30px 70px rgba(167,139,250,.3),0 8px 40px rgba(0,0,0,.9),0 0 0 1px rgba(212,221,232,.2);
+  transform:translateY(-6px);
+}
+/* top rarity stripe */
+.manager-card .mc-stripe{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#d4dde8 20%,#a78bfa 40%,#ffffff 50%,#a78bfa 60%,#d4dde8 80%,transparent);z-index:5;animation:stripe-shimmer 4s ease infinite;}
+@keyframes stripe-shimmer{0%,100%{opacity:.6}50%{opacity:1}}
+/* scanlines */
+.manager-card::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(168,196,245,.018) 3px,rgba(168,196,245,.018) 4px);pointer-events:none;z-index:2;}
+/* prismatic shine */
+.manager-card::before{content:'';position:absolute;top:0;left:-120%;width:70%;height:100%;background:linear-gradient(110deg,transparent 25%,rgba(212,227,252,.12) 45%,rgba(167,139,250,.08) 50%,rgba(212,227,252,.12) 55%,transparent 75%);animation:card-shine 8s ease-in-out infinite;z-index:3;pointer-events:none;}
+@keyframes card-shine{0%,100%{left:-120%}60%{left:200%}}
 .manager-card::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(110deg,transparent 30%,rgba(212,227,252,.10) 50%,transparent 70%);animation:shine 6s ease-in-out infinite;z-index:3;pointer-events:none;}
 @keyframes shine{0%,100%{left:-100%}55%{left:200%}}
 .cc{position:absolute;width:22px;height:22px;border:1px solid var(--blue);z-index:4;}
@@ -119,8 +125,17 @@ button{cursor:pointer;}
 .avatar-ring{position:absolute;inset:-6px;border:1px solid rgba(105,145,232,.3);border-radius:50%;border-top-color:var(--blue);animation:rotate 12s linear infinite;}
 @keyframes glow{0%,100%{opacity:.5}50%{opacity:1}}
 @keyframes rotate{to{transform:rotate(360deg)}}
-.mc-diamond{width:64px;height:64px;margin:1rem auto .5rem;background:linear-gradient(135deg,#e8f0ff,#6991e8 45%,#2a3e6e);transform:rotate(45deg);display:grid;place-items:center;box-shadow:0 0 30px rgba(105,145,232,.6),inset 0 0 12px rgba(212,227,252,.45);border-radius:4px;}
-.mc-score{transform:rotate(-45deg);font-family:'Antonio',sans-serif;font-size:1.85rem;font-weight:700;color:#fff;}
+.mc-diamond{
+  width:68px;height:68px;margin:1rem auto .5rem;
+  background:linear-gradient(135deg,#c8d3e8,#d4dde8 25%,#a78bfa 45%,#6991e8 55%,#d4dde8 75%,#ffffff);
+  background-size:200% 200%;
+  transform:rotate(45deg);display:grid;place-items:center;
+  box-shadow:0 0 35px rgba(167,139,250,.55),0 0 70px rgba(105,145,232,.25),inset 0 0 15px rgba(255,255,255,.25);
+  border-radius:5px;
+  animation:prismatic-diamond 5s ease-in-out infinite;
+}
+@keyframes prismatic-diamond{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.mc-score{transform:rotate(-45deg);font-family:'Antonio',sans-serif;font-size:1.95rem;font-weight:700;color:#fff;text-shadow:0 0 15px rgba(255,255,255,.8);}
 .mc-name{font-family:'Antonio',sans-serif;font-size:1.75rem;font-weight:700;text-align:center;letter-spacing:.2em;color:var(--text);margin-top:.6rem;text-transform:uppercase;}
 .mc-role{font-size:.68rem;letter-spacing:.4em;text-align:center;color:var(--text-muted);margin-top:.35rem;text-transform:uppercase;}
 .mc-stats{margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-around;}
@@ -588,6 +603,29 @@ button{cursor:pointer;}
 @media(max-width:768px){.teams-grid{grid-template-columns:1fr;}.cards-grid{grid-template-columns:repeat(2,1fr);gap:.7rem;}.screen.app-screen{padding-bottom:2rem;}.modal-stats-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:480px){.hero-title{font-size:4rem;}.manager-card{width:270px;height:410px;}.screen{padding:5.5rem 1rem 2rem;}}
 
+/* ============================================================  LOCKED TEAM GLOW  */
+.team-card.locked.is-live{
+  border-color:rgba(245,158,11,.55);
+  box-shadow:0 0 35px rgba(245,158,11,.14),0 0 70px rgba(245,158,11,.06),0 6px 28px rgba(0,0,0,.5);
+  background:linear-gradient(165deg,#111408 0%,#0e1628 40%,#0c1322 100%);
+}
+.team-card.locked.is-live .tc-name{color:#f59e0b;}
+.team-card.locked.is-classic{border-color:rgba(74,144,217,.45);box-shadow:0 0 22px rgba(74,144,217,.1);}
+.team-card.is-arena{border-color:rgba(107,199,139,.38);}
+
+/* Locked slot card — premium mini card */
+.locked-slot.filled .slot-card{cursor:default;padding:.3rem .15rem .25rem;}
+.locked-slot .slot-pos{font-weight:700;}
+
+/* ============================================================  ADD MODAL MODE BTNS  */
+.add-mode-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;margin-bottom:1rem;}
+.add-mode-btn{background:rgba(105,145,232,.05);border:1px solid var(--border);border-radius:6px;padding:.55rem .3rem;color:var(--text-muted);font-family:'Manrope',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4;}
+.add-mode-btn:hover{border-color:var(--border-strong);color:var(--text);}
+.add-mode-btn.active{border-color:var(--blue);color:var(--blue-light);background:rgba(105,145,232,.12);}
+
+/* ============================================================  HIDDEN MINI CARD  */
+.hidden-team-mini{background:rgba(105,145,232,.04);border:1px dashed rgba(107,122,149,.3);border-radius:8px;padding:.85rem 1rem;}
+
 /* ============================================================  SCORENESS  */
 .sn-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:20px;border-radius:4px;border:1px solid;font-family:'Antonio',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:0 4px;}
 .ci-sn{position:absolute;top:6px;right:6px;}
@@ -712,19 +750,33 @@ button{cursor:pointer;}
   <h1 class="hero-title">NESS<span class="title-deco"></span></h1>
   <div class="card-wrap">
     <div class="manager-card" id="heroCard">
+      <div class="mc-stripe"></div>
       <div class="cc tl"></div><div class="cc tr"></div><div class="cc bl"></div><div class="cc br"></div>
       <div class="mc-inner">
-        <div class="mc-top"><div class="mc-rarity">Unique</div><div class="mc-star"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 7.36H22l-6.18 4.5L18.18 22 12 17.5 5.82 22l2.36-8.14L2 9.36h7.61z"/></svg></div></div>
-        <div class="mc-avatar">
-          <div class="avatar-ring"></div>
-          <svg width="60" height="60" viewBox="0 0 64 64" fill="none"><path d="M16 50L16 14L48 50L48 14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="14" r="2.5" fill="currentColor"/><circle cx="48" cy="14" r="2.5" fill="currentColor"/><circle cx="16" cy="50" r="2.5" fill="currentColor"/><circle cx="48" cy="50" r="2.5" fill="currentColor"/></svg>
+        <div class="mc-top">
+          <div class="mc-rarity" style="letter-spacing:.35em;color:#d4dde8;">Unique</div>
+          <div style="display:flex;align-items:center;gap:.5rem;">
+            <span style="font-size:.58rem;letter-spacing:.25em;color:rgba(212,221,232,.5);text-transform:uppercase;">Manager</span>
+            <div class="mc-star" style="border-color:rgba(212,221,232,.3);background:rgba(212,221,232,.06);color:#d4dde8;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 7.36H22l-6.18 4.5L18.18 22 12 17.5 5.82 22l2.36-8.14L2 9.36h7.61z"/></svg></div>
+          </div>
+        </div>
+        <div class="mc-avatar" style="border-color:rgba(212,221,232,.4);background:radial-gradient(circle at 35% 35%,rgba(167,139,250,.2),rgba(105,145,232,.05) 70%);">
+          <div class="avatar-ring" style="border-top-color:#d4dde8;border-color:rgba(212,221,232,.2);"></div>
+          <svg width="54" height="54" viewBox="0 0 64 64" fill="none">
+            <path d="M16 50L16 14L48 50L48 14" stroke="#d4dde8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".9"/>
+            <circle cx="16" cy="14" r="3" fill="#a78bfa"/>
+            <circle cx="48" cy="14" r="3" fill="#a78bfa"/>
+            <circle cx="16" cy="50" r="3" fill="#6991e8"/>
+            <circle cx="48" cy="50" r="3" fill="#6991e8"/>
+          </svg>
         </div>
         <div class="mc-diamond"><div class="mc-score">99</div></div>
-        <div class="mc-name">Ness</div><div class="mc-role">Manager</div>
-        <div class="mc-stats">
-          <div class="mc-stat"><div class="mc-stat-val">—</div><div class="mc-stat-lbl">GW</div></div>
-          <div class="mc-stat"><div class="mc-stat-val">—</div><div class="mc-stat-lbl">AVG</div></div>
-          <div class="mc-stat"><div class="mc-stat-val">—</div><div class="mc-stat-lbl">Cards</div></div>
+        <div class="mc-name" style="letter-spacing:.25em;color:#ffffff;font-size:2rem;">NESS</div>
+        <div class="mc-role" style="letter-spacing:.4em;color:rgba(167,139,250,.7);">Manager · Unique</div>
+        <div class="mc-stats" style="border-top-color:rgba(212,221,232,.12);">
+          <div class="mc-stat"><div class="mc-stat-val" style="color:#d4dde8;">—</div><div class="mc-stat-lbl">GW</div></div>
+          <div class="mc-stat"><div class="mc-stat-val" style="color:#d4dde8;">—</div><div class="mc-stat-lbl">AVG</div></div>
+          <div class="mc-stat"><div class="mc-stat-val" style="color:#d4dde8;">24</div><div class="mc-stat-lbl">Cards</div></div>
         </div>
       </div>
     </div>
@@ -772,6 +824,10 @@ button{cursor:pointer;}
       <h2 class="page-title">GW Builder</h2>
       <div class="page-sub">Compose tes équipes · suis tes Hot Streaks en direct</div>
     </div>
+    <button id="headerAddTeamBtn" style="background:linear-gradient(135deg,rgba(105,145,232,.18),rgba(105,145,232,.08));border:1px solid var(--blue);color:var(--blue-light);padding:.65rem 1.35rem;border-radius:8px;font-family:'Antonio',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.55rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Créer une équipe
+    </button>
   </div>
   <div class="builder-gw-info">
     <div class="gw-info-left">
@@ -917,6 +973,12 @@ button{cursor:pointer;}
 <div class="add-modal-overlay" id="addModalOverlay">
   <div class="add-modal">
     <div class="add-modal-title">Nouvelle Équipe</div>
+    <!-- Mode selector -->
+    <div class="add-mode-row" id="addModeRow">
+      <button class="add-mode-btn active" data-amode="inseason">🔥 In Season</button>
+      <button class="add-mode-btn" data-amode="classic">📦 Classic</button>
+      <button class="add-mode-btn" data-amode="arena">🏟️ Arena</button>
+    </div>
     <label class="form-label" for="teamNameInput">Nom de l'équipe</label>
     <input id="teamNameInput" class="form-input" type="text" placeholder="Ex : Premier League Limited">
     <label class="form-label">Rareté des cartes</label>
@@ -927,28 +989,7 @@ button{cursor:pointer;}
       <div class="rarity-opt ro-unique" data-r="unique"><div class="ro-name">Unique</div><div class="ro-desc">1 / saison</div></div>
     </div>
     <label class="form-label" for="compSelect">Compétition</label>
-    <select id="compSelect" class="form-select">
-      <optgroup label="🔥 In Season">
-        <option value="premier_league">Premier League</option>
-        <option value="la_liga">La Liga</option>
-        <option value="bundesliga">Bundesliga</option>
-        <option value="ligue_1">Ligue 1 McDonald's</option>
-        <option value="eredivisie">Eredivisie</option>
-        <option value="jpl">Jupiler Pro League</option>
-        <option value="mls">MLS</option>
-        <option value="challenger">Challenger</option>
-        <option value="contender">Contender</option>
-      </optgroup>
-      <optgroup label="📦 Classic">
-        <option value="champion_europe">Champion Europe</option>
-        <option value="all_star">All Star</option>
-        <option value="u23">U23</option>
-      </optgroup>
-      <optgroup label="🏟️ Arena">
-        <option value="arena_capped">Arena Capped (260 cap)</option>
-        <option value="arena_uncapped">Arena Uncapped</option>
-      </optgroup>
-    </select>
+    <select id="compSelect" class="form-select"></select>
     <div class="add-modal-actions">
       <button class="am-cancel" id="addModalCancel">Annuler</button>
       <button class="am-confirm" id="addModalConfirm">Créer l'équipe</button>
@@ -1156,7 +1197,7 @@ function loadTeams(){
 
 let clubState = {rarity:"all",pos:"all",search:"",sort:"gw"};
 let pickerState = {teamId:null,pos:null};
-let addTeamState = {rarity:"limited"};
+let addTeamState = {rarity:"limited",mode:"inseason"};
 
 /* ============================================================
    HELPERS
@@ -1230,6 +1271,7 @@ document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click"
 document.getElementById("logoutBtn").addEventListener("click",()=>showPage("landing"));
 document.getElementById("sidebarBrand").addEventListener("click",()=>showPage(currentPage||"club"));
 document.getElementById("demoBtn").addEventListener("click",()=>showPage("club"));
+document.getElementById("headerAddTeamBtn")?.addEventListener("click",()=>openAddModal());
 document.getElementById("connectBtn").addEventListener("click",()=>{
   const btn=document.getElementById("connectBtn");
   const orig=btn.innerHTML;
@@ -1494,7 +1536,24 @@ function renderBuilder(){
       if(c){
         const sn=computeScoreNess(c);const snCol=scoreNessColor(sn);
         const md=CLUB_MATCHDAY[c.club]||'';
-        return `<div class="slot filled ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative">
+        if(team.locked){
+          /* ── Premium mini card (locked state) ── */
+          const scoreNum=s.done?s.liveScore:null;
+          const scoreColor=scoreNum!==null?(scoreNum>=c.avg*1.06?'#6bc78b':scoreNum>=c.avg*.88?'#f0c239':'#e05252'):col;
+          return `<div class="slot filled locked-slot" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
+            <div class="slot-pos" style="color:${col};font-size:.48rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
+            <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${col}60;box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a;gap:.15rem;">
+              <div class="slot-rarity-bar" style="background:${col};opacity:.55;height:3px;"></div>
+              ${isCap?`<div style="position:absolute;top:-9px;right:-2px;font-size:.95rem;line-height:1;z-index:5;filter:drop-shadow(0 0 5px rgba(240,194,57,.9));">👑</div>`:""}
+              <div style="font-family:'Antonio',sans-serif;font-size:1.15rem;font-weight:700;color:${col};letter-spacing:.02em;line-height:1;margin-top:.25rem;">${c.initials}</div>
+              <div style="font-size:.52rem;letter-spacing:.05em;color:rgba(255,255,255,.5);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:90%;text-align:center;">${c.player.split(' ').slice(-1)[0]}</div>
+              <div style="width:32px;height:32px;background:${scoreNum!==null?scoreColor+'25':'rgba(105,145,232,.08)'};border:1px solid ${scoreNum!==null?scoreColor+'66':'rgba(105,145,232,.22)'};border-radius:4px;transform:rotate(45deg);display:grid;place-items:center;margin:.1rem 0;">
+                <span style="transform:rotate(-45deg);font-family:'Antonio',sans-serif;font-size:.82rem;font-weight:700;color:${scoreNum!==null?scoreColor:'rgba(105,145,232,.5)'};">${scoreNum!==null?scoreNum:'?'}</span>
+              </div>
+              <span style="font-size:.44rem;font-weight:700;color:${snCol};background:${snCol}18;border:1px solid ${snCol}44;border-radius:3px;padding:1px 3px;letter-spacing:.04em;">SN${sn}</span>
+            </div></div>`;
+        }
+        return `<div class="slot filled" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative">
           <div class="slot-pos">${s.pos}</div>
           <div class="slot-card">
             <div class="slot-rarity-bar" style="background:${col};opacity:.6;"></div>
@@ -1503,7 +1562,7 @@ function renderBuilder(){
             <div class="slot-name">${c.player.split(" ").slice(-1)[0]}</div>
             <div class="slot-score" style="color:${col}">${s.done?s.liveScore:"⏳"}</div>
             <span class="sn-badge" style="position:absolute;top:3px;left:3px;font-size:.5rem;min-width:20px;height:16px;padding:0 2px;background:${snCol}22;color:${snCol};border-color:${snCol}55;">${sn}</span>
-            ${md&&!team.locked?`<div class="matchday-chip">${md}</div>`:''}
+            ${md?`<div class="matchday-chip">${md}</div>`:''}
           </div></div>`;
       }
       return `<div class="slot ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}">
@@ -1606,7 +1665,7 @@ function renderBuilder(){
     }
 
     const div=document.createElement("div");
-    div.className=`team-card ${team.locked?"locked":""} ${isHidden?"tc-hidden-card":""}`;
+    div.className=`team-card ${team.locked?"locked":""} ${team.inSeason?"is-live":""} ${isClassic?"is-classic":""} ${isArena?"is-arena":""} ${isHidden?"tc-hidden-card":""}`;
     div.dataset.teamid=team.id;
     div.innerHTML=`
       <div class="team-celebration" id="cel-${team.id}"></div>
@@ -1684,20 +1743,43 @@ function renderBuilder(){
   const hiddenTeams=teams.filter(t=>t.hidden&&modeCompsHidden.includes(t.comp));
   if(hiddenTeams.length>0){
     const hiddenSection=document.createElement("div");
-    hiddenSection.style.cssText="grid-column:1/-1;margin-top:.5rem;";
+    hiddenSection.style.cssText="grid-column:1/-1;margin-top:.75rem;";
     hiddenSection.innerHTML=`
       <button id="toggleHiddenBtn" style="width:100%;background:transparent;border:1px dashed rgba(107,122,149,.3);border-radius:8px;padding:.75rem;color:var(--text-muted);font-family:'Manrope',sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        ${hiddenTeams.length} équipe${hiddenTeams.length>1?"s":""} masquée${hiddenTeams.length>1?"s":""}
+        <span id="toggleHiddenLbl">${hiddenTeams.length} équipe${hiddenTeams.length>1?"s":""} masquée${hiddenTeams.length>1?"s":""}  ▼</span>
       </button>
-      <div id="hiddenGrid" style="display:none;margin-top:.75rem;display:none;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1.25rem;opacity:.7;"></div>`;
+      <div id="hiddenGrid" style="display:none;margin-top:.75rem;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.85rem;"></div>`;
     grid.appendChild(hiddenSection);
+
+    /* Populate hidden team mini-cards */
+    const hg=hiddenSection.querySelector("#hiddenGrid");
+    hiddenTeams.forEach(ht=>{
+      const rar=RARITY_COL[ht.rarity]||"#6991e8";
+      const score=teamScore(ht);
+      const tiers=getHotStreak(ht);
+      const tier=tiers?tiers[Math.max(0,(ht.streakLevel||1)-1)]:null;
+      const htCard=document.createElement("div");
+      htCard.className="hidden-team-mini";
+      htCard.innerHTML=`
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;">
+          <div>
+            <div style="font-family:'Antonio';font-size:.92rem;letter-spacing:.12em;color:var(--text);text-transform:uppercase;">${ht.name}</div>
+            <div style="font-size:.65rem;color:var(--text-muted);margin-top:.15rem;">${COMP_NAMES[ht.comp]||''} · ${RARITY_LABELS[ht.rarity]}</div>
+          </div>
+          <span style="font-size:.58rem;color:${rar};background:${rar}18;border:1px solid ${rar}44;border-radius:4px;padding:.15rem .45rem;font-weight:700;">${RARITY_LABELS[ht.rarity]}</span>
+        </div>
+        ${score?`<div style="font-family:'Antonio';font-size:1.35rem;font-weight:700;color:var(--text);margin-bottom:.2rem;">${score} <span style="font-size:.7rem;color:var(--text-muted);">pts</span>${tier&&score>=tier.pts?`<span style="font-size:.65rem;color:var(--success);margin-left:.5rem;">✓ Palier atteint</span>`:`<span style="font-size:.62rem;color:var(--text-muted);margin-left:.5rem;">${tier?`→ ${tier.pts} pts`:''}</span>`}</div>`:''}
+        <button class="tc-btn tc-btn-hide tc-btn-unhide" data-tid="${ht.id}" style="width:100%;margin-top:.4rem;padding:.45rem;font-size:.68rem;">👁 Afficher l'équipe</button>`;
+      htCard.querySelector("[data-tid]").addEventListener("click",()=>hideTeam(ht.id));
+      hg.appendChild(htCard);
+    });
+
     document.getElementById("toggleHiddenBtn")?.addEventListener("click",()=>{
-      const hg=document.getElementById("hiddenGrid");
-      if(hg){
-        const isOpen=hg.style.display!=="none";
-        hg.style.display=isOpen?"none":"grid";
-      }
+      const isOpen=hg.style.display!=="none";
+      hg.style.display=isOpen?"none":"grid";
+      const lbl=document.getElementById("toggleHiddenLbl");
+      if(lbl) lbl.textContent=`${hiddenTeams.length} équipe${hiddenTeams.length>1?"s":""} masquée${hiddenTeams.length>1?"s":""} ${isOpen?"▼":"▲"}`;
     });
   }
   /* Démarrer la simulation live pour les équipes In-Season verrouillées */
@@ -1945,14 +2027,29 @@ function assignPlayer(teamId,slotIdx,cardId){
 /* ============================================================
    ADD TEAM MODAL
    ============================================================ */
+function populateAddCompSelect(){
+  const sel=document.getElementById("compSelect");if(!sel)return;
+  const mode=addTeamState.mode||"inseason";
+  let comps=mode==="inseason"?IS_COMPS:mode==="classic"?CLASSIC_COMPS_LIST:ARENA_COMPS;
+  sel.innerHTML=comps.map(c=>`<option value="${c}">${COMP_NAMES[c]||c}</option>`).join("");
+}
 function openAddModal(){
   addTeamState.rarity="limited";
+  addTeamState.mode=activeBuilderMode;
   document.getElementById("teamNameInput").value="";
   document.querySelectorAll(".rarity-opt").forEach(el=>{el.classList.toggle("selected",el.dataset.r==="limited");});
+  document.querySelectorAll(".add-mode-btn").forEach(btn=>{btn.classList.toggle("active",btn.dataset.amode===addTeamState.mode);});
+  populateAddCompSelect();
   document.getElementById("addModalOverlay").classList.add("open");
   document.body.style.overflow="hidden";
   setTimeout(()=>document.getElementById("teamNameInput").focus(),100);
 }
+document.querySelectorAll(".add-mode-btn").forEach(btn=>btn.addEventListener("click",()=>{
+  addTeamState.mode=btn.dataset.amode;
+  document.querySelectorAll(".add-mode-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  populateAddCompSelect();
+}));
 function closeAddModal(){document.getElementById("addModalOverlay").classList.remove("open");document.body.style.overflow="";}
 document.getElementById("addModalCancel").addEventListener("click",closeAddModal);
 document.getElementById("addModalOverlay").addEventListener("click",e=>{if(e.target===e.currentTarget)closeAddModal();});
@@ -2231,11 +2328,9 @@ function fakePlayerEvents(card){
   const min1=Math.floor(rnd()*44+1);
   const min2=Math.floor(rnd()*44+46);
   const min3=Math.floor(rnd()*28+62);
-  const min4=Math.floor(rnd()*30+55);
   if((card.gpg||0)>=0.3) evts.push({min:min1,emoji:'⚽'});
   else if((card.gpg||0)>=0.15&&rnd()<0.45) evts.push({min:min2,emoji:'⚽'});
   if((card.apg||0)>=0.3) evts.push({min:min3,emoji:'🅰️'});
-  if(rnd()<0.10) evts.push({min:min4,emoji:'🟨'});
   return evts;
 }
 function liveTimelineHTML(team){

@@ -247,7 +247,9 @@ button{cursor:pointer;}
 .gw-qs-val{font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;color:var(--blue-light);}
 .gw-qs-lbl{font-size:.6rem;color:var(--text-muted);letter-spacing:.2em;text-transform:uppercase;}
 
-.teams-grid{max-width:1300px;width:100%;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:1.25rem;}
+.teams-grid{max-width:1300px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr;gap:1rem;}
+.team-group-header{display:flex;align-items:center;gap:.9rem;padding:.6rem 0 .2rem;color:var(--text-muted);font-family:'Rajdhani',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;}
+.team-group-header::before,.team-group-header::after{content:'';flex:1;height:1px;background:var(--border);}
 
 /* Team card */
 .team-card{
@@ -284,14 +286,14 @@ button{cursor:pointer;}
 .badge-season{border:1px solid rgba(240,194,57,.45);color:#f0c239;background:rgba(240,194,57,.08);animation:demo-glow 2s ease-in-out infinite;}
 
 /* Slots */
-.tc-slots{padding:1rem 1.25rem;display:flex;gap:.55rem;justify-content:space-between;}
+.tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:210px;align-items:stretch;}
 .slot{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:.22rem;cursor:pointer;transition:all .2s;position:relative;}
 .slot-pos{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
 .slot-card{
-  width:100%;aspect-ratio:2/3;
+  width:100%;flex:1;
   border-radius:8px;
   border:1px dashed rgba(105,145,232,.22);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;
   position:relative;overflow:hidden;transition:all .2s;
   background:rgba(255,255,255,.02);
 }
@@ -303,9 +305,9 @@ button{cursor:pointer;}
 }
 .slot-plus{font-size:1.25rem;color:rgba(105,145,232,.32);transition:all .2s;}
 .slot:not(.locked-slot):hover .slot-plus{color:rgba(105,145,232,.7);transform:scale(1.15);}
-.slot-name{font-family:'Rajdhani',sans-serif;font-size:.7rem;font-weight:700;text-align:center;letter-spacing:.05em;color:var(--text);text-transform:uppercase;padding:0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;}
-.slot-score{font-family:'Rajdhani',sans-serif;font-size:.68rem;font-weight:700;}
-.slot-initials{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;color:var(--blue-light);}
+.slot-name{font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;text-align:center;letter-spacing:.05em;color:var(--text);text-transform:uppercase;padding:0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;}
+.slot-score{font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;}
+.slot-initials{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--blue-light);}
 .slot-rarity-bar{position:absolute;bottom:0;left:0;right:0;height:2px;}
 .slot-cap-badge{position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:var(--warn);display:grid;place-items:center;font-size:8px;font-weight:700;color:#000;}
 .locked-slot{cursor:default;}
@@ -404,9 +406,9 @@ button{cursor:pointer;}
 .tc-btn-edit{flex:0 0 auto;background:rgba(105,145,232,.05);border-color:rgba(105,145,232,.28);color:var(--blue-light);padding:.62rem .85rem;font-size:.66rem;}
 .tc-btn-edit:hover{background:rgba(105,145,232,.13);}
 .tc-hidden-card{opacity:.55;filter:grayscale(.3);}
-.add-team-btn{background:rgba(255,255,255,.015);border:1px dashed rgba(105,145,232,.22);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;cursor:pointer;transition:all .25s;min-height:300px;color:rgba(105,145,232,.4);}
+.add-team-btn{background:rgba(255,255,255,.015);border:1px dashed rgba(105,145,232,.22);border-radius:16px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:.85rem;cursor:pointer;transition:all .25s;min-height:80px;color:rgba(105,145,232,.4);}
 .add-team-btn:hover{border-color:rgba(105,145,232,.55);color:var(--blue);background:rgba(105,145,232,.07);box-shadow:0 0 32px rgba(105,145,232,.1);}
-.add-team-btn svg{width:30px;height:30px;}
+.add-team-btn svg{width:22px;height:22px;}
 .add-team-btn span{font-family:'Rajdhani',sans-serif;font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;}
 
 /* ============================================================  MODALS  */
@@ -643,6 +645,38 @@ body.light-mode .demo-pill{border-color:rgba(180,130,0,.5);color:#886000;backgro
 body.light-mode .demo-dot{background:#886000;}
 body.light-mode .theme-toggle{border-color:rgba(15,50,90,.2);color:var(--text-muted);}
 body.light-mode .theme-toggle:hover{background:rgba(15,50,90,.1);}
+/* Hero title : foncé + sans halo */
+body.light-mode .hero-title{color:#0b1d34;text-shadow:0 2px 14px rgba(0,0,0,.18);}
+body.light-mode .hero-title::after{background:linear-gradient(90deg,transparent,rgba(15,50,90,.4) 30%,rgba(15,50,90,.4) 70%,transparent);}
+body.light-mode .title-deco{background:rgba(15,50,90,.6);box-shadow:0 0 8px rgba(15,50,90,.3);}
+/* Builder : barre GW */
+body.light-mode .builder-gw-info{background:rgba(255,255,255,.55);border-color:rgba(15,50,90,.14);box-shadow:0 4px 20px rgba(15,50,90,.08);}
+/* Builder : bouton créer */
+body.light-mode #headerAddTeamBtn{background:rgba(255,255,255,.5)!important;border-color:rgba(15,50,90,.28)!important;color:var(--blue-light)!important;box-shadow:none!important;}
+body.light-mode #headerAddTeamBtn:hover{background:rgba(255,255,255,.75)!important;}
+/* Boutons mode IS/Classic/Arena */
+body.light-mode .mode-btn{background:rgba(255,255,255,.22);border-color:rgba(15,50,90,.1);}
+body.light-mode .mode-btn:hover{background:rgba(255,255,255,.45);}
+body.light-mode .mode-btn.active{background:rgba(255,255,255,.55);border-color:var(--mode-color,var(--blue));}
+body.light-mode .mode-btn-count{background:rgba(255,255,255,.3);}
+/* Onglets compétition */
+body.light-mode .comp-tab{background:rgba(255,255,255,.3);border-color:rgba(15,50,90,.1);color:rgba(20,50,85,.7);}
+body.light-mode .comp-tab:hover{background:rgba(255,255,255,.55);color:var(--text);}
+body.light-mode .comp-tab.active{background:rgba(255,255,255,.7);border-color:rgba(15,50,90,.3);color:var(--text);}
+/* Team cards */
+body.light-mode .team-card{background:rgba(255,255,255,.62);border-color:rgba(15,50,90,.13);box-shadow:0 4px 20px rgba(15,50,90,.1);}
+body.light-mode .team-card:hover{box-shadow:0 12px 36px rgba(15,50,90,.16);}
+body.light-mode .tc-header{border-bottom-color:rgba(15,50,90,.1);}
+body.light-mode .slot-card{background:rgba(15,50,90,.04);border-color:rgba(15,50,90,.15);}
+body.light-mode .slot.filled .slot-card{border-color:rgba(15,50,90,.3);}
+body.light-mode .tc-footer{border-top-color:rgba(15,50,90,.1);}
+body.light-mode .ps-bar-bg{background:rgba(15,50,90,.1);}
+/* Bouton ajouter équipe */
+body.light-mode .add-team-btn{background:rgba(255,255,255,.25);border-color:rgba(15,50,90,.18);color:rgba(15,50,90,.35);}
+body.light-mode .add-team-btn:hover{background:rgba(255,255,255,.5);border-color:rgba(15,50,90,.4);color:var(--blue);box-shadow:0 0 24px rgba(15,50,90,.08);}
+/* Page title builder/club */
+body.light-mode .page-title{color:#0b1d34;text-shadow:none;}
+body.light-mode .page-sub{color:var(--text-muted)!important;}
 
 /* ============================================================  SCORE PREDICTION  */
 .gauge-prediction{
@@ -1700,7 +1734,19 @@ function renderBuilder(){
     document.getElementById("noTeamAddBtn")?.addEventListener("click",()=>openAddModal());
   }
 
-  visibleTeams.forEach((team,ti)=>{
+  /* Grouper par compétition */
+  const compOrder=[...new Set(visibleTeams.map(t=>t.comp))];
+  const grouped=Object.fromEntries(compOrder.map(c=>[c,visibleTeams.filter(t=>t.comp===c)]));
+  const showGroupHeaders=compOrder.length>1;
+  let ti=0;
+  compOrder.forEach(comp=>{
+    if(showGroupHeaders){
+      const hdr=document.createElement('div');
+      hdr.className='team-group-header';
+      hdr.innerHTML=`<span>${COMP_NAMES[comp]||comp}</span>`;
+      grid.appendChild(hdr);
+    }
+    grouped[comp].forEach(team=>{
     const tiers=getHotStreak(team); // null = Classic ou Arena
     const isClassic = !tiers && CLASSIC_COMPS_LIST.includes(team.comp);
     const isArena   = !tiers && ARENA_COMPS.includes(team.comp);
@@ -1935,7 +1981,9 @@ function renderBuilder(){
       tl.innerHTML=liveTimelineHTML(team);
       div.appendChild(tl);
     }
-  });
+    ti++;
+    });  // fin grouped[comp].forEach
+  });  // fin compOrder.forEach
 
 
   /* Section équipes masquées */

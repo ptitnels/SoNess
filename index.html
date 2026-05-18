@@ -315,9 +315,9 @@ button{cursor:pointer;}
 .tc-gauge-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.65rem;gap:.5rem;min-width:0;}
 .tc-score-display{font-family:'Antonio',sans-serif;font-size:1.65rem;font-weight:700;color:var(--text);flex-shrink:0;letter-spacing:.04em;}
 .tc-score-display small{font-size:.68rem;color:var(--text-muted);font-family:'Space Grotesk',sans-serif;margin-left:.1rem;}
-.tc-streak-info{text-align:right;min-width:0;overflow:hidden;flex-shrink:1;}
+.tc-streak-info{text-align:right;min-width:0;flex-shrink:1;}
 .tc-streak-level{font-family:'Antonio',sans-serif;font-size:.75rem;font-weight:700;color:var(--blue-light);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tc-streak-reward{font-size:.65rem;color:var(--text-muted);margin-top:.12rem;line-height:1.4;overflow:hidden;word-break:break-word;letter-spacing:.01em;}
+.tc-streak-reward{font-size:.7rem;color:var(--text-muted);padding:.15rem 1.25rem .55rem;letter-spacing:.02em;line-height:1.4;}
 .tc-streak-reward span{color:var(--warn);font-weight:700;}
 
 /* Progress track */
@@ -1858,9 +1858,9 @@ function renderBuilder(){
           <div class="tc-score-display" id="score-${team.id}">${score} <small>pts</small></div>
           <div class="tc-streak-info">
             <div class="tc-streak-level">${tiers?`🔥 Streak Niveau ${team.streakLevel}/5`:`${isArena?"🏟️ Arena":"📦 Compétition Classic"}`}</div>
-            <div class="tc-streak-reward">${tier?`${tier.pts} pts → <span>${tier.r}</span>`:`Cartes · Essence · XP`}</div>
           </div>
         </div>
+        <div class="tc-streak-reward">${tier?`Objectif : <strong>${tier.pts} pts</strong> → <span>${tier.r}</span>`:`Cartes · Essence · XP`}</div>
         <div class="gauge-outer">
           <div class="gauge-track" id="gt-${team.id}">
             <div class="gauge-fill ${!score?"no-anim":""}" id="gf-${team.id}" style="--pct:0%;--gauge-start:${gc.start};--gauge-end:${gc.end};--gauge-tip:${gc.tip};--gauge-color:${gc.glow};--gauge-tip-col:${gc.tip};--gauge-glow:10px;--gauge-speed:${gc.speed}"></div>

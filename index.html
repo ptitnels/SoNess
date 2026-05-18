@@ -619,15 +619,30 @@ button{cursor:pointer;}
 .theme-toggle{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(105,145,232,.06);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--text-muted);flex-shrink:0;}
 .theme-toggle:hover{background:rgba(105,145,232,.18);border-color:var(--blue);color:var(--text);}
 /* ============================================================  LIGHT MODE  */
-body.light-mode{--bg:#c8e4f5;--bg-2:#b8d8ed;--bg-3:#ddeef8;--bg-card:rgba(255,255,255,.75);--text:#0d1e30;--text-muted:#3a5878;--border:rgba(20,60,100,.14);--border-strong:rgba(20,60,100,.28);--blue:#2468a8;--blue-light:#1a4878;--blue-bright:#0d2a52;--blue-deep:#c0dcf0;--success:#1a7840;--error:#c03030;}
-body.light-mode html,body.light-mode body{background:linear-gradient(180deg,#4fa8d8 0%,#7ec8ea 35%,#b8dff0 70%,#d8eef8 100%);}
+body.light-mode{
+  --bg:#b8ddf0;--bg-2:#a8d0e8;--bg-3:#d4ecf8;--bg-card:rgba(255,255,255,.82);
+  --text:#0c1c2e;--text-muted:#2e5070;
+  --border:rgba(15,50,90,.15);--border-strong:rgba(15,50,90,.3);
+  --blue:#1a5c9a;--blue-light:#0f3d6e;--blue-bright:#081e38;--blue-deep:#b0d4ec;
+  --success:#156b34;--error:#b02828;
+  background:#b8ddf0;
+}
 body.light-mode .atmosphere{display:none;}
 body.light-mode .grid-bg{display:none;}
-body.light-mode .grain{opacity:.015;}
-body.light-mode .app-header{background:linear-gradient(180deg,rgba(180,220,240,.97) 0%,rgba(180,220,240,.7) 100%);}
-body.light-mode .sidebar{background:rgba(200,228,245,.97);border-right-color:rgba(20,60,100,.12);}
-body.light-mode .modal-backdrop{background:rgba(10,30,50,.5);}
-body.light-mode .modal{background:linear-gradient(165deg,var(--bg-3),var(--bg-card));}
+body.light-mode .grain{opacity:.012;}
+body.light-mode .app-header{background:rgba(160,210,238,.88);backdrop-filter:blur(16px);border-bottom-color:rgba(15,50,90,.12);}
+body.light-mode .sidebar{background:rgba(155,205,235,.95);border-right-color:rgba(15,50,90,.12);}
+body.light-mode .sidebar .nav-item{color:var(--text-muted);}
+body.light-mode .sidebar .nav-item.active,body.light-mode .sidebar .nav-item:hover{color:var(--text);background:rgba(15,50,90,.1);}
+body.light-mode .modal-backdrop{background:rgba(5,20,40,.55);}
+body.light-mode .modal{background:linear-gradient(165deg,rgba(215,238,252,.98),rgba(240,251,255,.98));border-color:rgba(15,50,90,.18);}
+body.light-mode .team-card{background:rgba(255,255,255,.72);border-color:rgba(15,50,90,.14);}
+body.light-mode .page-title{color:#0c1c2e;text-shadow:0 1px 8px rgba(0,0,0,.15);}
+body.light-mode .beta{border-color:rgba(15,50,90,.3);color:var(--text-muted);}
+body.light-mode .demo-pill{border-color:rgba(180,130,0,.5);color:#886000;background:rgba(220,170,0,.1);}
+body.light-mode .demo-dot{background:#886000;}
+body.light-mode .theme-toggle{border-color:rgba(15,50,90,.2);color:var(--text-muted);}
+body.light-mode .theme-toggle:hover{background:rgba(15,50,90,.1);}
 
 /* ============================================================  SCORE PREDICTION  */
 .gauge-prediction{
@@ -2412,13 +2427,13 @@ document.addEventListener("click", e=>{
   });
 
   /* ---- MODE JOUR : nuages + oiseaux ---- */
-  const clouds=Array.from({length:7},()=>({
-    x:Math.random(),y:.04+Math.random()*.45,
-    w:.10+Math.random()*.14,h:.035+Math.random()*.05,
-    spd:.007+Math.random()*.008,
-    alpha:.75+Math.random()*.25,
-    puffs:Array.from({length:5+Math.floor(Math.random()*4)},()=>({
-      dx:(Math.random()-.5)*1.6,dy:Math.random()*.8-.1,r:.45+Math.random()*.55
+  const clouds=Array.from({length:8},()=>({
+    x:Math.random(),y:.04+Math.random()*.42,
+    w:.055+Math.random()*.075,
+    spd:.005+Math.random()*.007,
+    alpha:.88+Math.random()*.12,
+    puffs:Array.from({length:4+Math.floor(Math.random()*4)},()=>({
+      dx:(Math.random()-.5)*2.2,dy:Math.random()*.7,r:.5+Math.random()*.6
     }))
   }));
   const birds=Array.from({length:14},()=>({
@@ -2458,17 +2473,33 @@ document.addEventListener("click", e=>{
 
     /* ---- MODE JOUR ---- */
     if(document.body.classList.contains('light-mode')){
+      /* Ciel */
+      const sky=ctx.createLinearGradient(0,0,0,H);
+      sky.addColorStop(0,'#2e8ec8');
+      sky.addColorStop(.25,'#4aaee0');
+      sky.addColorStop(.6,'#78c8e8');
+      sky.addColorStop(1,'#aaddee');
+      ctx.globalAlpha=1;ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
       /* Nuages */
       clouds.forEach(c=>{
-        const cx=c.x*W,cy=c.y*H,cw=c.w*W,ch=c.h*H;
+        const cx=c.x*W,cy=c.y*H,cw=c.w*W;
+        /* ombre portée légère */
         c.puffs.forEach(p=>{
-          const px=cx+p.dx*cw*.45,py=cy+p.dy*ch;
-          const pr=cw*.22*p.r;
+          const px=cx+p.dx*cw*.44,py=cy+p.dy*cw*.18+cw*.06;
+          const pr=cw*.19*p.r;
+          ctx.globalAlpha=.10;
+          ctx.beginPath();ctx.ellipse(px,py+pr*.35,pr*.9,pr*.28,0,0,Math.PI*2);
+          ctx.fillStyle='#1a4a6a';ctx.fill();
+        });
+        /* corps du nuage */
+        c.puffs.forEach(p=>{
+          const px=cx+p.dx*cw*.44,py=cy+p.dy*cw*.18;
+          const pr=cw*.19*p.r;
           ctx.globalAlpha=c.alpha;
-          const g=ctx.createRadialGradient(px,py-pr*.1,0,px,py,pr);
+          const g=ctx.createRadialGradient(px,py-pr*.15,pr*.05,px,py,pr);
           g.addColorStop(0,'rgba(255,255,255,1)');
-          g.addColorStop(.6,'rgba(240,248,255,.88)');
-          g.addColorStop(1,'rgba(220,235,250,0)');
+          g.addColorStop(.5,'rgba(245,252,255,.95)');
+          g.addColorStop(1,'rgba(210,235,250,0)');
           ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);
           ctx.fillStyle=g;ctx.fill();
         });

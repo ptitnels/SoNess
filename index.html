@@ -286,7 +286,7 @@ button{cursor:pointer;}
 .badge-season{border:1px solid rgba(240,194,57,.45);color:#f0c239;background:rgba(240,194,57,.08);animation:demo-glow 2s ease-in-out infinite;}
 
 /* Slots */
-.tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:360px;align-items:stretch;}
+.tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:auto;min-height:0;align-items:flex-start;}
 .slot{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.22rem;cursor:pointer;transition:all .2s;position:relative;}
 .slot-pos{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
 .slot-card{
@@ -517,6 +517,12 @@ button{cursor:pointer;}
   border-color:rgba(240,194,57,.55)!important;
   box-shadow:0 0 22px rgba(240,170,0,.22),0 0 0 1px rgba(240,194,57,.3)!important;
 }
+/* Below-card section (score + match + action) */
+.slot-below{display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.3rem 0 .15rem;width:100%;}
+.slot-score-pill{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;border:1px solid;border-radius:20px;padding:.18rem .65rem;line-height:1.25;letter-spacing:.02em;min-width:46px;text-align:center;}
+.slot-match-score{font-size:.6rem;color:var(--text-muted);letter-spacing:.1em;font-family:'Rajdhani',sans-serif;font-weight:600;}
+.slot-top-action{font-size:.9rem;line-height:1;}
+
 /* Événements sous la carte joueur */
 .slot-events{display:flex;gap:6px;justify-content:center;align-items:center;min-height:52px;flex-wrap:wrap;padding:6px 4px;}
 .slot-event{
@@ -814,6 +820,18 @@ body.light-mode .page-sub{color:var(--text-muted)!important;}
 .streak-proj-note.danger{color:var(--error);}
 .streak-proj-note::before{content:'◆';font-size:.45rem;}
 
+/* ============================================================  STREAK ACHIEVED PILL  */
+.streak-achieved-pill{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;width:100%;padding:.35rem .7rem;border-radius:20px;border:1px solid;font-size:.65rem;font-weight:700;letter-spacing:.06em;margin-top:.45rem;box-sizing:border-box;}
+
+/* ============================================================  GW STREAK SUMMARY  */
+.gw-streak-summary{background:rgba(12,18,35,.8);border:1px solid rgba(105,145,232,.15);border-radius:10px;padding:.6rem .85rem;margin-bottom:.85rem;}
+.gws-title{font-size:.58rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.45rem;display:flex;align-items:center;gap:.35rem;}
+.gws-rows{display:flex;flex-direction:column;gap:0;}
+.gws-row{display:grid;grid-template-columns:1.4rem 1fr auto;align-items:center;gap:.5rem;padding:.28rem 0;border-bottom:1px solid rgba(105,145,232,.07);font-size:.7rem;}
+.gws-row:last-child{border-bottom:none;}
+.gws-name{color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:.4rem;border-left:2px solid;}
+.gws-info{font-size:.64rem;text-align:right;white-space:nowrap;}
+
 /* ============================================================  LIVE TIMELINE  */
 .live-timeline{display:flex;gap:.4rem;flex-wrap:wrap;padding:.5rem 1.1rem .65rem;border-top:1px solid var(--border);}
 .lt-evt{display:inline-flex;align-items:center;gap:.25rem;background:rgba(105,145,232,.07);border:1px solid rgba(105,145,232,.18);border-radius:4px;padding:.2rem .45rem;font-size:.62rem;}
@@ -1039,6 +1057,7 @@ body.light-mode .page-sub{color:var(--text-muted)!important;}
   <div class="comp-tabs-wrap" id="compTabsWrap">
     <div class="comp-tabs" id="compTabsDynamic"></div>
   </div>
+  <div id="gwStreakSummary" style="display:none;"></div>
   <div class="teams-grid" id="teamsGrid"></div>
 </section>
 
@@ -1767,6 +1786,36 @@ function buildCompTabs(){
   });
 }
 
+/* Couleur lissée rouge→jaune→vert selon le score brut */
+function liveScoreColor(score){
+  const s=Math.max(0,Math.min(100,score||0));
+  let h;
+  if(s<=40)      h=0;
+  else if(s<=65) h=Math.round((s-40)/25*60);
+  else           h=Math.round(60+(s-65)/35*60);
+  const sat=s<40?70:80;
+  const lig=s<40?50:s<65?52:46;
+  return `hsl(${h},${sat}%,${lig}%)`;
+}
+
+/* Résultat de match déterministe basé sur cardId + liveScore */
+function getMatchScore(cardId,liveScore){
+  const h1=(cardId*7+liveScore*11)%17;
+  const h2=(cardId*13+liveScore*7)%13;
+  if(liveScore>=80){ const g=1+(h1%2); return `${g}–0`; }
+  if(liveScore>=65){ return h2<6?`1–0`:h2<10?`${1+h1%1}–${h1%1+1}`:`1–1`; }
+  if(liveScore>=52){ return h2<5?`0–0`:h2<9?`1–1`:`${h2%2}–${1+h2%2}`; }
+  return `0–${1+(h2%2)}`;
+}
+
+/* Action la plus notable d'un slot (première dans EV_ORDER) */
+function topAction(ev){
+  for(const key of EV_ORDER){
+    if(ev[key]) return {icon:SORARE_EVENTS[key].icon,type:SORARE_EVENTS[key].type,label:SORARE_EVENTS[key].label};
+  }
+  return null;
+}
+
 /* Génère les événements de match d'un slot (démo déterministe via seed) */
 /* ── Définitions officielles Sorare ─────────────────────────────────────── */
 const SORARE_EVENTS={
@@ -1847,6 +1896,7 @@ function slotEventsHTML(ev){
 function renderBuilder(){
   buildCompTabs();
   updateQuickStats();
+  renderGWSummary();
   const grid=document.getElementById("teamsGrid");
   grid.innerHTML="";
 
@@ -1916,24 +1966,29 @@ function renderBuilder(){
         if(team.locked){
           /* ── Premium mini card (locked state) ── */
           const scoreNum=s.done?s.liveScore:null;
-          const scoreColor=scoreNum!==null?(scoreNum>=c.avg*1.06?'#6bc78b':scoreNum>=c.avg*.88?'#f0c239':'#e05252'):col;
+          const scoreColor=scoreNum!==null?liveScoreColor(scoreNum):col;
           const ev=getSlotEvents(s,c);
+          const act=topAction(ev);
+          const mScore=s.done&&scoreNum!==null?getMatchScore(c.id,scoreNum):'';
           const capBadge=isCap?`<div style="position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ffe97a,#d4920a);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;color:#2a1500;z-index:5;box-shadow:0 0 14px rgba(240,170,0,.7),0 0 0 2px rgba(240,194,57,.45);">C</div>`:"";
           if(c.image){
             return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
               <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
-              <div class="slot-card" style="border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a${isCap?',0 0 24px rgba(240,170,0,.25)':''};flex:0 0 auto;height:233px;width:150px;padding:0;overflow:hidden;position:relative;">
+              <div class="slot-card" style="border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a${isCap?',0 0 24px rgba(240,170,0,.25)':''};flex:0 0 auto;height:195px;width:130px;padding:0;overflow:hidden;position:relative;">
                 <img src="${c.image}" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
-                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:5px 6px 4px;">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-end;">
-                    <span style="font-family:'Rajdhani',sans-serif;font-size:.62rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em;">${c.player.split(' ').slice(-1)[0]}</span>
-                    ${scoreNum!==null?`<span style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:${scoreColor};">${scoreNum}</span>`:''}
-                  </div>
+                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:4px 6px 5px;">
+                  <span style="font-family:'Rajdhani',sans-serif;font-size:.62rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em;">${c.player.split(' ').slice(-1)[0]}</span>
                 </div>
                 ${capBadge}
                 <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${col};opacity:.8;z-index:2;"></div>
               </div>
-              ${slotEventsHTML(ev)}</div>`;
+              <div class="slot-below">
+                ${scoreNum!==null
+                  ?`<div class="slot-score-pill" style="color:${scoreColor};border-color:${scoreColor}66;background:${scoreColor}18;">${scoreNum}</div>
+                     <div class="slot-match-score">${mScore}</div>
+                     ${act?`<span class="slot-top-action" title="${act.label}">${act.icon}</span>`:''}`
+                  :`<div style="font-size:.75rem;color:var(--text-muted);">⏳</div>`}
+              </div></div>`;
           }
           return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
             <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
@@ -1947,7 +2002,13 @@ function renderBuilder(){
               </div>
               <span style="font-size:.5rem;font-weight:700;color:${snCol};background:${snCol}18;border:1px solid ${snCol}44;border-radius:3px;padding:1px 4px;letter-spacing:.04em;">SN${sn}</span>
             </div>
-            ${slotEventsHTML(ev)}</div>`;
+            <div class="slot-below">
+              ${scoreNum!==null
+                ?`<div class="slot-score-pill" style="color:${scoreColor};border-color:${scoreColor}66;background:${scoreColor}18;">${scoreNum}</div>
+                   <div class="slot-match-score">${mScore}</div>
+                   ${act?`<span class="slot-top-action" title="${act.label}">${act.icon}</span>`:''}`
+                :`<div style="font-size:.75rem;color:var(--text-muted);">⏳</div>`}
+            </div></div>`;
         }
         const ev2=getSlotEvents(s,c);
         return `<div class="slot filled ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative">
@@ -2005,9 +2066,7 @@ function renderBuilder(){
     /* streak projection note */
     let streakProjHTML="";
     if(tiers&&tier){
-      if(score>=tier.pts){
-        streakProjHTML=`<div class="streak-proj-note">Maintiens ce niveau → ${tier.r}</div>`;
-      } else if(allDone){
+      if(allDone&&score<tier.pts){
         streakProjHTML=`<div class="streak-proj-note danger">Palier non atteint · ${tier.pts-score} pts manquants</div>`;
       }
       /* at-risk player warning */
@@ -2100,7 +2159,7 @@ function renderBuilder(){
         </div>
         ${predNoteHTML}
         ${streakProjHTML}
-        <div class="hs-badges">${hsBadgesHTML}</div>
+        ${tiers&&tier?`<div class="streak-achieved-pill" id="sa-${team.id}" style="${pct>=1?`color:${rCol};border-color:${rCol}44;background:${rCol}11`:'display:none'}">🔥 Palier ${tierIdx+1} validé · ${tier.r}</div>`:''}
       </div>
       ${arenaCapHTML}
       <div class="tc-footer">${footerHTML}</div>`;
@@ -2184,6 +2243,35 @@ function renderBuilder(){
   }
   /* Démarrer la simulation live pour les équipes In-Season verrouillées */
   teams.filter(t=>t.inSeason).forEach(t=>startLive(t.id));
+}
+
+function renderGWSummary(){
+  const el=document.getElementById("gwStreakSummary");
+  if(!el) return;
+  const inSeason=teams.filter(t=>t.inSeason&&t.locked&&getHotStreak(t));
+  if(!inSeason.length){el.style.display="none";return;}
+  const rows=inSeason.map(t=>{
+    const tiers=getHotStreak(t);
+    const tierIdx=Math.max(0,Math.min(tiers.length-1,(t.streakLevel||1)-1));
+    const tier=tiers[tierIdx];
+    const score=teamScore(t);
+    const allDone=t.slots.every(s=>!s.cardId||s.done);
+    const rCol=RARITY_COL[t.rarity]||"#6991e8";
+    let ico,infoHTML;
+    if(score>=tier.pts){
+      ico="✅";
+      infoHTML=`<span style="color:var(--success);font-weight:700;">${tier.r}</span>`;
+    } else if(allDone){
+      ico="❌";
+      infoHTML=`<span style="color:#e05252;">−${tier.pts-score} pts</span>`;
+    } else {
+      ico="🔄";
+      infoHTML=`<span style="color:var(--text-muted);">${score} / ${tier.pts} pts</span>`;
+    }
+    return `<div class="gws-row"><span>${ico}</span><span class="gws-name" style="border-color:${rCol};">${t.name}</span><span class="gws-info">${infoHTML}</span></div>`;
+  }).join("");
+  el.style.display="block";
+  el.innerHTML=`<div class="gw-streak-summary"><div class="gws-title">🔥 Hot Streak — GW en cours</div><div class="gws-rows">${rows}</div></div>`;
 }
 
 function updateQuickStats(){
@@ -2286,6 +2374,17 @@ function updateTeamDisplay(teamId){
       fill.classList.remove("no-anim");
     }
     if(pct>=1) triggerCelebration(teamId,team,tiers,tierIdx);
+    /* persistent achieved badge */
+    const saEl=document.getElementById(`sa-${teamId}`);
+    if(saEl&&tier&&pct>=1){
+      const rC=RARITY_COL[team.rarity]||"#6991e8";
+      saEl.style.display="inline-flex";
+      saEl.style.color=rC;
+      saEl.style.borderColor=rC+"44";
+      saEl.style.background=rC+"11";
+      saEl.innerHTML=`🔥 Palier ${tierIdx+1} validé · ${tier.r}`;
+    }
+    renderGWSummary();
   }
 
   const scoreEl=document.getElementById(`score-${teamId}`);

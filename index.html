@@ -277,8 +277,8 @@ button{cursor:pointer;}
 .team-card.locked.rarity-unique::after{background:linear-gradient(90deg,transparent 5%,rgba(212,221,232,.35) 30%,rgba(212,221,232,.7) 50%,rgba(212,221,232,.35) 70%,transparent 95%);}
 .tc-header{padding:1rem 1.25rem;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border);gap:.75rem;}
 .tc-header-left{display:flex;flex-direction:column;gap:.25rem;min-width:0;}
-.tc-name{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tc-comp{font-size:.66rem;color:var(--text-muted);letter-spacing:.05em;}
+.tc-name{font-family:'Rajdhani',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-comp{font-size:.75rem;color:var(--text-muted);letter-spacing:.05em;}
 .tc-badges{display:flex;gap:.4rem;align-items:center;flex-shrink:0;}
 .tc-badge{padding:.22rem .6rem;border-radius:999px;font-size:.6rem;letter-spacing:.18em;font-weight:700;text-transform:uppercase;}
 .badge-open{border:1px solid rgba(34,196,122,.4);color:var(--success);background:rgba(34,196,122,.08);}
@@ -286,7 +286,7 @@ button{cursor:pointer;}
 .badge-season{border:1px solid rgba(240,194,57,.45);color:#f0c239;background:rgba(240,194,57,.08);animation:demo-glow 2s ease-in-out infinite;}
 
 /* Slots */
-.tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:210px;align-items:stretch;}
+.tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:262px;align-items:stretch;}
 .slot{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:.22rem;cursor:pointer;transition:all .2s;position:relative;}
 .slot-pos{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
 .slot-card{
@@ -316,16 +316,16 @@ button{cursor:pointer;}
 /* ============================================================  GAUGE  */
 .tc-gauge-wrap{padding:.9rem 1.25rem 0;}
 .tc-gauge-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.65rem;gap:.5rem;min-width:0;}
-.tc-score-display{font-family:'Rajdhani',sans-serif;font-size:1.65rem;font-weight:700;color:var(--text);flex-shrink:0;letter-spacing:.04em;}
-.tc-score-display small{font-size:.68rem;color:var(--text-muted);font-family:'Nunito Sans',sans-serif;margin-left:.1rem;}
+.tc-score-display{font-family:'Rajdhani',sans-serif;font-size:2.2rem;font-weight:700;color:var(--text);flex-shrink:0;letter-spacing:.04em;}
+.tc-score-display small{font-size:.78rem;color:var(--text-muted);font-family:'Nunito Sans',sans-serif;margin-left:.15rem;}
 .tc-streak-info{text-align:right;min-width:0;flex-shrink:1;}
-.tc-streak-level{font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:700;color:var(--blue-light);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tc-streak-reward{font-size:.7rem;color:var(--text-muted);padding:.15rem 1.25rem .55rem;letter-spacing:.02em;line-height:1.4;}
+.tc-streak-level{font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700;color:var(--blue-light);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-streak-reward{font-size:.8rem;color:var(--text-muted);padding:.2rem 1.25rem .65rem;letter-spacing:.02em;line-height:1.4;}
 .tc-streak-reward span{color:var(--warn);font-weight:700;}
 
 /* Progress track */
 .gauge-outer{position:relative;margin-bottom:.4rem;}
-.gauge-track{position:relative;height:12px;background:rgba(105,145,232,.1);border-radius:999px;overflow:visible;}
+.gauge-track{position:relative;height:16px;background:rgba(105,145,232,.1);border-radius:999px;overflow:visible;}
 .gauge-fill{
   height:100%;border-radius:999px;
   width:var(--pct,0%);
@@ -359,7 +359,7 @@ button{cursor:pointer;}
 
 /* Hot streak badges */
 .hs-badges{display:flex;gap:.35rem;margin-bottom:.9rem;flex-wrap:wrap;}
-.hs-badge{padding:.2rem .55rem;border-radius:3px;font-size:.58rem;letter-spacing:.12em;font-weight:700;text-transform:uppercase;border:1px solid;opacity:.35;transition:all .4s;}
+.hs-badge{padding:.28rem .72rem;border-radius:4px;font-size:.68rem;letter-spacing:.12em;font-weight:700;text-transform:uppercase;border:1px solid;opacity:.35;transition:all .4s;}
 .hs-badge.reached{opacity:1;animation:badge-glow .5s ease;}
 @keyframes badge-glow{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .hs-1{color:#6bc78b;border-color:rgba(107,199,139,.5);background:rgba(107,199,139,.08);}
@@ -500,17 +500,33 @@ button{cursor:pointer;}
 
 /* Captain badge — argent */
 .cap-crown{
-  position:absolute;top:3px;right:3px;
-  width:16px;height:16px;border-radius:50%;
-  background:linear-gradient(135deg,#eef2f8,#b8cce0);
+  position:absolute;top:5px;right:5px;
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,#ffe97a,#d4920a);
   display:grid;place-items:center;
-  font-family:'Rajdhani',sans-serif;font-size:.58rem;font-weight:700;color:#0a1525;
+  font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;color:#2a1500;
   z-index:5;letter-spacing:0;line-height:1;
-  box-shadow:0 0 8px rgba(200,218,240,.55),0 0 0 1px rgba(200,218,240,.28);
+  box-shadow:0 0 14px rgba(240,170,0,.7),0 0 0 2px rgba(240,194,57,.45);
   animation:cap-pop .4s cubic-bezier(.175,.885,.32,1.275) forwards;
 }
 .cap-crown::after{content:'C';}
 @keyframes cap-pop{0%{transform:scale(0);opacity:0}80%{transform:scale(1.25);opacity:1}100%{transform:scale(1);opacity:1}}
+/* Carte capitaine — highlight or */
+.slot.is-captain .slot-card{
+  border-color:rgba(240,194,57,.55)!important;
+  box-shadow:0 0 22px rgba(240,170,0,.22),0 0 0 1px rgba(240,194,57,.3)!important;
+}
+/* Événements sous la carte joueur */
+.slot-events{display:flex;gap:3px;justify-content:center;align-items:center;min-height:28px;flex-wrap:wrap;padding:2px 4px;}
+.slot-event{
+  width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:.78rem;line-height:1;border:1px solid;
+  flex-shrink:0;transition:transform .15s;cursor:default;
+}
+.slot-event:hover{transform:scale(1.2);}
+.slot-event.ev-pos{background:rgba(34,196,122,.14);border-color:rgba(34,196,122,.45);box-shadow:0 0 6px rgba(34,196,122,.18);}
+.slot-event.ev-neg{background:rgba(232,84,84,.14);border-color:rgba(232,84,84,.45);box-shadow:0 0 6px rgba(232,84,84,.18);}
 
 /* Season history sparkline */
 .season-hist{padding:.15rem 1.1rem .75rem;}
@@ -1713,6 +1729,83 @@ function buildCompTabs(){
   });
 }
 
+/* Génère les événements de match d'un slot (démo déterministe via seed) */
+/* ── Définitions officielles Sorare ─────────────────────────────────────── */
+const SORARE_EVENTS={
+  goal:            {icon:'⚽', type:'pos', label:'But'},
+  assist:          {icon:'🦵', type:'pos', label:'Passe décisive'},
+  penaltyWon:      {icon:'🎯', type:'pos', label:'Penalty obtenu'},
+  clearanceLine:   {icon:'🛡️', type:'pos', label:'Dégagement sur la ligne'},
+  cleanSheet:      {icon:'🧤', type:'pos', label:'Clean Sheet (GK)'},
+  penaltySave:     {icon:'✋', type:'pos', label:'Arrêt de penalty'},
+  lastManTackle:   {icon:'💪', type:'pos', label:'Dernier défenseur'},
+  redCard:         {icon:'🟥', type:'neg', label:'Carton rouge'},
+  ownGoal:         {icon:'😬', type:'neg', label:'CSC'},
+  penaltyConceded: {icon:'🚫', type:'neg', label:'Penalty concédé'},
+  errorGoal:       {icon:'⚠️', type:'neg', label:'Erreur menant à un but'},
+};
+const EV_ORDER=['goal','assist','penaltyWon','clearanceLine','cleanSheet','penaltySave','lastManTackle','redCard','ownGoal','penaltyConceded','errorGoal'];
+
+function getSlotEvents(s,c){
+  if(!s.done||!c||!s.liveScore) return {};
+  const sc=s.liveScore;
+  const h1=(sc*7 +c.id*13)%100;
+  const h2=(sc*11+c.id*17)%100;
+  const isGK =c.pos==='Gardien';
+  const isDEF=c.pos==='Défenseur';
+  const isMID=c.pos==='Milieu';
+  const isATT=c.pos==='Attaquant';
+  const ev={};
+
+  if(!isGK){
+    /* But : ATT > MID > DEF, plus probable avec haut score */
+    const gThr=isATT?82:isMID?88:94;
+    if(sc>=96)                           ev.goal=2;
+    else if(sc>=gThr&&h1<(isATT?72:isMID?52:28)) ev.goal=1;
+
+    /* Passe décisive */
+    if(sc>=90&&!ev.goal)                 ev.assist=1;
+    else if(sc>=80&&h1>=35&&h1<68)       ev.assist=1;
+
+    /* Penalty obtenu (rare) */
+    if(sc>=86&&h2<12)                    ev.penaltyWon=1;
+
+    /* Dégagement sur la ligne (DEF/MID) */
+    if((isDEF||isMID)&&sc>=83&&h2>=84)   ev.clearanceLine=1;
+
+    /* Tackle décisif (DEF) */
+    if(isDEF&&sc>=78&&h2>=76&&h2<90)     ev.lastManTackle=1;
+  }
+
+  if(isGK){
+    /* Clean sheet — GK uniquement (règle officielle Sorare) */
+    if(sc>=75&&h1<58)                    ev.cleanSheet=1;
+    /* Arrêt de penalty */
+    if(sc>=86&&h2<22)                    ev.penaltySave=1;
+  }
+
+  /* Malus — tous postes */
+  if(sc<50&&h1<14)                       ev.redCard=1;
+  if(!isGK&&sc<55&&h2<9)                 ev.ownGoal=1;
+  if(sc<58&&h1>=88)                      ev.penaltyConceded=1;
+  if(sc<52&&h2>=86)                      ev.errorGoal=1;
+
+  return ev;
+}
+
+function slotEventsHTML(ev){
+  if(!ev||!Object.keys(ev).length) return '<div class="slot-events"></div>';
+  let h='';
+  EV_ORDER.forEach(key=>{
+    const val=ev[key]; if(!val) return;
+    const def=SORARE_EVENTS[key];
+    const n=typeof val==='number'?val:1;
+    for(let i=0;i<n;i++)
+      h+=`<span class="slot-event ${def.type==='pos'?'ev-pos':'ev-neg'}" title="${def.label}">${def.icon}</span>`;
+  });
+  return `<div class="slot-events">${h}</div>`;
+}
+
 function renderBuilder(){
   buildCompTabs();
   updateQuickStats();
@@ -1786,20 +1879,23 @@ function renderBuilder(){
           /* ── Premium mini card (locked state) ── */
           const scoreNum=s.done?s.liveScore:null;
           const scoreColor=scoreNum!==null?(scoreNum>=c.avg*1.06?'#6bc78b':scoreNum>=c.avg*.88?'#f0c239':'#e05252'):col;
-          return `<div class="slot filled locked-slot" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
-            <div class="slot-pos" style="color:${col};font-size:.48rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
-            <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${col}60;box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a;gap:.15rem;">
+          const ev=getSlotEvents(s,c);
+          return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
+            <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
+            <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a${isCap?',0 0 24px rgba(240,170,0,.25)':''};gap:.2rem;flex:1;">
               <div class="slot-rarity-bar" style="background:${col};opacity:.55;height:3px;"></div>
-              ${isCap?`<div style="position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#eef2f8,#b8cce0);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-size:.58rem;font-weight:700;color:#0a1525;z-index:5;box-shadow:0 0 8px rgba(200,218,240,.5),0 0 0 1px rgba(200,218,240,.28);">C</div>`:""}
-              <div style="font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;color:${col};letter-spacing:.02em;line-height:1;margin-top:.25rem;">${c.initials}</div>
-              <div style="font-size:.52rem;letter-spacing:.05em;color:rgba(255,255,255,.5);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:90%;text-align:center;">${c.player.split(' ').slice(-1)[0]}</div>
-              <div style="width:32px;height:32px;background:${scoreNum!==null?scoreColor+'25':'rgba(105,145,232,.08)'};border:1px solid ${scoreNum!==null?scoreColor+'66':'rgba(105,145,232,.22)'};border-radius:4px;transform:rotate(45deg);display:grid;place-items:center;margin:.1rem 0;">
-                <span style="transform:rotate(-45deg);font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;color:${scoreNum!==null?scoreColor:'rgba(105,145,232,.5)'};">${scoreNum!==null?scoreNum:'?'}</span>
+              ${isCap?`<div style="position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ffe97a,#d4920a);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;color:#2a1500;z-index:5;box-shadow:0 0 14px rgba(240,170,0,.7),0 0 0 2px rgba(240,194,57,.45);">C</div>`:""}
+              <div style="font-family:'Rajdhani',sans-serif;font-size:1.45rem;font-weight:700;color:${col};letter-spacing:.02em;line-height:1;margin-top:.3rem;">${c.initials}</div>
+              <div style="font-size:.6rem;letter-spacing:.05em;color:rgba(255,255,255,.6);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:90%;text-align:center;">${c.player.split(' ').slice(-1)[0]}</div>
+              <div style="width:40px;height:40px;background:${scoreNum!==null?scoreColor+'25':'rgba(105,145,232,.08)'};border:1px solid ${scoreNum!==null?scoreColor+'66':'rgba(105,145,232,.22)'};border-radius:4px;transform:rotate(45deg);display:grid;place-items:center;margin:.15rem 0;">
+                <span style="transform:rotate(-45deg);font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:${scoreNum!==null?scoreColor:'rgba(105,145,232,.5)'};">${scoreNum!==null?scoreNum:'?'}</span>
               </div>
-              <span style="font-size:.44rem;font-weight:700;color:${snCol};background:${snCol}18;border:1px solid ${snCol}44;border-radius:3px;padding:1px 3px;letter-spacing:.04em;">SN${sn}</span>
-            </div></div>`;
+              <span style="font-size:.5rem;font-weight:700;color:${snCol};background:${snCol}18;border:1px solid ${snCol}44;border-radius:3px;padding:1px 4px;letter-spacing:.04em;">SN${sn}</span>
+            </div>
+            ${slotEventsHTML(ev)}</div>`;
         }
-        return `<div class="slot filled" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative">
+        const ev2=getSlotEvents(s,c);
+        return `<div class="slot filled ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative">
           <div class="slot-pos">${s.pos}</div>
           <div class="slot-card">
             <div class="slot-rarity-bar" style="background:${col};opacity:.6;"></div>
@@ -1809,7 +1905,8 @@ function renderBuilder(){
             <div class="slot-score" style="color:${col}">${s.done?s.liveScore:"⏳"}</div>
             <span class="sn-badge" style="position:absolute;top:3px;left:3px;font-size:.5rem;min-width:20px;height:16px;padding:0 2px;background:${snCol}22;color:${snCol};border-color:${snCol}55;">${sn}</span>
             ${md?`<div class="matchday-chip">${md}</div>`:''}
-          </div></div>`;
+          </div>
+          ${slotEventsHTML(ev2)}</div>`;
       }
       return `<div class="slot ${team.locked?"locked-slot":""}" data-pos="${s.pos}" data-slot-idx="${si}">
         <div class="slot-pos">${s.pos}</div>

@@ -160,7 +160,7 @@ button{cursor:pointer;}
 /* ============================================================  PAGE HEADER  */
 .page-header{margin-bottom:1.5rem;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;max-width:1300px;width:100%;margin-inline:auto;}
 .page-eyebrow{font-size:.6rem;letter-spacing:.42em;color:var(--blue-light);text-transform:uppercase;font-weight:600;margin-bottom:.25rem;}
-.page-title{font-family:'Antonio',sans-serif;font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;background:linear-gradient(160deg,#ffffff 0%,#c0d8f8 55%,#6991e8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.05em;}
+.page-title{font-family:'Antonio',sans-serif;font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;color:#ffffff;letter-spacing:.05em;text-shadow:0 0 40px rgba(255,255,255,.9),0 0 80px rgba(210,225,255,.45),0 0 160px rgba(168,196,245,.18),0 2px 10px rgba(0,0,0,.85);}
 .page-sub{font-size:.76rem;color:var(--text-muted);margin-top:.2rem;letter-spacing:.03em;}
 
 /* ============================================================  CLUB PAGE  */
@@ -315,9 +315,9 @@ button{cursor:pointer;}
 .tc-gauge-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.65rem;gap:.5rem;min-width:0;}
 .tc-score-display{font-family:'Antonio',sans-serif;font-size:1.65rem;font-weight:700;color:var(--text);flex-shrink:0;letter-spacing:.04em;}
 .tc-score-display small{font-size:.68rem;color:var(--text-muted);font-family:'Space Grotesk',sans-serif;margin-left:.1rem;}
-.tc-streak-info{text-align:right;min-width:0;overflow:hidden;}
-.tc-streak-level{font-family:'Antonio',sans-serif;font-size:.75rem;font-weight:700;color:var(--blue-light);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tc-streak-reward{font-size:.62rem;color:var(--text-muted);margin-top:.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-streak-info{text-align:right;min-width:0;overflow:hidden;flex-shrink:1;}
+.tc-streak-level{font-family:'Antonio',sans-serif;font-size:.75rem;font-weight:700;color:var(--blue-light);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-streak-reward{font-size:.65rem;color:var(--text-muted);margin-top:.12rem;line-height:1.4;overflow:hidden;word-break:break-word;letter-spacing:.01em;}
 .tc-streak-reward span{color:var(--warn);font-weight:700;}
 
 /* Progress track */
@@ -495,9 +495,19 @@ button{cursor:pointer;}
 .gauge-predict-line{width:100%;height:100%;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.65) 0,rgba(255,255,255,.65) 3px,transparent 3px,transparent 6px);border-radius:1px;}
 .gauge-predict-lbl{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);font-size:.52rem;letter-spacing:.05em;color:rgba(255,255,255,.75);white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;background:rgba(10,15,25,.75);padding:1px 4px;border-radius:3px;}
 
-/* Captain crown */
-.cap-crown{position:absolute;top:-10px;right:-3px;font-size:1rem;animation:crown-pop .5s cubic-bezier(.175,.885,.32,1.275) forwards;filter:drop-shadow(0 0 6px rgba(240,194,57,.9));z-index:5;line-height:1;}
-@keyframes crown-pop{0%{transform:scale(0) rotate(-25deg);opacity:0}80%{transform:scale(1.25) rotate(6deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+/* Captain badge — argent */
+.cap-crown{
+  position:absolute;top:3px;right:3px;
+  width:16px;height:16px;border-radius:50%;
+  background:linear-gradient(135deg,#eef2f8,#b8cce0);
+  display:grid;place-items:center;
+  font-family:'Antonio',sans-serif;font-size:.58rem;font-weight:700;color:#0a1525;
+  z-index:5;letter-spacing:0;line-height:1;
+  box-shadow:0 0 8px rgba(200,218,240,.55),0 0 0 1px rgba(200,218,240,.28);
+  animation:cap-pop .4s cubic-bezier(.175,.885,.32,1.275) forwards;
+}
+.cap-crown::after{content:'C';}
+@keyframes cap-pop{0%{transform:scale(0);opacity:0}80%{transform:scale(1.25);opacity:1}100%{transform:scale(1);opacity:1}}
 
 /* Season history sparkline */
 .season-hist{padding:.15rem 1.1rem .75rem;}
@@ -634,24 +644,29 @@ button{cursor:pointer;}
 
 /* ============================================================  CAPTAIN CROWN  */
 .slot-crown{
-  position:absolute;top:-8px;left:50%;transform:translateX(-50%);
-  font-size:14px;
-  animation:crown-drop .5s cubic-bezier(.175,.885,.32,1.275) forwards;
-  z-index:5;
-  filter:drop-shadow(0 0 6px rgba(240,194,57,.8));
+  position:absolute;top:3px;right:3px;
+  width:16px;height:16px;border-radius:50%;
+  background:linear-gradient(135deg,#eef2f8,#b8cce0);
+  display:grid;place-items:center;
+  font-family:'Antonio',sans-serif;font-size:.58rem;font-weight:700;color:#0a1525;
+  z-index:5;letter-spacing:0;line-height:1;
+  box-shadow:0 0 8px rgba(200,218,240,.55);
+  animation:crown-drop .45s cubic-bezier(.175,.885,.32,1.275) forwards;
 }
+.slot-crown::after{content:'C';}
 @keyframes crown-drop{
-  0%{transform:translateX(-50%) translateY(-14px) scale(.5);opacity:0;}
-  100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1;}
+  0%{transform:scale(0);opacity:0;}
+  80%{transform:scale(1.2);opacity:1;}
+  100%{transform:scale(1);opacity:1;}
 }
 .slot.captain-assigned .slot-card{
-  border-color:rgba(240,194,57,.7)!important;
-  box-shadow:0 0 14px rgba(240,194,57,.3);
+  border-color:rgba(200,218,240,.65)!important;
+  box-shadow:0 0 14px rgba(200,218,240,.28);
   animation:cap-flash .6s ease;
 }
 @keyframes cap-flash{
-  0%{background:rgba(240,194,57,.25);}
-  100%{background:var(--slot-bg,rgba(105,145,232,.04));}
+  0%{background:rgba(200,218,240,.18);}
+  100%{background:rgba(255,255,255,.02);}
 }
 
 @media(max-width:768px){.teams-grid{grid-template-columns:1fr;}.cards-grid{grid-template-columns:repeat(2,1fr);gap:.7rem;}.screen.app-screen{padding-bottom:2rem;}.modal-stats-grid{grid-template-columns:repeat(2,1fr);}}
@@ -1091,6 +1106,21 @@ const DEMO_CARDS = [
   {id:22, player:"Antoine Griezmann",       initials:"GR", club:"Atlético Madrid",   pos:"Attaquant", rarity:"limited",    gw:70, avg:63.5, apps:26, form:[65,68,72,68,70], home:true,  opp:3, gpg:0.28, apg:0.22, value:22},
   {id:23, player:"Jamal Musiala",           initials:"JM", club:"Bayern Munich",     pos:"Milieu",    rarity:"rare",       gw:79, avg:67.9, apps:27, form:[74,78,82,76,80], home:true,  opp:2, gpg:0.22, apg:0.30, value:48},
   {id:24, player:"Bernardo Silva",          initials:"BS", club:"Manchester City",   pos:"Milieu",    rarity:"limited",    gw:63, avg:61.2, apps:29, form:[56,62,64,60,64], home:false, opp:3, gpg:0.10, apg:0.18, value:18},
+  /* === Joueurs supplémentaires (démo étendue) === */
+  {id:25, player:"Ederson",                 initials:"ED", club:"Manchester City",   pos:"Gardien",   rarity:"limited",    gw:72, avg:65.4, apps:27, form:[66,70,74,68,72], home:false, opp:3, gpg:0,    apg:0,    value:18},
+  {id:26, player:"Virgil van Dijk",          initials:"VD", club:"Liverpool",         pos:"Défenseur", rarity:"rare",       gw:78, avg:69.2, apps:29, form:[72,76,80,74,78], home:true,  opp:2, gpg:0.06, apg:0.04, value:38},
+  {id:27, player:"Kevin De Bruyne",          initials:"KB", club:"Manchester City",   pos:"Milieu",    rarity:"unique",     gw:86, avg:74.5, apps:24, form:[80,82,88,84,90], home:false, opp:3, gpg:0.15, apg:0.42, value:160},
+  {id:28, player:"Bruno Fernandes",          initials:"BF", club:"Manchester United", pos:"Milieu",    rarity:"rare",       gw:75, avg:68.3, apps:28, form:[68,74,78,72,76], home:false, opp:3, gpg:0.22, apg:0.32, value:44},
+  {id:29, player:"Rafael Leão",              initials:"RL", club:"AC Milan",          pos:"Attaquant", rarity:"limited",    gw:80, avg:70.1, apps:26, form:[74,78,82,76,80], home:false, opp:2, gpg:0.38, apg:0.28, value:26},
+  {id:30, player:"Darwin Núñez",             initials:"DN", club:"Liverpool",         pos:"Attaquant", rarity:"limited",    gw:68, avg:61.8, apps:25, form:[60,66,72,64,68], home:true,  opp:2, gpg:0.44, apg:0.16, value:22},
+  {id:31, player:"Declan Rice",              initials:"DR", club:"Arsenal",           pos:"Milieu",    rarity:"rare",       gw:73, avg:66.7, apps:30, form:[68,72,74,70,74], home:false, opp:4, gpg:0.08, apg:0.18, value:40},
+  {id:32, player:"Joshua Kimmich",           initials:"JK", club:"Bayern Munich",     pos:"Milieu",    rarity:"super_rare", gw:81, avg:72.3, apps:28, form:[74,78,84,80,82], home:true,  opp:2, gpg:0.12, apg:0.36, value:88},
+  {id:33, player:"Achraf Hakimi",            initials:"AH", club:"Paris SG",          pos:"Défenseur", rarity:"rare",       gw:76, avg:67.8, apps:27, form:[70,74,78,74,78], home:true,  opp:3, gpg:0.12, apg:0.28, value:42},
+  {id:34, player:"Ousmane Dembélé",          initials:"OD", club:"Paris SG",          pos:"Attaquant", rarity:"limited",    gw:74, avg:64.5, apps:24, form:[66,72,76,70,74], home:true,  opp:3, gpg:0.20, apg:0.38, value:24},
+  {id:35, player:"Theo Hernandez",           initials:"TH", club:"AC Milan",          pos:"Défenseur", rarity:"limited",    gw:70, avg:63.8, apps:26, form:[62,68,72,66,70], home:false, opp:2, gpg:0.10, apg:0.22, value:20},
+  {id:36, player:"Ansu Fati",                initials:"AF", club:"FC Barcelone",      pos:"Attaquant", rarity:"limited",    gw:61, avg:58.2, apps:18, form:[52,58,64,58,62], home:false, opp:4, gpg:0.18, apg:0.15, value:16},
+  {id:37, player:"Thibaut Courtois",         initials:"TC", club:"Real Madrid",       pos:"Gardien",   rarity:"super_rare", gw:80, avg:72.5, apps:25, form:[74,78,82,76,80], home:true,  opp:2, gpg:0,    apg:0,    value:82},
+  {id:38, player:"Antonio Rüdiger",          initials:"AR", club:"Real Madrid",       pos:"Défenseur", rarity:"super_rare", gw:74, avg:66.8, apps:28, form:[68,72,76,70,74], home:true,  opp:2, gpg:0.06, apg:0.04, value:72},
 ];
 
 const RARITY_LABELS = {limited:"Limited",rare:"Rare",super_rare:"Super Rare",unique:"Unique"};
@@ -1103,7 +1133,8 @@ const CLUB_MATCHDAY = {
   "Real Madrid":"Mar 20","FC Barcelone":"Mar 20","Atlético Madrid":"Mer 21",
   "Arsenal":"Jeu 22","Manchester City":"Mer 21","Liverpool":"Mer 21",
   "Bayern Munich":"Sam 24","Bayer Leverkusen":"Jeu 22",
-  "Manchester United":"Dim 25","Tottenham":"Dim 25","AC Milan":"Jeu 22"
+  "Manchester United":"Dim 25","Tottenham":"Dim 25","AC Milan":"Jeu 22",
+  "Paris SG":"Mar 20"
 };
 
 function computeScoreNess(card){
@@ -1230,6 +1261,81 @@ const DEMO_TEAMS = [
       {pos:"MID", cardId:4,  liveScore:74, done:true},
       {pos:"ATT", cardId:6,  liveScore:71, done:false},
       {pos:"ANY", cardId:8,  liveScore:0,  done:false},
+    ]
+  },
+  /* === Équipes démo — cas de test Hot Streak === */
+  /* Cas 1 : Limited PL, tous terminés, Palier 1 ATTEINT (413 pts > 360) */
+  {
+    id:5, name:"City Attack", rarity:"limited", comp:"premier_league", streakLevel:1,
+    locked:true, inSeason:true, captain:34,
+    slots:[
+      {pos:"GK",  cardId:25, liveScore:75, done:true},
+      {pos:"DEF", cardId:13, liveScore:70, done:true},
+      {pos:"MID", cardId:17, liveScore:82, done:true},
+      {pos:"ATT", cardId:29, liveScore:78, done:true},
+      {pos:"ANY", cardId:34, liveScore:72, done:true},
+    ]
+  },
+  /* Cas 2 : Rare Bundesliga, tous terminés, Palier 1 MANQUÉ (273 pts < 400) */
+  {
+    id:6, name:"Bundesliga Galère", rarity:"rare", comp:"bundesliga", streakLevel:1,
+    locked:true, inSeason:true, captain:14,
+    slots:[
+      {pos:"GK",  cardId:15, liveScore:50, done:true},
+      {pos:"DEF", cardId:14, liveScore:48, done:true},
+      {pos:"MID", cardId:4,  liveScore:55, done:true},
+      {pos:"ATT", cardId:6,  liveScore:52, done:true},
+      {pos:"ANY", cardId:11, liveScore:44, done:true},
+    ]
+  },
+  /* Cas 3 : Super Rare PL, EN COURS — 3/5 terminés, 2 en attente */
+  {
+    id:7, name:"Madrid SR", rarity:"super_rare", comp:"premier_league", streakLevel:2,
+    locked:true, inSeason:true, captain:5,
+    slots:[
+      {pos:"GK",  cardId:37, liveScore:80, done:true},
+      {pos:"DEF", cardId:38, liveScore:74, done:true},
+      {pos:"MID", cardId:5,  liveScore:91, done:true},
+      {pos:"ATT", cardId:3,  liveScore:0,  done:false},
+      {pos:"ANY", cardId:7,  liveScore:0,  done:false},
+    ]
+  },
+  /* Cas 4 : Rare Ligue 1, tous terminés, Palier 3 ATTEINT (465 pts > 440) */
+  {
+    id:8, name:"Ligue 1 Flammes", rarity:"rare", comp:"ligue_1", streakLevel:3,
+    locked:true, inSeason:true, captain:23,
+    slots:[
+      {pos:"GK",  cardId:15, liveScore:86, done:true},
+      {pos:"DEF", cardId:26, liveScore:84, done:true},
+      {pos:"MID", cardId:23, liveScore:90, done:true},
+      {pos:"ATT", cardId:20, liveScore:88, done:true},
+      {pos:"ANY", cardId:28, liveScore:72, done:true},
+    ]
+  },
+  /* Cas 5 : Limited MLS, EN COURS — 1/5 terminé */
+  {
+    id:9, name:"MLS Attack", rarity:"limited", comp:"mls", streakLevel:2,
+    locked:true, inSeason:true, captain:30,
+    slots:[
+      {pos:"GK",  cardId:25, liveScore:68, done:true},
+      {pos:"DEF", cardId:35, liveScore:0,  done:false},
+      {pos:"MID", cardId:24, liveScore:0,  done:false},
+      {pos:"ATT", cardId:30, liveScore:0,  done:false},
+      {pos:"ANY", cardId:36, liveScore:0,  done:false},
+    ]
+  },
+  /* Cas 6 : Rare Classic Champion Europe, verrouillée avant GW */
+  {
+    id:10, name:"All Stars Classic", rarity:"rare", comp:"champion_europe", streakLevel:1,
+    locked:true, inSeason:false, captain:28,
+    slots:[
+      {pos:"GK",  cardId:26, liveScore:0, done:false},
+      {pos:"DEF", cardId:33, liveScore:0, done:false},
+      {pos:"DEF", cardId:31, liveScore:0, done:false},
+      {pos:"MID", cardId:28, liveScore:0, done:false},
+      {pos:"MID", cardId:20, liveScore:0, done:false},
+      {pos:"ATT", cardId:6,  liveScore:0, done:false},
+      {pos:"ANY", cardId:29, liveScore:0, done:false},
     ]
   }
 ];
@@ -1607,7 +1713,7 @@ function renderBuilder(){
             <div class="slot-pos" style="color:${col};font-size:.48rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
             <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${col}60;box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a;gap:.15rem;">
               <div class="slot-rarity-bar" style="background:${col};opacity:.55;height:3px;"></div>
-              ${isCap?`<div style="position:absolute;top:-9px;right:-2px;font-size:.95rem;line-height:1;z-index:5;filter:drop-shadow(0 0 5px rgba(240,194,57,.9));">👑</div>`:""}
+              ${isCap?`<div style="position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#eef2f8,#b8cce0);display:grid;place-items:center;font-family:'Antonio',sans-serif;font-size:.58rem;font-weight:700;color:#0a1525;z-index:5;box-shadow:0 0 8px rgba(200,218,240,.5),0 0 0 1px rgba(200,218,240,.28);">C</div>`:""}
               <div style="font-family:'Antonio',sans-serif;font-size:1.15rem;font-weight:700;color:${col};letter-spacing:.02em;line-height:1;margin-top:.25rem;">${c.initials}</div>
               <div style="font-size:.52rem;letter-spacing:.05em;color:rgba(255,255,255,.5);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:90%;text-align:center;">${c.player.split(' ').slice(-1)[0]}</div>
               <div style="width:32px;height:32px;background:${scoreNum!==null?scoreColor+'25':'rgba(105,145,232,.08)'};border:1px solid ${scoreNum!==null?scoreColor+'66':'rgba(105,145,232,.22)'};border-radius:4px;transform:rotate(45deg);display:grid;place-items:center;margin:.1rem 0;">
@@ -1620,7 +1726,7 @@ function renderBuilder(){
           <div class="slot-pos">${s.pos}</div>
           <div class="slot-card">
             <div class="slot-rarity-bar" style="background:${col};opacity:.6;"></div>
-            ${isCap?`<div class="cap-crown">👑</div>`:""}
+            ${isCap?`<div class="cap-crown"></div>`:""}
             <div class="slot-initials" style="color:${col}">${c.initials}</div>
             <div class="slot-name">${c.player.split(" ").slice(-1)[0]}</div>
             <div class="slot-score" style="color:${col}">${s.done?s.liveScore:"⏳"}</div>
@@ -1752,7 +1858,7 @@ function renderBuilder(){
           <div class="tc-score-display" id="score-${team.id}">${score} <small>pts</small></div>
           <div class="tc-streak-info">
             <div class="tc-streak-level">${tiers?`🔥 Streak Niveau ${team.streakLevel}/5`:`${isArena?"🏟️ Arena":"📦 Compétition Classic"}`}</div>
-            <div class="tc-streak-reward">${tier?`Objectif : ${tier.pts} pts → <span>${tier.r}</span>`:`Cartes · Essence · XP`}</div>
+            <div class="tc-streak-reward">${tier?`${tier.pts} pts → <span>${tier.r}</span>`:`Cartes · Essence · XP`}</div>
           </div>
         </div>
         <div class="gauge-outer">
@@ -2234,7 +2340,6 @@ function animateCaptainCrown(teamId, newCaptainId){
     slots[slotIdx].classList.add("captain-assigned");
     const crown=document.createElement("div");
     crown.className="slot-crown";
-    crown.textContent="👑";
     slots[slotIdx].querySelector(".slot-card")?.appendChild(crown);
   }
 }

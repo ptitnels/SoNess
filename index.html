@@ -518,11 +518,11 @@ button{cursor:pointer;}
   box-shadow:0 0 22px rgba(240,170,0,.22),0 0 0 1px rgba(240,194,57,.3)!important;
 }
 /* Événements sous la carte joueur */
-.slot-events{display:flex;gap:3px;justify-content:center;align-items:center;min-height:28px;flex-wrap:wrap;padding:2px 4px;}
+.slot-events{display:flex;gap:5px;justify-content:center;align-items:center;min-height:40px;flex-wrap:wrap;padding:4px 4px;}
 .slot-event{
-  width:22px;height:22px;border-radius:50%;
+  width:36px;height:36px;border-radius:50%;
   display:grid;place-items:center;
-  font-size:.78rem;line-height:1;border:1px solid;
+  font-size:1.25rem;line-height:1;border:1px solid;
   flex-shrink:0;transition:transform .15s;cursor:default;
 }
 .slot-event:hover{transform:scale(1.2);}
@@ -1203,6 +1203,12 @@ const DEMO_CARDS = [
   {id:36, player:"Ansu Fati",                initials:"AF", club:"FC Barcelone",      pos:"Attaquant", rarity:"limited",    gw:61, avg:58.2, apps:18, form:[52,58,64,58,62], home:false, opp:4, gpg:0.18, apg:0.15, value:16},
   {id:37, player:"Thibaut Courtois",         initials:"TC", club:"Real Madrid",       pos:"Gardien",   rarity:"super_rare", gw:80, avg:72.5, apps:25, form:[74,78,82,76,80], home:true,  opp:2, gpg:0,    apg:0,    value:82},
   {id:38, player:"Antonio Rüdiger",          initials:"AR", club:"Real Madrid",       pos:"Défenseur", rarity:"super_rare", gw:74, avg:66.8, apps:28, form:[68,72,76,70,74], home:true,  opp:2, gpg:0.06, apg:0.04, value:72},
+  /* === Cartes réelles (test rendu) === */
+  {id:39, player:"Mathew Ryan",             initials:"MR", club:"Levante",           pos:"Gardien",   rarity:"unique",     gw:33, avg:55.0, apps:20, form:[50,55,60,52,56], home:true,  opp:2, gpg:0,    apg:0,    value:80,  image:"2026-05-18_20h20_26.png"},
+  {id:40, player:"Adrián de la Fuente",     initials:"AF", club:"Levante",           pos:"Défenseur", rarity:"rare",       gw:26, avg:52.0, apps:18, form:[48,52,56,50,54], home:true,  opp:2, gpg:0.05, apg:0.10, value:12,  image:"2026-05-18_20h20_30.png"},
+  {id:41, player:"Fermín López",            initials:"FL", club:"FC Barcelone",      pos:"Milieu",    rarity:"rare",       gw:22, avg:58.0, apps:22, form:[54,58,62,56,60], home:false, opp:3, gpg:0.12, apg:0.18, value:28,  image:"2026-05-18_20h20_34.png"},
+  {id:42, player:"Antoine Griezmann",       initials:"AG", club:"Atlético Madrid",   pos:"Attaquant", rarity:"rare",       gw:33, avg:63.5, apps:26, form:[58,64,68,62,66], home:false, opp:3, gpg:0.28, apg:0.22, value:22,  image:"2026-05-18_20h20_38.png"},
+  {id:43, player:"Pau Cubarsí",             initials:"PC", club:"FC Barcelone",      pos:"Défenseur", rarity:"rare",       gw:18, avg:55.0, apps:24, form:[50,55,58,52,56], home:false, opp:3, gpg:0.04, apg:0.02, value:20,  image:"2026-05-18_20h20_42.png"},
 ];
 
 const RARITY_LABELS = {limited:"Limited",rare:"Rare",super_rare:"Super Rare",unique:"Unique"};
@@ -1431,6 +1437,18 @@ const DEMO_TEAMS = [
       {pos:"ATT", cardId:20, liveScore:88, done:true},
       {pos:"ANY", cardId:28, liveScore:92, done:true},
     ]
+  },
+  /* Cas 8 : Cartes réelles — test rendu images */
+  {
+    id:12, name:"Ma Team", rarity:"rare", comp:"la_liga", streakLevel:1,
+    locked:true, inSeason:true, captain:42,
+    slots:[
+      {pos:"GK",  cardId:39, liveScore:72, done:true},
+      {pos:"DEF", cardId:40, liveScore:65, done:true},
+      {pos:"DEF", cardId:43, liveScore:68, done:true},
+      {pos:"MID", cardId:41, liveScore:75, done:true},
+      {pos:"ATT", cardId:42, liveScore:88, done:true},
+    ]
   }
 ];
 
@@ -1450,7 +1468,14 @@ function saveTeams(){
 function loadTeams(){
   try {
     const saved = localStorage.getItem(gwKey());
-    if(saved){ teams = JSON.parse(saved); return; }
+    if(saved){
+      teams = JSON.parse(saved);
+      if(gwOffset===0){
+        const savedIds = new Set(teams.map(t=>t.id));
+        DEMO_TEAMS.forEach(dt=>{ if(!savedIds.has(dt.id)) teams.push(JSON.parse(JSON.stringify(dt))); });
+      }
+      return;
+    }
   } catch(e){}
   // Pas de save : GW courante → démo, autres → vide
   teams = gwOffset===0
@@ -1893,11 +1918,28 @@ function renderBuilder(){
           const scoreNum=s.done?s.liveScore:null;
           const scoreColor=scoreNum!==null?(scoreNum>=c.avg*1.06?'#6bc78b':scoreNum>=c.avg*.88?'#f0c239':'#e05252'):col;
           const ev=getSlotEvents(s,c);
+          const capBadge=isCap?`<div style="position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ffe97a,#d4920a);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;color:#2a1500;z-index:5;box-shadow:0 0 14px rgba(240,170,0,.7),0 0 0 2px rgba(240,194,57,.45);">C</div>`:"";
+          if(c.image){
+            return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
+              <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
+              <div class="slot-card" style="border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a${isCap?',0 0 24px rgba(240,170,0,.25)':''};flex:0 0 auto;height:145px;padding:0;overflow:hidden;position:relative;">
+                <img src="${c.image}" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:5px 6px 4px;">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+                    <span style="font-family:'Rajdhani',sans-serif;font-size:.62rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em;">${c.player.split(' ').slice(-1)[0]}</span>
+                    ${scoreNum!==null?`<span style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:${scoreColor};">${scoreNum}</span>`:''}
+                  </div>
+                </div>
+                ${capBadge}
+                <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${col};opacity:.8;z-index:2;"></div>
+              </div>
+              ${slotEventsHTML(ev)}</div>`;
+          }
           return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
             <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
             <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a${isCap?',0 0 24px rgba(240,170,0,.25)':''};gap:.2rem;flex:0 0 auto;height:145px;">
               <div class="slot-rarity-bar" style="background:${col};opacity:.55;height:3px;"></div>
-              ${isCap?`<div style="position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ffe97a,#d4920a);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;color:#2a1500;z-index:5;box-shadow:0 0 14px rgba(240,170,0,.7),0 0 0 2px rgba(240,194,57,.45);">C</div>`:""}
+              ${capBadge}
               <div style="font-family:'Rajdhani',sans-serif;font-size:1.45rem;font-weight:700;color:${col};letter-spacing:.02em;line-height:1;margin-top:.3rem;">${c.initials}</div>
               <div style="font-size:.6rem;letter-spacing:.05em;color:rgba(255,255,255,.6);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:90%;text-align:center;">${c.player.split(' ').slice(-1)[0]}</div>
               <div style="width:40px;height:40px;background:${scoreNum!==null?scoreColor+'25':'rgba(105,145,232,.08)'};border:1px solid ${scoreNum!==null?scoreColor+'66':'rgba(105,145,232,.22)'};border-radius:4px;transform:rotate(45deg);display:grid;place-items:center;margin:.15rem 0;">

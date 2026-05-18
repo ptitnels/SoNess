@@ -1883,7 +1883,7 @@ function renderBuilder(){
           const ev=getSlotEvents(s,c);
           return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
             <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
-            <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a${isCap?',0 0 24px rgba(240,170,0,.25)':''};gap:.2rem;">
+            <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a${isCap?',0 0 24px rgba(240,170,0,.25)':''};gap:.2rem;flex:0 0 auto;height:145px;">
               <div class="slot-rarity-bar" style="background:${col};opacity:.55;height:3px;"></div>
               ${isCap?`<div style="position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ffe97a,#d4920a);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;color:#2a1500;z-index:5;box-shadow:0 0 14px rgba(240,170,0,.7),0 0 0 2px rgba(240,194,57,.45);">C</div>`:""}
               <div style="font-family:'Rajdhani',sans-serif;font-size:1.45rem;font-weight:700;color:${col};letter-spacing:.02em;line-height:1;margin-top:.3rem;">${c.initials}</div>

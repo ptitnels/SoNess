@@ -287,7 +287,7 @@ button{cursor:pointer;}
 
 /* Slots */
 .tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:262px;align-items:stretch;}
-.slot{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:.22rem;cursor:pointer;transition:all .2s;position:relative;}
+.slot{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.22rem;cursor:pointer;transition:all .2s;position:relative;}
 .slot-pos{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
 .slot-card{
   width:100%;flex:1;
@@ -310,6 +310,7 @@ button{cursor:pointer;}
 .slot-initials{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--blue-light);}
 .slot-rarity-bar{position:absolute;bottom:0;left:0;right:0;height:2px;}
 .slot-cap-badge{position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:var(--warn);display:grid;place-items:center;font-size:8px;font-weight:700;color:#000;}
+.slot.filled .slot-card{flex:0 0 auto;min-height:130px;}
 .locked-slot{cursor:default;}
 .locked-slot .slot-card{opacity:.92;}
 
@@ -1794,7 +1795,7 @@ function getSlotEvents(s,c){
 }
 
 function slotEventsHTML(ev){
-  if(!ev||!Object.keys(ev).length) return '<div class="slot-events"></div>';
+  if(!ev||!Object.keys(ev).length) return '';
   let h='';
   EV_ORDER.forEach(key=>{
     const val=ev[key]; if(!val) return;
@@ -1882,7 +1883,7 @@ function renderBuilder(){
           const ev=getSlotEvents(s,c);
           return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
             <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>
-            <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a${isCap?',0 0 24px rgba(240,170,0,.25)':''};gap:.2rem;flex:1;">
+            <div class="slot-card" style="background:linear-gradient(165deg,${col}1c,${col}07);border-color:${isCap?'rgba(240,194,57,.55)':col+'60'};box-shadow:0 0 16px ${col}1a,inset 0 0 24px ${col}0a${isCap?',0 0 24px rgba(240,170,0,.25)':''};gap:.2rem;">
               <div class="slot-rarity-bar" style="background:${col};opacity:.55;height:3px;"></div>
               ${isCap?`<div style="position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ffe97a,#d4920a);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;color:#2a1500;z-index:5;box-shadow:0 0 14px rgba(240,170,0,.7),0 0 0 2px rgba(240,194,57,.45);">C</div>`:""}
               <div style="font-family:'Rajdhani',sans-serif;font-size:1.45rem;font-weight:700;color:${col};letter-spacing:.02em;line-height:1;margin-top:.3rem;">${c.initials}</div>

@@ -286,7 +286,7 @@ button{cursor:pointer;}
 .badge-season{border:1px solid rgba(240,194,57,.45);color:#f0c239;background:rgba(240,194,57,.08);animation:demo-glow 2s ease-in-out infinite;}
 
 /* Slots */
-.tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:305px;align-items:stretch;}
+.tc-slots{padding:1rem 1.25rem;display:flex;gap:.7rem;justify-content:space-between;height:360px;align-items:stretch;}
 .slot{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.22rem;cursor:pointer;transition:all .2s;position:relative;}
 .slot-pos{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
 .slot-card{
@@ -518,11 +518,11 @@ button{cursor:pointer;}
   box-shadow:0 0 22px rgba(240,170,0,.22),0 0 0 1px rgba(240,194,57,.3)!important;
 }
 /* Événements sous la carte joueur */
-.slot-events{display:flex;gap:5px;justify-content:center;align-items:center;min-height:40px;flex-wrap:wrap;padding:4px 4px;}
+.slot-events{display:flex;gap:6px;justify-content:center;align-items:center;min-height:52px;flex-wrap:wrap;padding:6px 4px;}
 .slot-event{
-  width:36px;height:36px;border-radius:50%;
+  width:46px;height:46px;border-radius:50%;
   display:grid;place-items:center;
-  font-size:1.25rem;line-height:1;border:1px solid;
+  font-size:1.6rem;line-height:1;border:1px solid;
   flex-shrink:0;transition:transform .15s;cursor:default;
 }
 .slot-event:hover{transform:scale(1.2);}
@@ -1933,7 +1933,7 @@ function renderBuilder(){
                 ${capBadge}
                 <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${col};opacity:.8;z-index:2;"></div>
               </div>
-            </div>`;
+              ${slotEventsHTML(ev)}</div>`;
           }
           return `<div class="slot filled locked-slot ${isCap?'is-captain':''}" data-pos="${s.pos}" data-slot-idx="${si}" style="position:relative;">
             <div class="slot-pos" style="color:${col};font-size:.52rem;font-weight:700;letter-spacing:.15em;">${s.pos}</div>

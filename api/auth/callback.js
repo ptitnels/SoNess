@@ -12,8 +12,7 @@ module.exports = async function handler(req, res) {
     const clientSecret = process.env.SORARE_CLIENT_SECRET;
 
     if (!clientId || !clientSecret) {
-      console.error('Missing env vars - CLIENT_ID:', !!clientId, 'CLIENT_SECRET:', !!clientSecret);
-      return res.redirect(`${appUrl}/?auth_error=missing_env_vars`);
+      return res.redirect(`${appUrl}/?auth_error=missing_env_vars&detail=id:${!!clientId}+secret:${!!clientSecret}`);
     }
 
     const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
@@ -27,6 +26,8 @@ module.exports = async function handler(req, res) {
       body: new URLSearchParams({
         grant_type: 'authorization_code',
         code,
+        client_id: clientId,
+        client_secret: clientSecret,
         redirect_uri: `${appUrl}/api/auth/callback`,
       }).toString(),
     });
@@ -42,7 +43,7 @@ module.exports = async function handler(req, res) {
 
     if (!data.access_token) {
       const errCode = encodeURIComponent(data.error || 'no_token');
-      const errDetail = encodeURIComponent(data.error_description || JSON.stringify(data).slice(0, 100));
+      const errDetail = encodeURIComponent((data.error_description || JSON.stringify(data)).slice(0, 120) + ' | id_prefix:' + clientId.slice(0, 6));
       return res.redirect(`${appUrl}/?auth_error=${errCode}&detail=${errDetail}`);
     }
 

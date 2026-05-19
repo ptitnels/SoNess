@@ -1229,30 +1229,29 @@ function showLoading(on){
 async function loadUserCards(){
   showLoading(true);
   try{
-    const data=await sorareQuery(`query CurrentUser {
-      currentUser {
-        slug
-        nickname
-        cards(first:200) {
-          nodes {
-            slug
-            rarityTyped
-            player {
-              displayName
-              position
-              activeClub { name }
-            }
-          }
-        }
-      }
-    }`);
-    if(data.errors&&data.errors.length) console.warn('Sorare API warnings:',data.errors);
-    const user=data.data&&data.data.currentUser;
+    /* Étape 1 : vérifier l'identité (champs sûrs) */
+    const authData=await sorareQuery(`query Me { currentUser { slug nickname } }`);
+    const user=authData.data&&authData.data.currentUser;
     if(!user){ clearTokens(); showLoading(false); showPage('landing'); return; }
     currentUserData={slug:user.slug,nickname:user.nickname};
     const pill=document.getElementById('demoPill');
     if(pill) pill.querySelector('span').textContent=user.nickname||'Connecté';
-    const nodes=(user.cards&&user.cards.nodes)||(user.allNFTs&&user.allNFTs.nodes)||[];
+
+    /* Étape 2 : introspection pour trouver le bon champ des cartes */
+    const intro=await sorareQuery(`{ __type(name:"CurrentUser"){ fields{ name } } }`);
+    const fields=(intro.data&&intro.data.__type&&intro.data.__type.fields)||[];
+    const fieldNames=fields.map(f=>f.name);
+    console.log('CurrentUser fields:', fieldNames);
+
+    /* Étape 3 : charger les cartes avec le bon champ */
+    const cardsField=fieldNames.find(n=>n==='allNFTs')||fieldNames.find(n=>n==='cards')||fieldNames.find(n=>n==='nfts')||fieldNames.find(n=>n.toLowerCase().includes('card')||n.toLowerCase().includes('nft'));
+    if(!cardsField){ console.warn('Aucun champ cartes trouvé dans CurrentUser'); showLoading(false); return; }
+    console.log('Champ cartes utilisé:', cardsField);
+
+    const cardsData=await sorareQuery(`query Cards { currentUser { ${cardsField}(first:200) { nodes { slug rarityTyped player { displayName position activeClub { name } } } } } }`);
+    if(cardsData.errors) console.warn('Cards warnings:',cardsData.errors);
+    const cu=cardsData.data&&cardsData.data.currentUser;
+    const nodes=(cu&&cu[cardsField]&&cu[cardsField].nodes)||[];
     userCards=nodes.map(nft=>{
       const p=nft.player||{};
       return {
@@ -1265,10 +1264,9 @@ async function loadUserCards(){
         gw:0,avg:0,apps:0,form:[],home:false,opp:3,gpg:0,apg:0,value:0
       };
     });
+    console.log('Cartes chargées:', userCards.length);
   }catch(err){
     console.error('loadUserCards error:',err);
-    showLoading(false);
-    return;
   }
   showLoading(false);
 }

@@ -962,7 +962,7 @@ body.light-mode .page-sub{color:var(--text-muted)!important;}
   </div>
   <button class="connect-btn" id="connectBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Connexion Sorare<span class="arrow">›</span></button>
   <button class="demo-btn" id="demoBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>Explorer la démo</button>
-  <div class="helper-text"><span class="accent">Authentification officielle Sorare</span> en cours d'activation</div>
+
 </section>
 
 <!-- CLUB -->
@@ -1241,16 +1241,12 @@ async function loadUserCards(){
               displayName
               position
               activeClub { name }
-              latestFinalFixtureStats(last:5) { nodes { score } }
             }
           }
         }
       }
     }`);
-    if(data.errors&&data.errors.length){
-      console.warn('Sorare API errors:',data.errors);
-      clearTokens(); showLoading(false); showPage('landing'); return;
-    }
+    if(data.errors&&data.errors.length) console.warn('Sorare API warnings:',data.errors);
     const user=data.data&&data.data.currentUser;
     if(!user){ clearTokens(); showLoading(false); showPage('landing'); return; }
     currentUserData={slug:user.slug,nickname:user.nickname};
@@ -1259,10 +1255,6 @@ async function loadUserCards(){
     const nodes=(user.allNFTs&&user.allNFTs.nodes)||[];
     userCards=nodes.map(nft=>{
       const p=nft.player||{};
-      const recent=(p.latestFinalFixtureStats&&p.latestFinalFixtureStats.nodes)||[];
-      const form=recent.map(s=>Math.round(s.score||0));
-      const gw=form.length?form[form.length-1]:0;
-      const avg=form.length?Math.round(form.reduce((a,b)=>a+b,0)/form.length*10)/10:0;
       return {
         id:nft.slug,
         player:p.displayName||'Inconnu',
@@ -1270,12 +1262,13 @@ async function loadUserCards(){
         club:(p.activeClub&&p.activeClub.name)||'',
         pos:mapPosition(p.position),
         rarity:mapRarity(nft.rarityTyped),
-        gw,avg,apps:form.length,form,home:false,opp:3,gpg:0,apg:0,value:0
+        gw:0,avg:0,apps:0,form:[],home:false,opp:3,gpg:0,apg:0,value:0
       };
     });
   }catch(err){
     console.error('loadUserCards error:',err);
-    clearTokens(); showPage('landing');
+    showLoading(false);
+    return;
   }
   showLoading(false);
 }

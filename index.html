@@ -1215,7 +1215,9 @@ async function sorareQuery(query, variables){
   return res.json();
 }
 function mapPosition(pos){
-  return {Goalkeeper:'Gardien',Defender:'Défenseur',Midfielder:'Milieu',Forward:'Attaquant'}[pos]||pos||'';
+  if(!pos) return '';
+  const map={goalkeeper:'Gardien',defender:'Défenseur',midfielder:'Milieu',forward:'Attaquant'};
+  return map[pos.toLowerCase()]||pos;
 }
 function mapRarity(r){
   if(!r) return 'limited';
@@ -1237,10 +1239,15 @@ async function loadUserCards(){
     const pill=document.getElementById('demoPill');
     if(pill) pill.querySelector('span').textContent=user.nickname||'Connecté';
 
+    /* Diagnostic : champs disponibles sur currentUser */
+    const intro=await sorareQuery(`{__type(name:"CurrentUser"){fields{name}}}`);
+    const cuFields=((intro.data&&intro.data.__type&&intro.data.__type.fields)||[]).map(f=>f.name);
+    console.log('CurrentUser fields:', cuFields.length?cuFields.join(', '):JSON.stringify(intro).slice(0,400));
+
     /* Étape 2 : trouver le bon champ cartes */
     const candidates=[
-      'allNFTs','cards','footballCards','paginatedCards','nfts','so5Cards',
-      'footballNFTs','ownedCards','paginatedNfts','allCards'
+      'footballCards','allNFTs','cards','nfts','so5Cards',
+      'footballNFTs','ownedCards','paginatedCards','paginatedNfts','allCards'
     ];
     let nodes=[];
     let foundField=null, useEdges=false;
@@ -1284,9 +1291,10 @@ async function loadUserCards(){
 
     if(foundField){
       let subQ=useEdges
-        ? `edges{node{slug rarityTyped player{displayName position activeClub{name}}}}`
-        : `nodes{slug rarityTyped player{displayName position activeClub{name}}}`;
+        ? `edges{node{slug rarity player{displayName position activeClub{name}}}}`
+        : `nodes{slug rarity player{displayName position activeClub{name}}}`;
       const full=await sorareQuery(`query Cards{currentUser{${foundField}(first:200){${subQ}}}}`);
+      if(full.errors) console.warn('Erreurs requête cartes:', JSON.stringify(full.errors).slice(0,400));
       const cu2=full.data&&full.data.currentUser;
       if(useEdges){
         const eds=(cu2&&cu2[foundField]&&cu2[foundField].edges)||[];
@@ -1295,6 +1303,7 @@ async function loadUserCards(){
         nodes=(cu2&&cu2[foundField]&&cu2[foundField].nodes)||[];
       }
       console.log('Champ utilisé:', foundField, useEdges?'(edges)':'(nodes)', '— cartes:', nodes.length);
+      if(nodes.length>0) console.log('Exemple nœud brut:', JSON.stringify(nodes[0]));
     } else {
       console.log('Aucun champ cartes trouvé. Voir erreurs ci-dessus pour diagnostic.');
     }
@@ -1306,7 +1315,7 @@ async function loadUserCards(){
         initials:(p.displayName||'??').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2),
         club:(p.activeClub&&p.activeClub.name)||'',
         pos:mapPosition(p.position),
-        rarity:mapRarity(nft.rarityTyped),
+        rarity:mapRarity(nft.rarity),
         gw:0,avg:0,apps:0,form:[],home:false,opp:3,gpg:0,apg:0,value:0
       };
     });

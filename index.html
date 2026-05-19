@@ -1237,21 +1237,67 @@ async function loadUserCards(){
     const pill=document.getElementById('demoPill');
     if(pill) pill.querySelector('span').textContent=user.nickname||'Connecté';
 
-    /* Étape 2 : introspection pour trouver le bon champ des cartes */
-    const intro=await sorareQuery(`{ __type(name:"CurrentUser"){ fields{ name } } }`);
-    const fields=(intro.data&&intro.data.__type&&intro.data.__type.fields)||[];
-    const fieldNames=fields.map(f=>f.name);
-    console.log('CurrentUser fields:', fieldNames);
+    /* Étape 2 : trouver le bon champ cartes */
+    const candidates=[
+      'allNFTs','cards','footballCards','paginatedCards','nfts','so5Cards',
+      'footballNFTs','ownedCards','paginatedNfts','allCards'
+    ];
+    let nodes=[];
+    let foundField=null, useEdges=false;
 
-    /* Étape 3 : charger les cartes avec le bon champ */
-    const cardsField=fieldNames.find(n=>n==='allNFTs')||fieldNames.find(n=>n==='cards')||fieldNames.find(n=>n==='nfts')||fieldNames.find(n=>n.toLowerCase().includes('card')||n.toLowerCase().includes('nft'));
-    if(!cardsField){ console.warn('Aucun champ cartes trouvé dans CurrentUser'); showLoading(false); return; }
-    console.log('Champ cartes utilisé:', cardsField);
+    async function probeField(field, structure){
+      let q;
+      if(structure==='nodes')
+        q=`query P{currentUser{${field}(first:3){nodes{slug}}}}`;
+      else if(structure==='edges')
+        q=`query P{currentUser{${field}(first:3){edges{node{slug}}}}}`;
+      else
+        q=`query P{currentUser{${field}{nodes{slug}}}}`;
+      const r=await sorareQuery(q);
+      if(r.errors){
+        const msg=(r.errors[0]&&r.errors[0].message)||JSON.stringify(r.errors[0]);
+        console.log(`[${field}/${structure}] ERREUR: ${msg.slice(0,200)}`);
+      }
+      const cu=r.data&&r.data.currentUser;
+      if(!cu) return null;
+      const conn=cu[field];
+      if(!conn) return null;
+      if(structure==='nodes') return conn.nodes!==undefined?conn.nodes:null;
+      if(structure==='edges') return conn.edges!==undefined?conn.edges:null;
+      return conn.nodes!==undefined?conn.nodes:null;
+    }
 
-    const cardsData=await sorareQuery(`query Cards { currentUser { ${cardsField}(first:200) { nodes { slug rarityTyped player { displayName position activeClub { name } } } } } }`);
-    if(cardsData.errors) console.warn('Cards warnings:',cardsData.errors);
-    const cu=cardsData.data&&cardsData.data.currentUser;
-    const nodes=(cu&&cu[cardsField]&&cu[cardsField].nodes)||[];
+    for(const field of candidates){
+      let result=await probeField(field,'nodes');
+      if(result!==null){ foundField=field; useEdges=false; console.log(`✓ ${field}/nodes: ${result.length} résultats`); break; }
+      result=await probeField(field,'edges');
+      if(result!==null){ foundField=field; useEdges=true; console.log(`✓ ${field}/edges: ${result.length} résultats`); break; }
+      result=await probeField(field,'no-args');
+      if(result!==null){ foundField=field; useEdges=false; console.log(`✓ ${field}/no-args: ${result.length} résultats`); break; }
+    }
+
+    if(!foundField && user.slug){
+      console.log('Essai via profil public slug:', user.slug);
+      const rPub=await sorareQuery(`query{user(slug:"${user.slug}"){footballCards(first:3){nodes{slug}}}}`);
+      console.log('Profil public:', JSON.stringify(rPub).slice(0,400));
+    }
+
+    if(foundField){
+      let subQ=useEdges
+        ? `edges{node{slug rarityTyped player{displayName position activeClub{name}}}}`
+        : `nodes{slug rarityTyped player{displayName position activeClub{name}}}`;
+      const full=await sorareQuery(`query Cards{currentUser{${foundField}(first:200){${subQ}}}}`);
+      const cu2=full.data&&full.data.currentUser;
+      if(useEdges){
+        const eds=(cu2&&cu2[foundField]&&cu2[foundField].edges)||[];
+        nodes=eds.map(e=>e.node).filter(Boolean);
+      } else {
+        nodes=(cu2&&cu2[foundField]&&cu2[foundField].nodes)||[];
+      }
+      console.log('Champ utilisé:', foundField, useEdges?'(edges)':'(nodes)', '— cartes:', nodes.length);
+    } else {
+      console.log('Aucun champ cartes trouvé. Voir erreurs ci-dessus pour diagnostic.');
+    }
     userCards=nodes.map(nft=>{
       const p=nft.player||{};
       return {

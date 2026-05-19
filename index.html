@@ -1233,7 +1233,7 @@ async function loadUserCards(){
       currentUser {
         slug
         nickname
-        allNFTs(first:200) {
+        cards(first:200) {
           nodes {
             slug
             rarityTyped
@@ -1252,7 +1252,7 @@ async function loadUserCards(){
     currentUserData={slug:user.slug,nickname:user.nickname};
     const pill=document.getElementById('demoPill');
     if(pill) pill.querySelector('span').textContent=user.nickname||'Connecté';
-    const nodes=(user.allNFTs&&user.allNFTs.nodes)||[];
+    const nodes=(user.cards&&user.cards.nodes)||(user.allNFTs&&user.allNFTs.nodes)||[];
     userCards=nodes.map(nft=>{
       const p=nft.player||{};
       return {

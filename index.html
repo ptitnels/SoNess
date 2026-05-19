@@ -1287,9 +1287,12 @@ function checkAuth(){
     }
   }
   const urlParams=new URLSearchParams(window.location.search);
-  if(urlParams.get('auth_error')){
-    console.warn('Auth error:',urlParams.get('auth_error'));
+  const authError=urlParams.get('auth_error');
+  const authDetail=urlParams.get('detail');
+  if(authError){
     history.replaceState(null,'','/');
+    alert('Erreur connexion Sorare : ' + authError + (authDetail?' — '+decodeURIComponent(authDetail):''));
+    return;
   }
   const token=getToken();
   if(token&&!isTokenExpired()){

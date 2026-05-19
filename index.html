@@ -492,6 +492,7 @@ button{cursor:pointer;}
 .loading-overlay.visible{opacity:1;pointer-events:auto;}
 .spinner{width:44px;height:44px;border:2px solid rgba(105,145,232,.2);border-top-color:var(--blue);border-radius:50%;animation:spin .9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'Rajdhani',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-light);opacity:.7;}
 
 
 /* Prediction line on gauge */
@@ -1224,9 +1225,18 @@ function mapRarity(r){
   const s=r.toLowerCase().replace(/ /g,'_');
   return s==='superrare'?'super_rare':s;
 }
-function showLoading(on){
+function showLoading(on, text){
   const el=document.getElementById('loadingOverlay');
-  if(el) el.style.display=on?'flex':'none';
+  if(!el) return;
+  if(on){
+    const lt=el.querySelector('.loading-text');
+    if(lt) lt.textContent=text||'Chargement…';
+    el.style.display='flex';
+    requestAnimationFrame(()=>el.classList.add('visible'));
+  } else {
+    el.classList.remove('visible');
+    setTimeout(()=>{ if(!el.classList.contains('visible')) el.style.display='none'; },320);
+  }
 }
 async function loadUserCards(){
   showLoading(true);
@@ -1239,14 +1249,9 @@ async function loadUserCards(){
     const pill=document.getElementById('demoPill');
     if(pill) pill.querySelector('span').textContent=user.nickname||'Connecté';
 
-    /* Diagnostic : champs disponibles sur currentUser */
-    const intro=await sorareQuery(`{__type(name:"CurrentUser"){fields{name}}}`);
-    const cuFields=((intro.data&&intro.data.__type&&intro.data.__type.fields)||[]).map(f=>f.name);
-    console.log('CurrentUser fields:', cuFields.length?cuFields.join(', '):JSON.stringify(intro).slice(0,400));
-
     /* Étape 2 : trouver le bon champ cartes */
     const candidates=[
-      'footballCards','allNFTs','cards','nfts','so5Cards',
+      'cards','footballCardCollections','footballCards','allNFTs','nfts','so5Cards',
       'footballNFTs','ownedCards','paginatedCards','paginatedNfts','allCards'
     ];
     let nodes=[];
@@ -1291,8 +1296,8 @@ async function loadUserCards(){
 
     if(foundField){
       let subQ=useEdges
-        ? `edges{node{slug rarity player{displayName position activeClub{name}}}}`
-        : `nodes{slug rarity player{displayName position activeClub{name}}}`;
+        ? `edges{node{slug rarityTyped anyPlayer{displayName position activeClub{name}}}}`
+        : `nodes{slug rarityTyped anyPlayer{displayName position activeClub{name}}}`;
       const full=await sorareQuery(`query Cards{currentUser{${foundField}(first:200){${subQ}}}}`);
       if(full.errors) console.warn('Erreurs requête cartes:', JSON.stringify(full.errors).slice(0,400));
       const cu2=full.data&&full.data.currentUser;
@@ -1308,14 +1313,14 @@ async function loadUserCards(){
       console.log('Aucun champ cartes trouvé. Voir erreurs ci-dessus pour diagnostic.');
     }
     userCards=nodes.map(nft=>{
-      const p=nft.player||{};
+      const p=nft.anyPlayer||{};
       return {
         id:nft.slug,
         player:p.displayName||'Inconnu',
         initials:(p.displayName||'??').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2),
         club:(p.activeClub&&p.activeClub.name)||'',
         pos:mapPosition(p.position),
-        rarity:mapRarity(nft.rarity),
+        rarity:mapRarity(nft.rarityTyped),
         gw:0,avg:0,apps:0,form:[],home:false,opp:3,gpg:0,apg:0,value:0
       };
     });
@@ -1326,6 +1331,7 @@ async function loadUserCards(){
   showLoading(false);
 }
 function checkAuth(){
+  const landing=document.getElementById('screen-landing');
   const hash=window.location.hash;
   if(hash.includes('access_token=')){
     const params=new URLSearchParams(hash.slice(1));
@@ -1333,6 +1339,8 @@ function checkAuth(){
     const refresh=params.get('refresh_token');
     const expires=params.get('expires_in');
     if(access){
+      if(landing) landing.classList.add('hidden');
+      showLoading(true,'Connexion Sorare en cours…');
       storeTokens(access,refresh,expires?Number(expires):null);
       history.replaceState(null,'','/');
       loadUserCards().then(()=>showPage('club'));
@@ -1349,6 +1357,8 @@ function checkAuth(){
   }
   const token=getToken();
   if(token&&!isTokenExpired()){
+    if(landing) landing.classList.add('hidden');
+    showLoading(true,'Chargement de tes cartes…');
     loadUserCards().then(()=>showPage('club'));
   }
 }

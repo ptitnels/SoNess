@@ -1,6 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/api/auth/callback", "destination": "/api/auth/callback" },
-    { "source": "/api/sorare", "destination": "/api/sorare" }
-  ]
+  "functions": {
+    "api/**/*.js": { "runtime": "nodejs18.x" }
+  }
 }

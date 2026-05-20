@@ -1267,7 +1267,7 @@ async function loadUserCards(){
     let hasNextPage=true;
     while(hasNextPage){
       const result=await sorareQuery(
-        `query Cards($slug:String!,$cursor:String){user(slug:$slug){cards(sport:FOOTBALL,first:50,after:$cursor){nodes{slug rarityTyped anyPositions anyTeam{name}anyPlayer{displayName}... on FootballCard{pictureUrl}}pageInfo{hasNextPage endCursor}}}}`,
+        `query Cards($slug:String!,$cursor:String){user(slug:$slug){cards(sport:FOOTBALL,first:50,after:$cursor){nodes{slug rarityTyped anyPositions anyTeam{name}anyPlayer{displayName}pictureUrl}pageInfo{hasNextPage endCursor}}}}`,
         {slug:user.slug,cursor}
       );
       console.log('Réponse cartes (raw):',JSON.stringify(result).slice(0,500));

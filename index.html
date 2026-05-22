@@ -439,7 +439,7 @@ button{cursor:pointer;}
 /* Club detail modal */
 .modal-overlay{position:fixed;inset:0;z-index:50;background:rgba(6,10,20,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;}
 .modal-overlay.open{opacity:1;pointer-events:auto;}
-.modal{width:100%;max-width:min(96vw,940px);background:linear-gradient(165deg,var(--bg-3),var(--bg-card));border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;transform:translateY(20px) scale(.97);transition:transform .3s;max-height:92vh;overflow-y:auto;}
+.modal{width:100%;max-width:min(96vw,1100px);background:linear-gradient(165deg,var(--bg-3),var(--bg-card));border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;transform:translateY(20px) scale(.97);transition:transform .3s;max-height:93vh;overflow-y:auto;}
 .modal-overlay.open .modal{transform:translateY(0) scale(1);}
 .modal-header{padding:1.1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
 .modal-rarity{font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:.3em;font-weight:600;}
@@ -463,7 +463,7 @@ button{cursor:pointer;}
 .chart-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px;vertical-align:middle;}
 .modal-section-title{font-size:.65rem;letter-spacing:.3em;color:var(--blue-light);text-transform:uppercase;font-weight:600;margin-bottom:.7rem;}
 .sparkline-wrap{background:rgba(105,145,232,.04);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1.5rem;overflow:hidden;position:relative;}
-.sparkline-wrap svg{width:100%;height:260px;}
+.sparkline-wrap svg{width:100%;height:300px;}
 .chart-logos-row{display:flex;position:relative;height:24px;margin-top:5px;}
 .chart-logo-item{position:absolute;transform:translateX(-50%);width:22px;height:22px;transition:opacity .2s;}
 .chart-logo-item img{width:100%;height:100%;border-radius:50%;object-fit:contain;background:rgba(5,14,30,.9);border:1px solid rgba(105,145,232,.25);display:block;}
@@ -2013,48 +2013,46 @@ function openCardModal(id){
   const pSlug=c.playerSlug;
   if(!pSlug){ console.warn('[CardScore] playerSlug absent, pas de requête home/away'); return; }
 
-  sorareQuery(
-    `query PlayerScoreFull($slug:String!){player(slug:$slug){... on Player{so5Scores(last:10){score so5Appearance{so5Fixture{gameWeek startDate} anyGamePlayer{decisiveActions{actionType}} anyGame{homeTeam{name slug pictureUrl}awayTeam{name slug pictureUrl}}}}}}}`,
-    {slug:pSlug}
-  ).then(res=>{
-    console.log('[CardScore] raw:', JSON.stringify(res?.data).slice(0,400));
-    if(res?.errors?.length){
-      console.warn('[CardScore] erreur q1:', res.errors[0]?.message, '→ fallback sans champs enrichis');
-      return sorareQuery(
-        `query PlayerScore($slug:String!){player(slug:$slug){... on Player{so5Scores(last:10){score so5Appearance{so5Fixture{gameWeek} anyGame{homeTeam{name slug}awayTeam{name slug}}}}}}}`,
-        {slug:pSlug}
-      ).then(r2=>{
-        if(r2?.errors?.length){
-          console.warn('[CardScore] erreur q2:', r2.errors[0]?.message, '→ fallback minimal');
-          return sorareQuery(`query PlayerScore2($slug:String!){player(slug:$slug){... on Player{so5Scores(last:10){score so5Appearance{so5Fixture{gameWeek}}}}}}}`,{slug:pSlug});
-        }
-        return r2;
-      });
-    }
-    return res;
-  }).then(res=>{
-    if(!res||res.errors){ console.warn('[CardScore] échec requête player'); return; }
+  /* ── Cascade de 4 requêtes, du plus riche au plus simple ────────────────
+     Q1: anyGame direct sur so5Appearance (chemin le plus courant)
+     Q2: anyGamePlayer sur so5Score lui-même (chemin alternatif)
+     Q3: anyGamePlayer via inline fragment FootballPlayer
+     Q4: fallback ultime — score + GW seulement, sans dom/ext
+  ──────────────────────────────────────────────────────────────────────── */
+  const Q1=`query ScoreQ1($s:String!){player(slug:$s){... on Player{so5Scores(last:10){score so5Appearance{so5Fixture{gameWeek startDate} anyGame{homeTeam{name slug}awayTeam{name slug}}}}}}}`;
+  const Q2=`query ScoreQ2($s:String!){player(slug:$s){... on Player{so5Scores(last:10){score anyGamePlayer{... on FootballPlayer{anyGame{homeTeam{name slug}awayTeam{name slug}}}} so5Appearance{so5Fixture{gameWeek startDate}}}}}}`;
+  const Q3=`query ScoreQ3($s:String!){player(slug:$s){... on Player{so5Scores(last:10){score so5Appearance{so5Fixture{gameWeek startDate} anyGamePlayer{... on FootballPlayer{anyGame{homeTeam{name slug}awayTeam{name slug}}}}}}}}`;
+  const Q4=`query ScoreQ4($s:String!){player(slug:$s){... on Player{so5Scores(last:10){score so5Appearance{so5Fixture{gameWeek}}}}}}`;
+
+  function tryQuery(queries,idx,slug){
+    if(idx>=queries.length) return Promise.resolve(null);
+    return sorareQuery(queries[idx],{s:slug}).then(r=>{
+      if(r?.errors?.length){
+        console.warn(`[CardScore] Q${idx+1} erreur:`,r.errors[0]?.message,'→ essai Q'+(idx+2));
+        return tryQuery(queries,idx+1,slug);
+      }
+      console.log(`[CardScore] Q${idx+1} OK →`,JSON.stringify(r?.data).slice(0,300));
+      return r;
+    });
+  }
+
+  tryQuery([Q1,Q2,Q3,Q4],0,pSlug).then(res=>{
+    if(!res){ console.warn('[CardScore] toutes les requêtes ont échoué'); return; }
     const pl=res.data?.player;
-    if(!pl){ console.warn('[CardScore] player null'); return; }
+    if(!pl){ console.warn('[CardScore] player null dans la réponse'); return; }
     const rawNodes=Array.isArray(pl.so5Scores)?pl.so5Scores:[];
-    console.log('[CardScore] so5Scores brut (%d scores):', rawNodes.length, JSON.stringify(rawNodes).slice(0,300));
-    if(!rawNodes.length) return;
-    /* L'API renvoie du plus récent au plus ancien — on inverse pour afficher chronologiquement */
+    if(!rawNodes.length){ console.warn('[CardScore] so5Scores vide'); return; }
+    /* L'API renvoie du plus récent au plus ancien — on inverse */
     const nodes=[...rawNodes].reverse();
     const tSlug=c.teamSlug, tName=c.club;
     const FR_MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
-    const ACT_MAP={
-      GOAL:{icon:'⚽',type:'pos'},ASSIST:{icon:'🦵',type:'pos'},
-      PENALTY_WON:{icon:'🎯',type:'pos'},CLEARANCE_OFF_THE_LINE:{icon:'🛡️',type:'pos'},
-      CLEAN_SHEET:{icon:'🧤',type:'pos'},CLEAN_SHEET_60:{icon:'🧤',type:'pos'},
-      PENALTY_SAVE:{icon:'✋',type:'pos'},LAST_MAN_TACKLE:{icon:'💪',type:'pos'},
-      RED_CARD:{icon:'🟥',type:'neg'},OWN_GOAL:{icon:'😬',type:'neg'},
-      PENALTY_CONCEDED:{icon:'🚫',type:'neg'},ERROR_LEADS_TO_GOAL:{icon:'⚠️',type:'neg'},
-    };
-    console.log('[CardScore] teamSlug=%s club=%s', tSlug, tName);
     const entries=nodes.map(n=>{
-      const ag=n.so5Appearance?.anyGame;
+      /* GW — peut venir de so5Appearance.so5Fixture */
       const fixture=n.so5Appearance?.so5Fixture;
+      /* anyGame — essaie les deux chemins possibles */
+      const ag=n.so5Appearance?.anyGame
+              ||n.anyGamePlayer?.anyGame
+              ||n.so5Appearance?.anyGamePlayer?.anyGame;
       let home=null,teamLogoUrl=null,teamName='';
       if(ag){
         const hSlug=ag.homeTeam?.slug,aSlug=ag.awayTeam?.slug;
@@ -2063,16 +2061,21 @@ function openCardModal(id){
         else if(tSlug&&aSlug&&tSlug===aSlug)  home=false;
         else if(tName&&hName&&tName===hName)  home=true;
         else if(tName&&aName&&tName===aName)  home=false;
-        if(home===null) console.log('[CardScore] aucun match: teamSlug=%s hSlug=%s aSlug=%s hName=%s aName=%s',tSlug,hSlug,aSlug,hName,aName);
-        if(home===true){teamLogoUrl=ag.awayTeam?.pictureUrl||null;teamName=ag.awayTeam?.name||'';}
+        if(home===true) {teamLogoUrl=ag.awayTeam?.pictureUrl||null;teamName=ag.awayTeam?.name||'';}
         else if(home===false){teamLogoUrl=ag.homeTeam?.pictureUrl||null;teamName=ag.homeTeam?.name||'';}
       }
       let month=null;
       if(fixture?.startDate){const d=new Date(fixture.startDate);month=`${FR_MONTHS[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`;}
-      const rawActs=n.so5Appearance?.anyGamePlayer?.decisiveActions||[];
-      const events=rawActs.map(a=>ACT_MAP[a.actionType]).filter(Boolean);
-      return {score:n.score??0,gw:fixture?.gameWeek??null,home,teamLogoUrl,teamName,month,events};
+      return {score:n.score??0,gw:fixture?.gameWeek??null,home,teamLogoUrl,teamName,month,events:[]};
     });
+    /* ── Diagnostic clair dans la console ────────────────────────────── */
+    const gwOk=entries.filter(e=>e.gw!==null).length;
+    const haOk=entries.filter(e=>e.home!==null).length;
+    console.log(`[CardScore] ✅ ${entries.length} scores | GW: ${gwOk}/${entries.length} | Dom/Ext: ${haOk}/${entries.length}`);
+    if(gwOk===0)  console.warn('[CardScore] ⚠️ so5Fixture.gameWeek non disponible via l\'API');
+    if(haOk===0)  console.warn('[CardScore] ⚠️ anyGame (homeTeam/awayTeam) non disponible via l\'API');
+    if(gwOk>0)    console.log('[CardScore] GW récupérées:',entries.map(e=>e.gw));
+    if(haOk>0)    console.log('[CardScore] Dom/Ext:',entries.map(e=>e.home===true?'dom':e.home===false?'ext':'?'));
     /* Stocker pour le filtre dom/ext */
     _chartEntries=entries; _chartCol=col;
     /* Met à jour le form pour scoreNess */
